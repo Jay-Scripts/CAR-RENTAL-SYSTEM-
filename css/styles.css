@@ -1,14 +1,12 @@
-#headerName {
+* {
   font-family: "Shrikhand", serif;
-  font-weight: 400;
-  font-style: normal;
 }
 // general fonts
-* {
+/* .text {
   font-family: "Yeseva One", serif;
   font-weight: 400;
   font-style: normal;
-}
+} */
 //annimation index
 /* Custom keyframes for fade-in and slide-up */
 @keyframes fadeIn {

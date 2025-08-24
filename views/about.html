@@ -3,32 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>About | CarRental</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../css/styles.css" />
-    <style>
-      @keyframes popup {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        80% {
-          transform: scale(1.05);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-      .animate-popup {
-        animation: popup 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-    </style>
+    <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
     <header class="fade-in">
@@ -39,7 +20,7 @@
             class="flex items-center space-x-3 rtl:space-x-reverse"
             id="headerName"
           >
-             <span
+            <span
               class="self-center text-2xl md:text-4xl whitespace-nowrap text-white font-bold"
               >CarRental</span
             >
@@ -88,17 +69,67 @@
                   >About</a
                 >
               </li>
+
               <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  >My Booking</a
+                <button
+                  id="dropdownNavbarLinkBooking"
+                  data-dropdown-toggle="dropdownNavbarBooking"
+                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
                 >
+                  My Booking
+                  <svg
+                    class="w-2.5 h-2.5 ms-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div
+                  id="dropdownNavbarBooking"
+                  class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                >
+                  <ul
+                    class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                    aria-labelledby="dropdownNavbarLinkBooking"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >View</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Cancel</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Request Invoice</a
+                      >
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li>
                 <button
-                  id="dropdownNavbarLink"
-                  data-dropdown-toggle="dropdownNavbar"
+                  id="dropdownNavbarLinkHelp"
+                  data-dropdown-toggle="dropdownNavbarHelp"
                   class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
                 >
                   Help
@@ -120,12 +151,12 @@
                 </button>
                 <!-- Dropdown menu -->
                 <div
-                  id="dropdownNavbar"
+                  id="dropdownNavbarHelp"
                   class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
                 >
                   <ul
                     class="py-2 text-sm text-gray-700 dark:text-gray-400"
-                    aria-labelledby="dropdownLargeButton"
+                    aria-labelledby="dropdownNavbarLinkHelp"
                   >
                     <li>
                       <a
@@ -164,66 +195,40 @@
       </nav>
     </header>
     <main
-      class="flex flex-col justify-around h-[100vh] fade-in bg-[url('../src/images/mainbg.jpg')] bg-cover bg-center w-full"
+      class="flex flex-col items-center justify-center min-h-[80vh] bg-[url('../src/images/mainbg.jpg')] bg-cover bg-center w-full fade-in"
       style="animation-delay: 0.2s"
     >
-      <section class="flex items-center justify-center mx-10">
-        <form
-          class="max-w-sm w-full mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
-        >
-          <h2 class="text-2xl font-bold text-[#df927f] mb-6 text-center animate__animated animate__fadeInDown">
-            Login to CarRental
-          </h2>
-          <div class="mb-5 animate__animated animate__fadeInLeft animate__delay-1s"></div>
-            <label
-              for="email"
-              class="block mb-2 text-sm font-medium text-[#df927f]"
-              >Email</label
-            >
-            <input
-              type="email"
-              id="email"
-              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
-              placeholder="your@email.com"
-              required
-            />
+      <section
+        class="bg-white bg-opacity-90 rounded-xl shadow-lg p-8 m-6 text-center slide-up"
+      >
+        <h1 class="text-4xl font-bold text-[#a86c3f] mb-4">About CarRental</h1>
+        <p class="text-gray-700 text-lg mb-6">
+          CarRental is your trusted partner for hassle-free car reservations and
+          rentals. Our mission is to make your journey smooth, comfortable, and
+          memorable. With a wide selection of vehicles, easy booking process,
+          and dedicated customer support, we ensure you drive with confidence
+          and style.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="bg-[#df927f] rounded-lg p-4 text-white shadow-sm">
+            <h2 class="font-semibold text-xl mb-2">Our Vision</h2>
+            <p>
+              To be the leading car rental service, delivering reliability and
+              convenience for every traveler.
+            </p>
           </div>
-          <div class="mb-5 animate__animated animate__fadeInLeft animate__delay-2s"></div>
-            <label
-              for="password"
-              class="block mb-2 text-sm font-medium text-[#df927f]"
-              >Password</label
-            >
-            <input
-              type="password"
-              id="password"
-              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
-              required
-            />
+          <div class="bg-[#2c343c] rounded-lg p-4 text-white shadow-sm">
+            <h2 class="font-semibold text-xl mb-2">Why Choose Us?</h2>
+            <ul class="list-disc list-inside text-white text-left">
+              <li>Wide range of vehicles</li>
+              <li>Easy online booking</li>
+              <li>Transparent pricing</li>
+              <li>24/7 customer support</li>
+            </ul>
           </div>
-          <div class="flex items-center justify-between mb-6 animate__animated animate__fadeIn animate__delay-3s"></div>
-            <a href="#" class="text-sm text-[#df927f] hover:underline"
-              >Forgot password?</a
-            >
-          </div>
-          <button
-            type="submit"
-            class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] focus:ring-4 focus:outline-none focus:ring-[#df927f]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
-          >
-            Login
-          </button>
-          <p class="mt-6 text-sm text-center text-[#df927f]">
-            Don't have an account?
-            <a
-              href="register.html"
-              class="text-[#df927f] hover:underline font-medium"
-              >Register</a
-            >
-          </p>
-        </form>
+        </div>
       </section>
     </main>
-
     <footer
       class="bg-[#837671] shadow-sm fade-in"
       style="animation-delay: 0.5s"
@@ -231,7 +236,7 @@
       <div class="w-full mx-auto p-4 md:py-8">
         <div class="sm:flex sm:items-center sm:justify-between">
           <a
-            href="https://flowbite.com/"
+            href="#"
             class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
             <span
@@ -261,13 +266,11 @@
           class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8"
         />
         <span class="block text-sm text-white sm:text-center"
-          >© 2025
-          <a href="https://flowbite.com/" class="hover:underline">CarRental™ </a
-          >All rights reserved.</span
+          >© 2025 <a href="#" class="hover:underline">CarRental™ </a>All rights
+          reserved.</span
         >
       </div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
   </body>
 </html>
