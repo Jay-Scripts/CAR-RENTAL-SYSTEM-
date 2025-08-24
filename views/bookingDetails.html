@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CarRental</title>
+    <title>Booking Details</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
@@ -55,7 +55,7 @@
             >
               <li>
                 <a
-                  href="index.html"
+                  href="../index.html"
                   class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
                   aria-current="page"
                   >Home</a
@@ -64,7 +64,7 @@
 
               <li>
                 <a
-                  href="./views/about.html"
+                  href="about.html"
                   class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                   >About</a
                 >
@@ -195,59 +195,113 @@
       </nav>
     </header>
     <main
-      class="flex flex-col justify-around h-[100vh] fade-in bg-[url('./src/images/mainbg.jpg')] bg-cover bg-center w-full"
+      class="flex flex-col items-center justify-center min-h-[80vh] bg-[url('../src/images/mainbg.jpg')] bg-cover bg-center w-full fade-in"
       style="animation-delay: 0.2s"
     >
-      <div class="flex flex-col justify-center items-center slide-up">
-        <p
-          class="bg-[#a86c3f] rounded-2xl p-5 m-3 text-white fade-in delay-1 text-center md:text-2xl"
-        >
-          The Road Awaits <br />
-          Reserve Your Ride Today!
-        </p>
-        <a
-          href="./views/loginPage.html"
-          class="text-[#986555] bg-white border w-[20%] focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 hover-scale fade-in delay-2"
-        >
-          Book Now
-        </a>
-      </div>
       <section class="flex items-center justify-center mx-10">
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        <form
+          class="max-w-md w-full mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
         >
-          <div
-            class="block max-w-sm p-6 bg-[#4e402d] border border-gray-200 rounded-lg shadow-sm slide-up delay-1 hover-scale"
-          >
-            <p class="font-normal text-center text-white">
-              Reliable Rides, Unmatched Service.
-            </p>
+          <h2 class="text-2xl font-bold text-[#df927f] mb-6 text-center">
+            Booking Details
+          </h2>
+
+          <!-- Booking  -->
+          <div class="mb-5">
+            <label
+              for="floating_repeat_password"
+              class="block mb-2 text-sm font-medium text-[#df927f]"
+            >
+              Details About the trip :
+            </label>
+            <input
+              type="password"
+              id="floating_repeat_password"
+              name="repeat_password"
+              required
+              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+            />
           </div>
-          <div
-            class="block max-w-sm p-6 bg-[#2c343c] border border-gray-200 rounded-lg shadow-sm slide-up delay-2 hover-scale"
-          >
-            <p class="font-normal text-center text-white">
-              Smooth Reservations, Smoother Rides.
-            </p>
+
+          <!-- Pick-up Date & Drop-off Date -->
+          <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-5">
+              <label
+                for="floating_first_name"
+                class="block mb-2 text-sm font-medium text-[#df927f]"
+              >
+                Pick-up Date
+              </label>
+              <input
+                type="date"
+                id="pickUpDate"
+                name="pickUpDate"
+                required
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+              />
+            </div>
+            <div class="mb-5">
+              <label
+                for="floating_last_name"
+                class="block mb-2 text-sm font-medium text-[#df927f]"
+              >
+                Drop-off Date
+              </label>
+              <input
+                type="date"
+                id="dropOffDate"
+                name="dropOffDate"
+                required
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+              />
+            </div>
           </div>
-          <div
-            class="block max-w-sm p-6 bg-[#aa6d3f] border border-gray-200 rounded-lg shadow-sm slide-up delay-3 hover-scale"
-          >
-            <p class="font-normal text-center text-white">
-              From Booking to Driving – Hassle-Free.
-            </p>
+
+          <!-- Pick-up Time & Drop-off Time -->
+          <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-5">
+              <label
+                for="floating_phone"
+                class="block mb-2 text-sm font-medium text-[#df927f]"
+              >
+                Pick-up Time
+              </label>
+              <input
+                type="time"
+                id="pickUpTime"
+                name="pickUpTime"
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                required
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+              />
+            </div>
+            <div class="mb-5">
+              <label
+                for="floating_company"
+                class="block mb-2 text-sm font-medium text-[#df927f]"
+              >
+                Drop-off Time
+              </label>
+              <input
+                type="time"
+                id="dropOffTime"
+                name="dropOffTime"
+                required
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+              />
+            </div>
           </div>
-          <div
-            class="block max-w-sm p-6 bg-[#757c7c] border border-gray-200 rounded-lg shadow-sm slide-up delay-4 hover-scale"
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] focus:ring-4 focus:outline-none focus:ring-[#df927f]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
           >
-            <p class="font-normal text-center text-white">
-              Drive with Ease, Arrive in Style.
-            </p>
-          </div>
-        </div>
+            Submit
+          </button>
+        </form>
       </section>
     </main>
-
     <footer
       class="bg-[#837671] shadow-sm fade-in"
       style="animation-delay: 0.5s"
@@ -255,7 +309,7 @@
       <div class="w-full mx-auto p-4 md:py-8">
         <div class="sm:flex sm:items-center sm:justify-between">
           <a
-            href="https://flowbite.com/"
+            href="#"
             class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
             <span
@@ -285,13 +339,11 @@
           class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8"
         />
         <span class="block text-sm text-white sm:text-center"
-          >© 2025
-          <a href="https://flowbite.com/" class="hover:underline">CarRental™ </a
-          >All rights reserved.</span
+          >© 2025 <a href="#" class="hover:underline">CarRental™ </a>All rights
+          reserved.</span
         >
       </div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
   </body>
 </html>
