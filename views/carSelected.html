@@ -3,32 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Booking Details</title>
+    <link href="../style.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
-      href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
+      href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&family=Yeseva+One&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./css/styles.css" />
-    <style>
-      @keyframes popup {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        80% {
-          transform: scale(1.05);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-      .animate-popup {
-        animation: popup 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-    </style>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&display=swap"
+      rel="stylesheet"
+    />
+    <title>Car Selection</title>
   </head>
   <body>
     <header class="fade-in">
@@ -213,113 +201,124 @@
         </div>
       </nav>
     </header>
-    <main
-      class="flex flex-col items-center justify-center min-h-[80vh] bg-[url('../src/images/dropOffbg.jpg')] bg-cover bg-center w-full fade-in"
-      style="animation-delay: 0.2s"
-    >
-      <section class="flex items-center justify-center mx-10">
-        <form
-          class="max-w-md w-full mx-auto bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
+    <main id="mainContent" class="h-[100vh] w-full">
+      <h1 class="font-bold text-[2rem] shrikhand-regular text-center p-5">
+        Available Cars
+      </h1>
+
+      <div class="flex justify-center">
+        <div
+          class="grid grid-cols-1 landscape:grid-cols-3 gap-2 rounded-md w-[80%] bg-white border shadow-black shadow-md hover:bg-gray-300 font-bold"
         >
-          <h2 class="text-2xl font-bold text-white mb-6 text-center">
-            Booking Details
-          </h2>
-
-          <!-- Booking  -->
-          <div class="mb-5">
-            <label
-              for="floating_repeat_password"
-              class="block mb-2 text-sm font-medium text-white"
-            >
-              Details About the trip :
-            </label>
-            <input
-              type="password"
-              id="floating_repeat_password"
-              name="repeat_password"
-              required
-              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+          <div id="carImage" class="p-2">
+            <img
+              src="../src/images/carsImage/blueviosXLE2022.png"
+              alt="bluevios image"
+              class="w-full h-auto object-contain"
             />
+            <hr class="block landscape:hidden" />
           </div>
 
-          <!-- Pick-up Date & Drop-off Date -->
-          <div class="grid md:grid-cols-2 md:gap-6">
-            <div class="mb-5">
-              <label
-                for="floating_first_name"
-                class="block mb-2 text-sm font-medium text-white"
+          <div id="carDetails" class="p-2 flex justify-center flex-col">
+            <h2 class="flex portrait:justify-center items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#999999"
               >
-                Pick-up Date
-              </label>
-              <input
-                type="date"
-                id="pickUpDate"
-                name="pickUpDate"
-                required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
-              />
+                <path
+                  d="M240-200q-50 0-85-35t-35-85H40v-360q0-33 23.5-56.5T120-760h560l240 240v200h-80q0 50-35 85t-85 35q-50 0-85-35t-35-85H360q0 50-35 85t-85 35Zm360-360h160L640-680h-40v120Zm-240 0h160v-120H360v120Zm-240 0h160v-120H120v120Zm120 290q21 0 35.5-14.5T290-320q0-21-14.5-35.5T240-370q-21 0-35.5 14.5T190-320q0 21 14.5 35.5T240-270Zm480 0q21 0 35.5-14.5T770-320q0-21-14.5-35.5T720-370q-21 0-35.5 14.5T670-320q0 21 14.5 35.5T720-270ZM120-400h32q17-18 39-29t49-11q27 0 49 11t39 29h304q17-18 39-29t49-11q27 0 49 11t39 29h32v-80H120v80Zm720-80H120h720Z"
+                />
+              </svg>
+              Toyota Vios XLE 2022
+            </h2>
+            <br />
+            <div
+              class="grid grid-cols-2 grid-rows-2 gap-2 portrait:flex portrait:justify-between portrait:flex-col portrait:items-center"
+            >
+              <div>
+                <p class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#999999"
+                  >
+                    <path
+                      d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"
+                    />
+                  </svg>
+                  4 passenger
+                </p>
+              </div>
+              <div>
+                <p class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#999999"
+                  >
+                    <path
+                      d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 32.5-156t88-127Q256-817 330-848.5T488-880q80 0 151 27.5t124.5 76q53.5 48.5 85 115T880-518q0 115-70 176.5T640-280h-74q-9 0-12.5 5t-3.5 11q0 12 15 34.5t15 51.5q0 50-27.5 74T480-80Zm0-400Zm-220 40q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm120-160q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm200 0q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm120 160q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17ZM480-160q9 0 14.5-5t5.5-13q0-14-15-33t-15-57q0-42 29-67t71-25h70q66 0 113-38.5T800-518q0-121-92.5-201.5T488-800q-136 0-232 93t-96 227q0 133 93.5 226.5T480-160Z"
+                    />
+                  </svg>
+                  Blue Mica Metallic
+                </p>
+              </div>
+              <div class="col-start-2 row-start-2">
+                <p class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#999999"
+                  >
+                    <path
+                      d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"
+                    /></svg
+                  >Automatic
+                </p>
+              </div>
+              <div class="col-start-1 row-start-2">
+                <p class="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#999999"
+                  >
+                    <path
+                      d="M160-160v-640h80v640h-80Zm280 0v-160h80v160h-80Zm280 0v-640h80v640h-80ZM440-400v-160h80v160h-80Zm0-240v-160h80v160h-80Z"
+                    />
+                  </svg>
+                  41,809 km
+                </p>
+              </div>
             </div>
-            <div class="mb-5">
-              <label
-                for="floating_last_name"
-                class="block mb-2 text-sm font-medium text-white"
-              >
-                Drop-off Date
-              </label>
-              <input
-                type="date"
-                id="dropOffDate"
-                name="dropOffDate"
-                required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
-              />
-            </div>
+            <hr class="block landscape:hidden" />
           </div>
-
-          <!-- Pick-up Time & Drop-off Time -->
-          <div class="grid md:grid-cols-2 md:gap-6">
-            <div class="mb-5">
-              <label
-                for="floating_phone"
-                class="block mb-2 text-sm font-medium text-white"
-              >
-                Pick-up Time
-              </label>
-              <input
-                type="time"
-                id="pickUpTime"
-                name="pickUpTime"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
-              />
-            </div>
-            <div class="mb-5">
-              <label
-                for="floating_company"
-                class="block mb-2 text-sm font-medium text-white"
-              >
-                Drop-off Time
-              </label>
-              <input
-                type="time"
-                id="dropOffTime"
-                name="dropOffTime"
-                required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
-              />
-            </div>
-          </div>
-
-          <!-- Submit Button -->
-          <button
-            type="submit"
-            class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] focus:ring-4 focus:outline-none focus:ring-[#df927f]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
+          <div
+            class="p-2 flex justify-center items-center flex-col border-l"
+            id="carPrice"
           >
-            Submit
-          </button>
-        </form>
-      </section>
+            <div class="grid grid-cols-1 grid-rows-2 gap-5">
+              <p>Total : PHP 2,000</p>
+              <button
+                class="bg-[#df927f] hover:bg-[#b86b54] text-white font-bold w-[20vw] py-2 px-6 rounded shadow-md transition-colors duration-200 cursor-pointer"
+              >
+                Select
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <footer
       class="bg-[#837671] shadow-sm fade-in"
