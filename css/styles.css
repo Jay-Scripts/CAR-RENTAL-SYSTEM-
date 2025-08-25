@@ -52,7 +52,6 @@
   transform: scale(1.05);
 }
 
-/* //register
 @keyframes popup {
   0% {
     transform: scale(0.8);
@@ -69,4 +68,4 @@
 }
 .animate-popup {
   animation: popup 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-} */
+}

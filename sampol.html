@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Details</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+      
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .animate-popup {
+        animation: popup 0.5s ease-out;
+      }
+      
+      @keyframes popup {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* Interactive date picker styles */
+      .date-glow {
+        box-shadow: 0 0 20px rgba(223, 146, 127, 0.3);
+      }
+      
+      .pulse-border {
+        animation: pulse-border 2s infinite;
+      }
+      
+      @keyframes pulse-border {
+        0%, 100% { border-color: #df927f; }
+        50% { border-color: #f59e0b; }
+      }
+      
+      .shake {
+        animation: shake 0.5s ease-in-out;
+      }
+      
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+      
+      .slide-in {
+        animation: slideIn 0.3s ease-out;
+      }
+      
+      @keyframes slideIn {
+        from { transform: translateY(-10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      
+      .bounce-icon {
+        animation: bounce 1s infinite;
+      }
+      
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+      
+      .date-input:focus {
+        transform: scale(1.02);
+        transition: all 0.2s ease;
+      }
+      
+      .suggestion-btn:hover {
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="fade-in">
+      <nav class="bg-[#df927f] border-black shadow-sm shadow-black">
+        <div class="flex flex-wrap items-center justify-between p-5">
+          <a
+            href="#"
+            class="flex items-center space-x-3 rtl:space-x-reverse"
+            id="headerName"
+          >
+            <span
+              class="self-center text-2xl md:text-4xl whitespace-nowrap text-white font-bold"
+              >CarRental</span
+            >
+          </a>
+          <button
+            data-collapse-toggle="navbar-dropdown"
+            type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-dropdown"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          </button>
+          <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+            <ul
+              class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
+            >
+              <li>
+                <a
+                  href="../index.html"
+                  class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                  aria-current="page"
+                  >Home</a
+                >
+              </li>
+
+              <li>
+                <a
+                  href="about.html"
+                  class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >About</a
+                >
+              </li>
+
+              <li>
+                <button
+                  id="dropdownNavbarLinkBooking"
+                  data-dropdown-toggle="dropdownNavbarBooking"
+                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                >
+                  My Booking
+                  <svg
+                    class="w-2.5 h-2.5 ms-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div
+                  id="dropdownNavbarBooking"
+                  class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                >
+                  <ul
+                    class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                    aria-labelledby="dropdownNavbarLinkBooking"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >View</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Cancel</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Request Invoice</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <button
+                  id="dropdownNavbarLinkHelp"
+                  data-dropdown-toggle="dropdownNavbarHelp"
+                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                >
+                  Help
+                  <svg
+                    class="w-2.5 h-2.5 ms-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div
+                  id="dropdownNavbarHelp"
+                  class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                >
+                  <ul
+                    class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                    aria-labelledby="dropdownNavbarLinkHelp"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Dashboard</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Settings</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Earnings</a
+                      >
+                    </li>
+                  </ul>
+                  <div class="py-1">
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      >Sign out</a
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="flex flex-col items-center justify-center min-h-[80vh] bg-[url('../src/images/dropOffbg.jpg')] bg-cover bg-center w-full fade-in"
+      style="animation-delay: 0.2s"
+    >
+      <section class="flex items-center justify-center mx-10">
+        <form
+          class="max-w-md w-full mx-auto bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
+        >
+          <h2 class="text-2xl font-bold text-white mb-6 text-center">
+            📅 Booking Details
+          </h2>
+
+          <!-- Booking Details -->
+          <div class="mb-5">
+            <label
+              for="floating_repeat_password"
+              class="block mb-2 text-sm font-medium text-white"
+            >
+              Details About the trip :
+            </label>
+            <input
+              type="text"
+              id="floating_repeat_password"
+              name="repeat_password"
+              placeholder="Tell us about your trip..."
+              required
+              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light transition-all duration-300"
+            />
+          </div>
+
+          <!-- Enhanced Interactive Date Picker -->
+          <div class="grid md:grid-cols-2 md:gap-4 mb-4">
+            <div class="mb-5 relative">
+              <label for="pickUpDate" class="block mb-2 text-sm font-medium text-white flex items-center gap-2">
+                <span class="bounce-icon">🚗</span>
+                Pick-up Date
+                <span id="pickupHelper" class="text-xs text-gray-400 ml-2"></span>
+              </label>
+              <div class="relative">
+                <input
+                  type="date"
+                  id="pickUpDate"
+                  name="pickUpDate"
+                  required
+                  class="date-input shadow-xs bg-gray-50 border-2 border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light transition-all duration-300"
+                />
+                <div id="pickupIcon" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#df927f] opacity-0 transition-opacity duration-300 text-lg">
+                  ✓
+                </div>
+              </div>
+              <div id="pickupMessage" class="text-xs text-gray-400 mt-1 opacity-0 transition-opacity duration-300"></div>
+            </div>
+
+            <div class="mb-5 relative">
+              <label for="dropOffDate" class="block mb-2 text-sm font-medium text-white flex items-center gap-2">
+                <span class="bounce-icon">🔄</span>
+                Drop-off Date
+                <span id="dropoffHelper" class="text-xs text-gray-400 ml-2"></span>
+              </label>
+              <div class="relative">
+                <input
+                  type="date"
+                  id="dropOffDate"
+                  name="dropOffDate"
+                  required
+                  class="date-input shadow-xs bg-gray-50 border-2 border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light transition-all duration-300"
+                />
+                <div id="dropoffIcon" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#df927f] opacity-0 transition-opacity duration-300 text-lg">
+                  ✓
+                </div>
+              </div>
+              <div id="dropoffMessage" class="text-xs text-gray-400 mt-1 opacity-0 transition-opacity duration-300"></div>
+            </div>
+          </div>
+
+          <!-- Quick Duration Suggestions -->
+          <div id="suggestions" class="mb-6 opacity-0 transition-all duration-300">
+            <h3 class="text-white text-sm font-medium mb-3 flex items-center gap-2">
+              <span>⚡</span> Quick Select
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <button type="button" class="suggestion-btn bg-gray-700/80 hover:bg-[#df927f] text-white text-xs py-2 px-3 rounded-lg transition-all duration-300 hover:scale-105" data-days="1">
+                1 Day
+              </button>
+              <button type="button" class="suggestion-btn bg-gray-700/80 hover:bg-[#df927f] text-white text-xs py-2 px-3 rounded-lg transition-all duration-300 hover:scale-105" data-days="3">
+                3 Days
+              </button>
+              <button type="button" class="suggestion-btn bg-gray-700/80 hover:bg-[#df927f] text-white text-xs py-2 px-3 rounded-lg transition-all duration-300 hover:scale-105" data-days="7">
+                1 Week
+              </button>
+              <button type="button" class="suggestion-btn bg-gray-700/80 hover:bg-[#df927f] text-white text-xs py-2 px-3 rounded-lg transition-all duration-300 hover:scale-105" data-days="14">
+                2 Weeks
+              </button>
+            </div>
+          </div>
+
+          <!-- Rental Summary -->
+          <div id="rentalSummary" class="bg-gray-700/80 rounded-lg p-4 mb-5 opacity-0 transition-all duration-300">
+            <h3 class="text-white font-medium mb-2 flex items-center gap-2">
+              <span>📊</span> Rental Summary
+            </h3>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between text-gray-300">
+                <span>Duration:</span>
+                <span id="duration" class="text-[#df927f] font-medium">-</span>
+              </div>
+              <div class="flex justify-between text-gray-300">
+                <span>Category:</span>
+                <span id="rentalCategory" class="text-[#df927f] font-medium">-</span>
+              </div>
+              <div class="flex justify-between text-gray-300">
+                <span>Est. Cost:</span>
+                <span id="estimatedCost" class="text-[#df927f] font-medium">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pick-up Time & Drop-off Time -->
+          <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-5">
+              <label
+                for="pickUpTime"
+                class="block mb-2 text-sm font-medium text-white"
+              >
+                Pick-up Time
+              </label>
+              <input
+                type="time"
+                id="pickUpTime"
+                name="pickUpTime"
+                required
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light transition-all duration-300"
+              />
+            </div>
+            <div class="mb-5">
+              <label
+                for="dropOffTime"
+                class="block mb-2 text-sm font-medium text-white"
+              >
+                Drop-off Time
+              </label>
+              <input
+                type="time"
+                id="dropOffTime"
+                name="dropOffTime"
+                required
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light transition-all duration-300"
+              />
+            </div>
+          </div>
+
+          <!-- Progress Indicator -->
+          <div class="mb-6">
+            <div class="flex items-center justify-center gap-4">
+              <div id="step1" class="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs transition-all duration-300">
+                1
+              </div>
+              <div class="w-12 h-1 bg-gray-600 rounded transition-all duration-300" id="progress1"></div>
+              <div id="step2" class="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs transition-all duration-300">
+                2
+              </div>
+              <div class="w-12 h-1 bg-gray-600 rounded transition-all duration-300" id="progress2"></div>
+              <div id="step3" class="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs transition-all duration-300">
+                ✓
+              </div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-400 mt-2">
+              <span>Pick-up</span>
+              <span>Drop-off</span>
+              <span>Done</span>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] focus:ring-4 focus:outline-none focus:ring-[#df927f]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 hover:scale-105"
+          >
+            🚀 Book My Rental
+          </button>
+        </form>
+      </section>
+    </main>
+    <footer
+      class="bg-[#837671] shadow-sm fade-in"
+      style="animation-delay: 0.5s"
+    >
+      <div class="w-full mx-auto p-4 md:py-8">
+        <div class="sm:flex sm:items-center sm:justify-between">
+          <a
+            href="#"
+            class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+          >
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+              >CarRental</span
+            >
+          </a>
+          <ul
+            class="flex flex-wrap items-center mb-6 text-sm font-medium text-white sm:mb-0"
+          >
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6">Contact</a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6"
+                >Terms and Condition</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6"
+                >Privacy Policy
+              </a>
+            </li>
+          </ul>
+        </div>
+        <hr
+          class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8"
+        />
+        <span class="block text-sm text-white sm:text-center"
+          >© 2025 <a href="#" class="hover:underline">CarRental™ </a>All rights
+          reserved.</span
+        >
+      </div>
+    </footer>
+
+    <script>
+      // Interactive Date Picker JavaScript
+      const pickUpInput = document.getElementById('pickUpDate');
+      const dropOffInput = document.getElementById('dropOffDate');
+      const pickupHelper = document.getElementById('pickupHelper');
+      const dropoffHelper = document.getElementById('dropoffHelper');
+      const pickupMessage = document.getElementById('pickupMessage');
+      const dropoffMessage = document.getElementById('dropoffMessage');
+      const pickupIcon = document.getElementById('pickupIcon');
+      const dropoffIcon = document.getElementById('dropoffIcon');
+      const suggestions = document.getElementById('suggestions');
+      const rentalSummary = document.getElementById('rentalSummary');
+      const duration = document.getElementById('duration');
+      const estimatedCost = document.getElementById('estimatedCost');
+      const rentalCategory = document.getElementById('rentalCategory');
+
+      // Set minimum date to today
+      const today = new Date().toISOString().split('T')[0];
+      pickUpInput.setAttribute('min', today);
+      dropOffInput.setAttribute('min', today);
+
+      // Show initial helper text
+      pickupHelper.textContent = '(today or later)';
+      dropoffHelper.textContent = '(select pick-up first)';
+
+      // Add interactive behaviors
+      pickUpInput.addEventListener('focus', () => {
+        pickUpInput.classList.add('date-glow', 'pulse-border');
+        suggestions.classList.remove('opacity-0');
+        suggestions.classList.add('slide-in');
+      });
+
+      pickUpInput.addEventListener('blur', () => {
+        pickUpInput.classList.remove('date-glow', 'pulse-border');
+      });
+
+      dropOffInput.addEventListener('focus', () => {
+        dropOffInput.classList.add('date-glow');
+      });
+
+      dropOffInput.addEventListener('blur', () => {
+        dropOffInput.classList.remove('date-glow');
+      });
+
+      // Handle pick-up date changes
+      pickUpInput.addEventListener('change', () => {
+        const pickupDate = new Date(pickUpInput.value);
+        const today = new Date();
+        
+        if (pickupDate < today) {
+          pickUpInput.classList.add('shake');
+          pickupMessage.textContent = '⚠️ Pick-up date cannot be in the past';
+          pickupMessage.classList.remove('opacity-0');
+          pickupMessage.style.color = '#ef4444';
+          setTimeout(() => pickUpInput.classList.remove('shake'), 500);
+          return;
+        }
+
+        // Success feedback
+        pickupIcon.classList.remove('opacity-0');
+        pickupMessage.textContent = '✅ Perfect! Now select your drop-off date';
+        pickupMessage.classList.remove('opacity-0');
+        pickupMessage.style.color = '#10b981';
+        
+        // Update progress
+        document.getElementById('step1').classList.add('bg-[#df927f]');
+        document.getElementById('progress1').classList.add('bg-[#df927f]');
+
+        // Set minimum drop-off date
+        const nextDay = new Date(pickupDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        dropOffInput.setAttribute('min', nextDay.toISOString().split('T')[0]);
+        
+        dropoffHelper.textContent = '(next day or later)';
+        
+        // Clear drop-off if it's now invalid
+        if (dropOffInput.value && new Date(dropOffInput.value) <= pickupDate) {
+          dropOffInput.value = '';
+          dropoffIcon.classList.add('opacity-0');
+        }
+
+        updateRentalSummary();
+      });
+
+      // Handle drop-off date changes
+      dropOffInput.addEventListener('change', () => {
+        const pickupDate = new Date(pickUpInput.value);
+        const dropoffDate = new Date(dropOffInput.value);
+
+        if (!pickUpInput.value) {
+          dropOffInput.classList.add('shake');
+          dropoffMessage.textContent = '⚠️ Please select pick-up date first';
+          dropoffMessage.classList.remove('opacity-0');
+          dropoffMessage.style.color = '#ef4444';
+          setTimeout(() => dropOffInput.classList.remove('shake'), 500);
+          dropOffInput.value = '';
+          return;
+        }
+
+        if (dropoffDate <= pickupDate) {
+          dropOffInput.classList.add('shake');
+          dropoffMessage.textContent = '⚠️ Drop-off must be after pick-up date';
+          dropoffMessage.classList.remove('opacity-0');
+          dropoffMessage.style.color = '#ef4444';
+          setTimeout(() => dropOffInput.classList.remove('shake'), 500);
+          return;
+        }
+
+        // Success feedback
+        dropoffIcon.classList.remove('opacity-0');
+        dropoffMessage.textContent = '🎉 Excellent! Your dates are all set';
+        dropoffMessage.classList.remove('opacity-0');
+        dropoffMessage.style.color = '#10b981';
+
+        // Update progress
+        document.getElementById('step2').classList.add('bg-[#df927f]');
+        document.getElementById('progress2').classList.add('bg-[#df927f]');
+        document.getElementById('step3').classList.add('bg-green-500');
+
+        updateRentalSummary();
+      });
+
+      // Suggestion buttons
+      document.querySelectorAll('.suggestion-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!pickUpInput.value) {
+            pickUpInput.focus();
+            pickUpInput.classList.add('pulse-border');
+            return;
+          }
+
+          const pickupDate = new Date(pickUpInput.value);
+          const dropoffDate = new Date(pickupDate);
+          dropoffDate.setDate(dropoffDate.getDate() + parseInt(btn.dataset.days));
+          
+          dropOffInput.value = dropoffDate.toISOString().split('T')[0];
+          dropOffInput.dispatchEvent(new Event('change'));
+          
+          // Visual feedback
+          btn.classList.add('bg-green-500', 'scale-110');
+          setTimeout(() => {
+            btn.classList.remove('bg-green-500', 'scale-110');
+          }, 1000);
+        });
+      });
+
+      function updateRentalSummary() {
+        if (!pickUpInput.value || !dropOffInput.value) {
+          

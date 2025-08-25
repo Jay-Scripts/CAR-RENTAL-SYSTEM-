@@ -9,26 +9,7 @@
       href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./css/styles.css" />
-    <style>
-      @keyframes popup {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        80% {
-          transform: scale(1.05);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-      .animate-popup {
-        animation: popup 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-    </style>
+    <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <body>
     <header class="fade-in">
@@ -234,11 +215,11 @@
               Details About the trip :
             </label>
             <input
-              type="password"
-              id="floating_repeat_password"
-              name="repeat_password"
+              type="text"
+              id="tripDetails"
+              name="tripDetails"
               required
-              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
             />
           </div>
 
@@ -246,7 +227,7 @@
           <div class="grid md:grid-cols-2 md:gap-6">
             <div class="mb-5">
               <label
-                for="floating_first_name"
+                for="pickUpDate"
                 class="block mb-2 text-sm font-medium text-white"
               >
                 Pick-up Date
@@ -256,7 +237,7 @@
                 id="pickUpDate"
                 name="pickUpDate"
                 required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
               />
             </div>
             <div class="mb-5">
@@ -271,7 +252,7 @@
                 id="dropOffDate"
                 name="dropOffDate"
                 required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
               />
             </div>
           </div>
@@ -280,7 +261,7 @@
           <div class="grid md:grid-cols-2 md:gap-6">
             <div class="mb-5">
               <label
-                for="floating_phone"
+                for="pickUpTime"
                 class="block mb-2 text-sm font-medium text-white"
               >
                 Pick-up Time
@@ -291,12 +272,12 @@
                 name="pickUpTime"
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
               />
             </div>
             <div class="mb-5">
               <label
-                for="floating_company"
+                for="dropOffTime"
                 class="block mb-2 text-sm font-medium text-white"
               >
                 Drop-off Time
@@ -306,7 +287,7 @@
                 id="dropOffTime"
                 name="dropOffTime"
                 required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
+                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
               />
             </div>
           </div>
