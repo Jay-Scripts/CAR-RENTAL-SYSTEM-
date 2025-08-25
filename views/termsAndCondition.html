@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../style.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&family=Yeseva+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&display=swap"
+      rel="stylesheet"
+    />
+    <title>Terms & Condition</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background: #007bff;
+        color: white;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="fade-in">
+      <nav class="bg-[#df927f] border-black shadow-sm shadow-black">
+        <div class="flex flex-wrap items-center justify-between p-5">
+          <a
+            href="#"
+            class="flex items-center space-x-3 rtl:space-x-reverse"
+            id="headerName"
+          >
+            <span
+              class="self-center text-2xl md:text-4xl whitespace-nowrap text-white font-bold"
+              >CarRental</span
+            >
+          </a>
+          <div
+            data-collapse-toggle="navbar-dropdown"
+            type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-dropdown"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          </div>
+          <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+            <ul
+              class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
+            >
+              <li>
+                <a
+                  href="../index.html"
+                  class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                  aria-current="page"
+                  >Home</a
+                >
+              </li>
+
+              <li>
+                <a
+                  href="about.html"
+                  class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >About</a
+                >
+              </li>
+
+              <li>
+                <div
+                  id="dropdownNavbarLinkBooking"
+                  data-dropdown-toggle="dropdownNavbarBooking"
+                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                >
+                  My Booking
+                  <svg
+                    class="w-2.5 h-2.5 ms-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </div>
+                <!-- Dropdown menu -->
+                <div
+                  id="dropdownNavbarBooking"
+                  class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                >
+                  <ul
+                    class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                    aria-labelledby="dropdownNavbarLinkBooking"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >View</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Cancel</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Request Invoice</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <div
+                  id="dropdownNavbarLinkHelp"
+                  data-dropdown-toggle="dropdownNavbarHelp"
+                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                >
+                  Help
+                  <svg
+                    class="w-2.5 h-2.5 ms-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </div>
+                <!-- Dropdown menu -->
+                <div
+                  id="dropdownNavbarHelp"
+                  class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                >
+                  <ul
+                    class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                    aria-labelledby="dropdownNavbarLinkHelp"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Dashboard</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Settings</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Earnings</a
+                      >
+                    </li>
+                  </ul>
+                  <div class="py-1">
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      >Sign out</a
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      id="mainContent"
+      class="min-h-[100vh] w-full bg-gray-50 flex flex-col items-center p-6"
+    >
+      <h1
+        class="font-bold text-3xl shrikhand-regular text-center p-5 text-[#df927f]"
+      >
+        Terms & Conditions
+      </h1>
+
+      <div
+        class="max-w-3xl w-full bg-white shadow-md rounded-lg p-6 border border-gray-200 overflow-y-auto max-h-[70vh]"
+      >
+        <h2 class="text-xl font-semibold mb-4 text-center">
+          Car Rent with Driver Terms and Conditions
+        </h2>
+        <ol
+          class="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed"
+        >
+          <li>
+            <strong>Package Inclusions:</strong> The rental package includes the
+            use of the vehicle, fuel, road toll fees, and the services of a
+            designated driver.
+          </li>
+          <li>
+            <strong>Package Exclusions:</strong> Should the rental period exceed
+            the allotted hours, an additional hourly fee shall apply.
+          </li>
+          <li>
+            <strong>Payment Terms:</strong> CarRental accepts payments via
+            over-the-counter cash transactions and GCash. Any additional costs
+            incurred during the rental period shall be settled directly with the
+            assigned driver.
+          </li>
+          <li>
+            <strong>No-Show Policy:</strong> If the renter fails to appear
+            within three (3) hours of the scheduled pick-up time, the
+            reservation shall be deemed canceled without refund or compensation.
+          </li>
+          <li>
+            <strong>Cleaning Fees:</strong> Any client-related mess, including
+            but not limited to vomiting, spilling of liquids, or defecation,
+            that requires special cleaning shall be subject to a penalty fee of
+            PHP 500.
+          </li>
+          <li>
+            <strong>Liability for Damages:</strong> The renter shall bear full
+            financial responsibility for any damage caused to the vehicle during
+            the rental period. This includes but is not limited to the full cost
+            of repairs, restoration, and any revenue losses resulting from the
+            vehicle being unavailable for future rentals.
+          </li>
+          <li>
+            <strong>Identification Requirements:</strong> The renter must
+            provide at least one (1) valid government-issued identification
+            document, such as a driver’s license, passport, or national ID.
+          </li>
+        </ol>
+
+        <div
+          class="flex justify-center items-center flex-col"
+          id="checkBoxContainer"
+        >
+          <p class="mt-6 text-gray-600 italic">
+            By proceeding with the rental, the renter acknowledges and agrees to
+            the terms and conditions outlined in this agreement.
+          </p>
+
+          <label>
+            <input type="checkbox" id="agree" /> I agree to the terms &
+            conditions </label
+          ><br />
+
+          <button id="nextBtn" class="disabled" disabled>Next</button>
+        </div>
+      </div>
+    </main>
+
+    <footer
+      class="bg-[#837671] shadow-sm fade-in"
+      style="animation-delay: 0.5s"
+    >
+      <div class="w-full mx-auto p-4 md:py-8">
+        <div class="sm:flex sm:items-center sm:justify-between">
+          <a
+            href="#"
+            class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+          >
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+              >CarRental</span
+            >
+          </a>
+          <ul
+            class="flex flex-wrap items-center mb-6 text-sm font-medium text-white sm:mb-0"
+          >
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6">Contact</a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6"
+                >Terms and Condition</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6"
+                >Privacy Policy
+              </a>
+            </li>
+          </ul>
+        </div>
+        <hr
+          class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8"
+        />
+        <span class="block text-sm text-white sm:text-center"
+          >© 2025 <a href="#" class="hover:underline">CarRental™ </a>All rights
+          reserved.</span
+        >
+      </div>
+    </footer>
+    <script>
+      const agree = document.getElementById("agree");
+      const nextBtn = document.getElementById("nextBtn");
+
+      agree.addEventListener("change", () => {
+        if (agree.checked) {
+          nextBtn.disabled = false;
+          nextBtn.classList.remove("disabled");
+        } else {
+          nextBtn.disabled = true;
+          nextBtn.classList.add("disabled");
+        }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+  </body>
+</html>
