@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Booking Details</title>
+    <title>Service Options</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
@@ -199,108 +199,79 @@
       style="animation-delay: 0.2s"
     >
       <section class="flex items-center justify-center mx-10">
-        <form
-          class="max-w-md w-full mx-auto bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
+        <div
+          class="max-w-3xl w-full mx-auto bg-black/40 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-[#df927f] animate-popup"
         >
-          <h2 class="text-2xl font-bold text-white mb-6 text-center">
-            Booking Details
+          <h2 class="text-3xl font-bold text-white mb-8 text-center">
+            Choose Your Service
           </h2>
 
-          <!-- Pick-up Location -->
-          <div class="mb-5">
-            <label
-              for="pickUpLocation"
-              class="block mb-2 text-sm font-medium text-white"
+          <div class="grid gap-6 md:grid-cols-2">
+            <!-- With Driver Card -->
+            <a
+              href="withDriverBookingDetails.html"
+              class="group block bg-white/90 rounded-xl p-6 shadow-md border border-[#df927f] hover:bg-[#df927f] hover:text-white transition transform hover:scale-105"
             >
-              Pick-up Location
-            </label>
-            <input
-              type="text"
-              id="pickUpLocation"
-              name="pickUpLocation"
-              placeholder="Enter pick-up location ( address )"
-              required
-              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
-            />
-          </div>
+              <div class="flex flex-col items-center space-y-3">
+                <!-- Icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-12 h-12 text-[#df927f] group-hover:text-white transition"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
 
-          <!-- Pick-up Date & Drop-off Date -->
-          <div class="grid md:grid-cols-2 md:gap-6">
-            <div class="mb-5">
-              <label
-                for="pickUpDate"
-                class="block mb-2 text-sm font-medium text-white"
-              >
-                Pick-up Date
-              </label>
-              <input
-                type="date"
-                id="pickUpDate"
-                name="pickUpDate"
-                required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
-              />
-            </div>
-            <div class="mb-5">
-              <label
-                for="floating_last_name"
-                class="block mb-2 text-sm font-medium text-white"
-              >
-                Drop-off Date
-              </label>
-              <input
-                type="date"
-                id="dropOffDate"
-                name="dropOffDate"
-                required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
-              />
-            </div>
-          </div>
+                <h3 class="text-xl font-semibold">With Driver</h3>
+                <p
+                  class="text-sm text-gray-600 group-hover:text-white text-center"
+                >
+                  Relax and let our professional drivers take you safely to your
+                  destination.
+                </p>
+              </div>
+            </a>
 
-          <!-- Pick-up Time & Drop-off Time -->
-          <div class="grid md:grid-cols-2 md:gap-6">
-            <div class="mb-5">
-              <label
-                for="pickUpTime"
-                class="block mb-2 text-sm font-medium text-white"
-              >
-                Pick-up Time
-              </label>
-              <input
-                type="time"
-                id="pickUpTime"
-                name="pickUpTime"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
-              />
-            </div>
-            <div class="mb-5">
-              <label
-                for="dropOffTime"
-                class="block mb-2 text-sm font-medium text-white"
-              >
-                Drop-off Time
-              </label>
-              <input
-                type="time"
-                id="dropOffTime"
-                name="dropOffTime"
-                required
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 cursor-pointer"
-              />
-            </div>
-          </div>
+            <!-- Self Drive Card -->
+            <a
+              href="noDriverBookingDetails.html"
+              class="group block bg-white/90 rounded-xl p-6 shadow-md border border-[#df927f] hover:bg-[#df927f] hover:text-white transition transform hover:scale-105"
+            >
+              <div class="flex flex-col items-center space-y-3">
+                <!-- Icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-12 h-12 text-[#df927f] group-hover:text-white transition"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 12h18M9 5l7 7-7 7"
+                  />
+                </svg>
 
-          <!-- Submit Button -->
-          <button
-            type="submit"
-            class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] focus:ring-4 focus:outline-none focus:ring-[#df927f]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
-          >
-            Submit
-          </button>
-        </form>
+                <h3 class="text-xl font-semibold">Self Drive</h3>
+                <p
+                  class="text-sm text-gray-600 group-hover:text-white text-center"
+                >
+                  Enjoy the freedom of driving yourself at your own pace and
+                  comfort.
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
       </section>
     </main>
     <footer
