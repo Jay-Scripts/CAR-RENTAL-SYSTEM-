@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy | CarRental</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+      /* Keyframes */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Utility classes */
+      .fade-in {
+        animation: fadeIn 1s ease forwards;
+      }
+      .slide-up {
+        animation: slideUp 0.8s ease forwards;
+      }
+
+      /* Delay helpers */
+      .delay-1 {
+        animation-delay: 0.2s;
+      }
+      .delay-2 {
+        animation-delay: 0.4s;
+      }
+      .delay-3 {
+        animation-delay: 0.6s;
+      }
+      .delay-4 {
+        animation-delay: 0.8s;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+ <header class="fade-in">
+      <nav class="bg-[#df927f] border-black shadow-sm shadow-black">
+        <div class="flex flex-wrap items-center justify-between p-5">
+          <a
+            href="#"
+            class="flex items-center space-x-3 rtl:space-x-reverse"
+            id="headerName"
+          >
+            <span
+              class="self-center text-2xl md:text-4xl whitespace-nowrap text-white font-bold"
+              >CarRental</span
+            >
+          </a>
+          <button
+            data-collapse-toggle="navbar-dropdown"
+            type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-dropdown"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          </button>
+          <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+            <ul
+              class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
+            >
+              <li>
+                <a
+                  href="index.html"
+                  class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                  aria-current="page"
+                  >Home</a
+                >
+              </li>
+
+              <li>
+                <a
+                  href="./views/about.html"
+                  class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >About</a
+                >
+              </li>
+
+              <li>
+                <button
+                  id="dropdownNavbarLinkBooking"
+                  data-dropdown-toggle="dropdownNavbarBooking"
+                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                >
+                  My Booking
+                  <svg
+                    class="w-2.5 h-2.5 ms-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div
+                  id="dropdownNavbarBooking"
+                  class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                >
+                  <ul
+                    class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                    aria-labelledby="dropdownNavbarLinkBooking"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >View</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Cancel</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Request Invoice</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <button
+                  id="dropdownNavbarLinkHelp"
+                  data-dropdown-toggle="dropdownNavbarHelp"
+                  class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                >
+                  Help
+                  <svg
+                    class="w-2.5 h-2.5 ms-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div
+                  id="dropdownNavbarHelp"
+                  class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                >
+                  <ul
+                    class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                    aria-labelledby="dropdownNavbarLinkHelp"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Dashboard</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Settings</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >Earnings</a
+                      >
+                    </li>
+                  </ul>
+                  <div class="py-1">
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      >Sign out</a
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <!-- Main Content -->
+    <main
+      class="max-w-4xl mx-auto p-6 space-y-6 bg-white shadow-md rounded-lg mt-6 fade-in delay-1"
+    >
+      <section class="slide-up delay-1">
+        <h2 class="text-xl font-semibold mb-2">1. Introduction</h2>
+        <p>
+          At <strong>CarRental</strong>, we respect your privacy and are
+          committed to protecting your personal data. This Privacy Policy
+          explains how we collect, use, and safeguard your information when you
+          use our services.
+        </p>
+      </section>
+
+      <section class="slide-up delay-2">
+        <h2 class="text-xl font-semibold mb-2">2. Information We Collect</h2>
+        <ul class="list-disc list-inside space-y-1">
+          <li>Personal details (name, email, phone number, address)</li>
+          <li>Booking and payment details</li>
+          <li>Driver’s license and identification documents</li>
+          <li>Website usage data (cookies, IP address, browser type)</li>
+        </ul>
+      </section>
+
+      <section class="slide-up delay-3">
+        <h2 class="text-xl font-semibold mb-2">
+          3. How We Use Your Information
+        </h2>
+        <p>Your data may be used for:</p>
+        <ul class="list-disc list-inside space-y-1">
+          <li>Processing reservations and payments</li>
+          <li>Providing customer support</li>
+          <li>Improving our website and services</li>
+          <li>Sending booking confirmations and important updates</li>
+          <li>Legal and security purposes</li>
+        </ul>
+      </section>
+
+      <section class="slide-up delay-4">
+        <h2 class="text-xl font-semibold mb-2">4. Sharing of Information</h2>
+        <p>
+          We do not sell your personal data. We may share your information only
+          with:
+        </p>
+        <ul class="list-disc list-inside space-y-1">
+          <li>Trusted service providers (payment processors, insurers)</li>
+          <li>Legal authorities when required by law</li>
+          <li>Business partners to facilitate rentals</li>
+        </ul>
+      </section>
+
+      <section class="slide-up delay-1">
+        <h2 class="text-xl font-semibold mb-2">5. Data Security</h2>
+        <p>
+          We use appropriate technical and organizational measures to protect
+          your personal information from unauthorized access, loss, or misuse.
+        </p>
+      </section>
+
+      <section class="slide-up delay-2">
+        <h2 class="text-xl font-semibold mb-2">6. Your Rights</h2>
+        <p>
+          You have the right to access, update, or delete your personal data.
+          You may also opt out of receiving marketing communications at any
+          time.
+        </p>
+      </section>
+
+      <section class="slide-up delay-3">
+        <h2 class="text-xl font-semibold mb-2">7. Cookies</h2>
+        <p>
+          Our website may use cookies to enhance user experience. You can
+          control cookie preferences through your browser settings.
+        </p>
+      </section>
+
+      <section class="slide-up delay-4">
+        <h2 class="text-xl font-semibold mb-2">8. Changes to This Policy</h2>
+        <p>
+          We may update this Privacy Policy from time to time. Changes will be
+          posted on this page with the updated effective date.
+        </p>
+      </section>
+
+      <section class="slide-up delay-2">
+        <h2 class="text-xl font-semibold mb-2">9. Contact Us</h2>
+        <p>
+          If you have any questions about this Privacy Policy, please contact us
+          at:
+        </p>
+        <p class="font-semibold">📧 support@carrental.com</p>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="bg-[#837671] shadow-sm fade-in"
+      style="animation-delay: 0.5s"
+    >
+      <div class="w-full mx-auto p-4 md:py-8">
+        <div class="sm:flex sm:items-center sm:justify-between">
+          <a
+            href="https://flowbite.com/"
+            class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+          >
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+              >CarRental</span
+            >
+          </a>
+          <ul
+            class="flex flex-wrap items-center mb-6 text-sm font-medium text-white sm:mb-0"
+          >
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6">Contact</a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6"
+                >Terms and Condition</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6"
+                >Privacy Policy
+              </a>
+            </li>
+          </ul>
+        </div>
+        <hr
+          class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8"
+        />
+        <span class="block text-sm text-white sm:text-center"
+          >© 2025
+          <a href="https://flowbite.com/" class="hover:underline">CarRental™ </a
+          >All rights reserved.</span
+        >
+      </div>
+    </footer>
+  </body>
+</html>
