@@ -1,6 +1,6 @@
-* {
+/* * {
   font-family: "Shrikhand", serif;
-}
+} */
 // general fonts
 /* .text {
   font-family: "Yeseva One", serif;
@@ -68,4 +68,53 @@
 }
 .animate-popup {
   animation: popup 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeSlide {
+  animation: fadeSlide 0.4s ease-in-out forwards;
+}
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.navItem {
+  opacity: 0;
+  animation: fadeSlideIn 0.5s ease forwards;
+}
+
+nav .navItem:nth-child(1) {
+  animation-delay: 0.1s;
+}
+nav .navItem:nth-child(2) {
+  animation-delay: 0.2s;
+}
+nav .navItem:nth-child(3) {
+  animation-delay: 0.3s;
+}
+nav .navItem:nth-child(4) {
+  animation-delay: 0.4s;
+}
+nav .navItem:nth-child(5) {
+  animation-delay: 0.5s;
+}
+nav .navItem:nth-child(6) {
+  animation-delay: 0.6s;
 }

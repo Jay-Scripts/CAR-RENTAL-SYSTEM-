@@ -1,81 +1,31 @@
 function showModule(moduleId) {
   const modules = [
-    "overview",
-    "salesReports",
-    "performanceTrend",
-    "refund",
-    "registerStaff",
-    "modifyPosition",
-    "modifyStatus",
-    "stockEntry",
-    "stockLevel",
-    "lowStockAlerts",
-    "stocksMovementHistory",
-    "logWaste",
-    "disableProduct",
-    "enableProduct",
-    "productMovementHistory",
-    "satisfactionDashboard",
-    "complaintsManagement",
-    "rewards&LoyaltyProgram",
-    "discountDashboard",
+    "dashboard",
+    "vehicleStatus",
+    "reservations",
+    "payments",
+    "vehicleInventory",
+    "reports",
   ];
 
+  // hide all
   modules.forEach((module) => {
-    const el = document.getElementById(module);
-    if (el) el.classList.add("hidden");
+    document.getElementById(module).classList.add("hidden");
   });
 
-  const activeModule = document.getElementById(moduleId);
-  if (activeModule) activeModule.classList.remove("hidden");
+  // show the selected one
+  document.getElementById(moduleId).classList.remove("hidden");
 }
 
-// ==========================================
-// =       ACTIVE CLASS SIDEBAR STARTS HERE =
-// ==========================================
-window.addEventListener("DOMContentLoaded", () => {
-  const navItems = document.querySelectorAll(".navItem");
+window.addEventListener("load", () => {
+  showModule("dashboard");
+});
 
-  // Get ang last active module from localStorage then fallback to 'overview'
-  const activeModule = localStorage.getItem("activeModule") || "overview";
-  showModule(activeModule);
-
-  // Remove active class from all, then add to stored one
-  navItems.forEach((el) => {
-    el.classList.remove(
-      "bg-[var(--background-color)]",
-      "text-[var(--text-color)]"
-    );
-    if (el.dataset.module === activeModule) {
-      el.classList.add(
-        "bg-[var(--background-color)]",
-        "text-[var(--text-color)]"
-      );
-    }
-  });
-  navItems.forEach((item) => {
-    item.addEventListener("click", (e) => {
-      e.preventDefault();
-      const module = item.dataset.module;
-      showModule(module);
-
-      // Store to localStorage
-      localStorage.setItem("activeModule", module);
-
-      // Update active class
-      navItems.forEach((el) =>
-        el.classList.remove(
-          "bg-[var(--background-color)]",
-          "text-[var(--text-color)]"
-        )
-      );
-      item.classList.add(
-        "bg-[var(--background-color)]",
-        "text-[var(--text-color)]"
-      );
-    });
+// click handler for nav items
+document.querySelectorAll(".navItem").forEach((item) => {
+  item.addEventListener("click", (e) => {
+    e.preventDefault();
+    const moduleId = item.getAttribute("data-module");
+    showModule(moduleId);
   });
 });
-// ===================================================
-//        ACTIVE CLASS SIDEBAR ENDS HERE             =
-// ===================================================
