@@ -3,81 +3,266 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Modal Default</title>
+    <title>Car Booking Flow</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.1/flowbite.min.css"
+      href="https://unpkg.com/flowbite@1.7.0/dist/flowbite.min.css"
       rel="stylesheet"
     />
+    <style>
+      .step {
+        display: none;
+      }
+      .step.active {
+        display: block;
+      }
+    </style>
   </head>
-  <body class="bg-gray-100 h-screen flex items-center justify-center">
-    <!-- Login Modal (default visible) -->
-    <div
-      id="loginModal"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-    >
-      <div class="relative w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
-        <!-- Logo -->
-        <div class="flex justify-center mb-4">
-          <img
-            class="w-20 h-20 animate-fadeSlide"
-            src="../../src/svg/systemLogo.jpg"
-            alt="System Logo"
+  <body class="bg-gray-100">
+    <section class="flex flex-col items-center justify-center p-6 min-h-screen">
+      <!-- Step 1: Booking Details -->
+      <div
+        class="step active w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
+      >
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">
+          Step 1: Booking Details
+        </h2>
+        <div class="mb-5">
+          <label class="block mb-2 text-sm font-medium text-white"
+            >Details About the Trip:</label
+          >
+          <input
+            type="text"
+            id="tripDetails"
+            class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5"
           />
         </div>
-
-        <!-- Title -->
-        <h2 class="text-center text-xl font-bold mb-4">Login to Continue</h2>
-
-        <!-- Login Form -->
-        <form action="login.php" method="POST" class="space-y-4">
+        <div class="grid md:grid-cols-2 gap-4 mb-5">
           <div>
-            <label class="block text-sm font-medium mb-1">Username</label>
+            <label class="block mb-2 text-sm font-medium text-white"
+              >Pick-up Date</label
+            >
             <input
-              type="text"
-              name="username"
-              required
-              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              type="date"
+              id="pickUpDate"
+              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Password</label>
+            <label class="block mb-2 text-sm font-medium text-white"
+              >Drop-off Date</label
+            >
             <input
-              type="password"
-              name="password"
-              required
-              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              type="date"
+              id="dropOffDate"
+              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5"
             />
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 mb-5">
+          <div>
+            <label class="block mb-2 text-sm font-medium text-white"
+              >Pick-up Time</label
+            >
+            <input
+              type="time"
+              id="pickUpTime"
+              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5"
+            />
+          </div>
+          <div>
+            <label class="block mb-2 text-sm font-medium text-white"
+              >Drop-off Time</label
+            >
+            <input
+              type="time"
+              id="dropOffTime"
+              class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5"
+            />
+          </div>
+        </div>
+        <button
+          class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          onclick="nextStep()"
+        >
+          Next
+        </button>
+      </div>
+
+      <!-- Step 2: Car Selection -->
+      <div
+        class="step w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
+      >
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">
+          Step 2: Select Your Car
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4">
+          <!-- Car Card Example -->
+          <div
+            class="bg-black/20 border border-[#df927f] rounded-lg p-4 w-72 hover:bg-black/30 transition cursor-pointer"
+            onclick="selectCar('Toyota Vios XLE 2022', 2000)"
+          >
+            <img
+              src="https://via.placeholder.com/300x150"
+              alt="Car Image"
+              class="w-full h-auto object-contain mb-2"
+            />
+            <h3 class="text-white font-bold text-center">
+              Toyota Vios XLE 2022
+            </h3>
+            <p class="text-gray-300 text-center mt-1">
+              4 Passenger • Automatic • Blue Metallic
+            </p>
+            <p class="text-[#df927f] font-semibold text-center mt-2">
+              PHP 2,000
+            </p>
+          </div>
+          <div
+            class="bg-black/20 border border-[#df927f] rounded-lg p-4 w-72 hover:bg-black/30 transition cursor-pointer"
+            onclick="selectCar('Honda Civic 2023', 2500)"
+          >
+            <img
+              src="https://via.placeholder.com/300x150"
+              alt="Car Image"
+              class="w-full h-auto object-contain mb-2"
+            />
+            <h3 class="text-white font-bold text-center">Honda Civic 2023</h3>
+            <p class="text-gray-300 text-center mt-1">
+              4 Passenger • Automatic • Red
+            </p>
+            <p class="text-[#df927f] font-semibold text-center mt-2">
+              PHP 2,500
+            </p>
+          </div>
+        </div>
+        <button
+          class="w-full mt-5 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          onclick="nextStep()"
+        >
+          Next
+        </button>
+      </div>
+
+      <!-- Step 3: Terms & Conditions -->
+      <div
+        class="step w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
+      >
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">
+          Step 3: Terms & Conditions
+        </h2>
+        <div class="bg-white p-4 rounded-lg max-h-[50vh] overflow-y-auto">
+          <ol class="list-decimal list-inside space-y-2 text-gray-700">
+            <li>Package includes vehicle, fuel, toll fees, driver.</li>
+            <li>Extra hours incur additional fees.</li>
+            <li>Payments via cash or GCash.</li>
+            <li>No-show within 3 hours = canceled reservation.</li>
+            <li>Cleaning fees PHP 500 for mess caused by client.</li>
+            <li>Renter responsible for damages.</li>
+            <li>Must provide valid ID.</li>
+          </ol>
+          <div class="mt-4 flex items-center gap-2">
+            <input type="checkbox" id="agree" onclick="toggleNext(this)" />
+            <label class="text-gray-700"
+              >I agree to the terms & conditions</label
+            >
           </div>
           <button
-            type="submit"
-            class="w-full py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
+            id="nextBtn"
+            class="w-full mt-4 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            disabled
+            onclick="nextStep()"
           >
-            Login
+            Next
           </button>
-        </form>
-
-        <!-- ❌ REMOVE close button -->
+        </div>
       </div>
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.1/flowbite.min.js"></script>
+      <!-- Step 4: Summary -->
+      <div
+        class="step w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
+      >
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">
+          Step 4: Summary
+        </h2>
+        <div class="bg-white p-6 rounded-lg">
+          <p><strong>Trip Details:</strong> <span id="summaryTrip"></span></p>
+          <p><strong>Pick-up Date:</strong> <span id="summaryPickUp"></span></p>
+          <p>
+            <strong>Drop-off Date:</strong> <span id="summaryDropOff"></span>
+          </p>
+          <p><strong>Car Selected:</strong> <span id="summaryCar"></span></p>
+          <p><strong>Total:</strong> PHP <span id="summaryPrice"></span></p>
+        </div>
+        <button
+          class="w-full mt-5 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          onclick="nextStep()"
+        >
+          Proceed to Payment
+        </button>
+      </div>
+
+      <!-- Step 5: Payment QR Code -->
+      <div
+        class="step w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup"
+      >
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">
+          Step 5: Payment
+        </h2>
+        <div class="bg-white p-6 rounded-lg flex flex-col items-center">
+          <p class="mb-4">Scan GCash QR to pay:</p>
+          <img
+            src="https://via.placeholder.com/200x200"
+            alt="GCash QR Code"
+            class="mb-4"
+          />
+          <button
+            class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          >
+            Upload Receipt
+          </button>
+        </div>
+      </div>
+    </section>
 
     <script>
-      // Block modal from being hidden
-      const modal = document.getElementById("loginModal");
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          e.stopPropagation(); // disable background click
-        }
-      });
+      let currentStep = 0;
+      const steps = document.querySelectorAll(".step");
+      function showStep(n) {
+        steps.forEach((step, i) => step.classList.remove("active"));
+        steps[n].classList.add("active");
+      }
 
-      // Simulate login success (for testing)
-      document.querySelector("form").addEventListener("submit", function (e) {
-        e.preventDefault(); // remove this in real PHP login
-        // if login success from backend PHP -> hide modal
-        modal.style.display = "none";
-      });
+      function nextStep() {
+        if (currentStep === 3) updateSummary();
+        if (currentStep < steps.length - 1) currentStep++;
+        showStep(currentStep);
+      }
+
+      function toggleNext(checkbox) {
+        document.getElementById("nextBtn").disabled = !checkbox.checked;
+      }
+
+      function selectCar(name, price) {
+        window.selectedCar = { name, price };
+        alert(name + " selected for PHP " + price);
+      }
+
+      function updateSummary() {
+        document.getElementById("summaryTrip").innerText =
+          document.getElementById("tripDetails").value;
+        document.getElementById("summaryPickUp").innerText =
+          document.getElementById("pickUpDate").value;
+        document.getElementById("summaryDropOff").innerText =
+          document.getElementById("dropOffDate").value;
+        document.getElementById("summaryCar").innerText = selectedCar
+          ? selectedCar.name
+          : "";
+        document.getElementById("summaryPrice").innerText = selectedCar
+          ? selectedCar.price
+          : "";
+      }
     </script>
+
+    <script src="https://unpkg.com/flowbite@1.7.0/dist/flowbite.min.js"></script>
   </body>
 </html>
