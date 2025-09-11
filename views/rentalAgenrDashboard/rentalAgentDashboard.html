@@ -22,9 +22,95 @@
       href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&display=swap"
       rel="stylesheet"
     />
-    <title>Car Selection</title>
+    <title>Rental Agent Dashboard</title>
   </head>
   <body class="[#f0f0f0] h-screen">
+    <!-- 
+    ===================================================================================================================================================================================================================================================
+    =                                                                                                                                                                                                                                                 =
+    =                                                                                                                    LOGIN MODAL - STARTS HERE                                                                                                    =
+    =                                                                                                                                                                                                                                                 =
+    =================================================================================================================================================================================================================================================== 
+    -->
+    <!-- Login Modal (default visible) -->
+
+    <!-- 
+    <div
+      id="loginModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+    >
+      <div
+        class="relative w-full max-w-sm sm:max-w-md md:max-w-lg p-6 bg-white rounded-2xl shadow-2xl"
+      >
+        <div class="flex justify-center mb-4">
+          <img
+            class="h-20 sm:h-28 md:h-32 animate-fadeSlide"
+            src="../../src/svg/systemLogo.jpg"
+            alt="System Logo"
+          />
+        </div>
+        <h2
+          class="text-center text-xl sm:text-2xl font-bold mb-2 text-gray-800"
+        >
+          Welcome Back
+        </h2>
+        <p class="text-center text-sm text-gray-500 mb-6">
+          Please log in to access the rental agent dashboard
+        </p>
+        <form
+          action="loginRentalAgentDashboard.php"
+          method="POST"
+          class="space-y-5"
+        >
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Username
+            </label>
+            <input
+              type="text"
+              name="username"
+              required
+              placeholder="Enter your username"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              required
+              placeholder="Enter your password"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base"
+            />
+            <div class="text-right mt-1">
+              <a href="#" class="text-xs text-blue-600 hover:underline"
+                >Forgot password?</a
+              >
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="w-full py-3 bg-blue-600 text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Log In
+          </button>
+        </form>
+        <p class="mt-6 text-center text-xs text-gray-500">
+          Need help? Contact your system administrator.
+        </p>
+      </div>
+    </div> -->
+
+    <!-- 
+    ===================================================================================================================================================================================================================================================
+    =                                                                                                                                                                                                                                                 =
+    =                                                                                                                    LOGIN MODAL - ENDS HERE                                                                                                      =
+    =                                                                                                                                                                                                                                                 =
+    =================================================================================================================================================================================================================================================== 
+    -->
     <div class="flex items-center justify-start rtl:justify-end">
       <button
         data-drawer-target="logo-sidebar"
@@ -67,7 +153,7 @@
           src="../../src/svg/systemLogo.jpg"
           alt=""
         />
-        <nav class="flex-1 p-4 space-y-2">
+        <nav class="flex-1 p-4 space-y-2 border-t-2 border-[#986555]">
           <!-- Dashboard -->
           <a
             href="#"
@@ -466,6 +552,7 @@
     --></div>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script src="../../js/rentalAgentModules.js"></script>
+    <script src="../../js/loginModal.js"></script>
 
     <!--
     ===================================================================================================================================================================================================================================================
