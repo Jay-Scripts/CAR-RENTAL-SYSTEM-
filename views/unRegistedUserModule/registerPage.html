@@ -103,15 +103,15 @@
           <!-- Email -->
           <div class="mb-5">
             <label
-              for="floating_email"
+              for="email"
               class="block mb-2 text-sm font-medium text-[#df927f]"
             >
               Email address
             </label>
             <input
               type="email"
-              id="floating_email"
-              name="floating_email"
+              id="email"
+              name="email"
               placeholder="your@email.com"
               required
               class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
@@ -121,15 +121,15 @@
           <!-- Password -->
           <div class="mb-5">
             <label
-              for="floating_password"
+              for="password"
               class="block mb-2 text-sm font-medium text-[#df927f]"
             >
               Password
             </label>
             <input
               type="password"
-              id="floating_password"
-              name="floating_password"
+              id="password"
+              name="password"
               required
               class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
             />
@@ -138,14 +138,14 @@
           <!-- Confirm Password -->
           <div class="mb-5">
             <label
-              for="floating_repeat_password"
+              for="repeat_password"
               class="block mb-2 text-sm font-medium text-[#df927f]"
             >
               Confirm Password
             </label>
             <input
               type="password"
-              id="floating_repeat_password"
+              id="repeat_password"
               name="repeat_password"
               required
               class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
@@ -154,7 +154,7 @@
           <!-- Gender -->
           <div class="mb-5">
             <label
-              for="floating_repeat_password"
+              for="repeat_password"
               class="block mb-2 text-sm font-medium text-[#df927f]"
             >
               Gender
@@ -175,30 +175,30 @@
           <div class="grid md:grid-cols-2 md:gap-6">
             <div class="mb-5">
               <label
-                for="floating_first_name"
+                for="first_name"
                 class="block mb-2 text-sm font-medium text-[#df927f]"
               >
                 First Name
               </label>
               <input
                 type="text"
-                id="floating_first_name"
-                name="floating_first_name"
+                id="first_name"
+                name="first_name"
                 required
                 class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
               />
             </div>
             <div class="mb-5">
               <label
-                for="floating_last_name"
+                for="last_name"
                 class="block mb-2 text-sm font-medium text-[#df927f]"
               >
                 Last Name
               </label>
               <input
                 type="text"
-                id="floating_last_name"
-                name="floating_last_name"
+                id="last_name"
+                name="last_name"
                 required
                 class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
               />
@@ -209,15 +209,15 @@
           <div class="grid md:grid-cols-2 md:gap-6">
             <div class="mb-5">
               <label
-                for="floating_phone"
+                for="phone"
                 class="block mb-2 text-sm font-medium text-[#df927f]"
               >
                 Phone (123-456-7890)
               </label>
               <input
                 type="tel"
-                id="floating_phone"
-                name="floating_phone"
+                id="phone"
+                name="phone"
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 required
                 class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
@@ -225,15 +225,15 @@
             </div>
             <div class="mb-5">
               <label
-                for="floating_company"
+                for="address"
                 class="block mb-2 text-sm font-medium text-[#df927f]"
               >
                 Address
               </label>
               <input
                 type="text"
-                id="floating_address"
-                name="floating_address"
+                id="address"
+                name="address"
                 required
                 class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5 dark:bg-gray-700 dark:border-[#df927f] dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#df927f] dark:focus:border-[#df927f] dark:shadow-xs-light"
               />
@@ -243,6 +243,7 @@
           <!-- Submit Button -->
           <button
             type="submit"
+            name="customerRegister"
             class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] focus:ring-4 focus:outline-none focus:ring-[#df927f]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
           >
             Register
