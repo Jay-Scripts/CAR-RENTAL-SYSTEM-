@@ -119,7 +119,6 @@ $ses
         <a href="https://flowbite.com/" class="hover:underline">CarRental™ </a>All rights reserved.</span>
     </div>
   </footer>
-
   <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 

@@ -244,6 +244,11 @@ if (isset($_POST['customerRegister'])) {
         <?php
         echo $customer_input_message['password'];
         ?>
+        <label class="flex items-center gap-2 mt-2 text-sm text-gray-600">
+            <input type="checkbox" onclick="document.getElementById('password').type = this.checked ? 'text' : 'password'">
+            Show Password
+        </label>
+
     </div>
 
     <!-- Confirm Password -->
@@ -261,6 +266,11 @@ if (isset($_POST['customerRegister'])) {
         <?php
         echo $customer_input_message['repeat_password'];
         ?>
+        <label class="flex items-center gap-2 mt-2 text-sm text-gray-600">
+            <input type="checkbox" onclick="document.getElementById('repeat_password').type = this.checked ? 'text' : 'password'">
+            Show Password
+        </label>
+
     </div>
     <!-- Gender -->
     <div class="mb-5">

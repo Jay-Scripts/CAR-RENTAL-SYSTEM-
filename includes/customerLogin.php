@@ -104,6 +104,11 @@ if (isset($_POST['customerLogin'])) {
             type="password" id="password" name="password"
             class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
         <?php echo $login_input_message['password']; ?>
+        <label class="flex items-center gap-2 mt-2 text-sm text-gray-600">
+            <input type="checkbox" onclick="document.getElementById('password').type = this.checked ? 'text' : 'password'">
+            Show Password
+        </label>
+
     </div>
 
     <!-- Submit -->
