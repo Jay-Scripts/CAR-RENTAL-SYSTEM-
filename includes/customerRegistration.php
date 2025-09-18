@@ -53,6 +53,18 @@ if (isset($_POST['customerRegister'])) {
         $customer_input_message['email'] = "<p class='text-red-500 text-sm'>Email is required.</p>";
     } elseif (!filter_var($sanitized_email, FILTER_VALIDATE_EMAIL)) {
         $customer_input_message['email'] = "<p class='text-red-500 text-sm'>Please enter a valid email format.</p>";
+    } else {
+        $select_statement_existing_email = "SELECT COUNT(*) 
+                                            FROM customer_details   
+                                            WHERE email = :email;";
+
+        $stmt = $conn->prepare($select_statement_existing_email);
+        $stmt->execute([':email' => $sanitized_email]);
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            $customer_input_message['email'] = "<p class='text-red-500 text-sm'>Email already registered try a new one.</p>";
+        }
     }
 
     // Password
@@ -67,7 +79,7 @@ if (isset($_POST['customerRegister'])) {
     if (empty($sanitized_repeat_pass)) {
         $customer_input_message['repeat_password'] = "<p class='text-red-500 text-sm'>Password is required.</p>";
     } elseif (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/", $sanitized_repeat_pass)) {
-        $customer_input_message['password'] = "<p class='text-red-500 text-sm'>Password must be at least 8 characters, with upper, lower, number, and special char.</p>";
+        $customer_input_message['repeat_password'] = "<p class='text-red-500 text-sm'>Password must be at least 8 characters, with upper, lower, number, and special char.</p>";
     } elseif ($sanitized_password  !== $sanitized_repeat_pass) {
         $customer_input_message['repeat_password'] = "<p class='text-red-500 text-sm'>Passwords do not match.</p>";
     }
@@ -97,7 +109,19 @@ if (isset($_POST['customerRegister'])) {
     if (empty($sanitized_phone)) {
         $customer_input_message['phone'] = "<p class='text-red-500 text-sm'>Phone number is required.</p>";
     } elseif (!preg_match("/^\d{4}-\d{3}-\d{4}$/", $sanitized_phone)) {
-        $customer_input_message['phone'] = "<p class='text-red-500 text-sm'>Enter a valid phone number (10–15 digits).</p>";
+        $customer_input_message['phone'] = "<p class='text-red-500 text-sm'>Enter a valid phone number (11 digits).</p>";
+    } else {
+        $select_statement_existing_phone = "SELECT COUNT(*) 
+                                            FROM customer_details   
+                                            WHERE phone = :phone;";
+
+        $stmt = $conn->prepare($select_statement_existing_phone);
+        $stmt->execute([':phone' => $sanitized_phone]);
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            $customer_input_message['phone'] = "<p class='text-red-500 text-sm'>Phone number already registered try a new one.</p>";
+        }
     }
 
     // Address
@@ -145,13 +169,15 @@ if (isset($_POST['customerRegister'])) {
             $customer_ID = $conn->lastInsertId(); // getting the last customer ID added in the customer_detail table (PK) to link the customer_account table
 
             // second data insert customer_accounts table, if first transaction is successful 
+
+            $hashed_password = password_hash($sanitized_password, PASSWORD_ARGON2ID); // hashing password before insertion
             $insertStatementCustomerAccount = "INSERT INTO customer_account(customer_id, password)
                                                VALUE(:customer_id, :password)";
             $stmt = $conn->prepare($insertStatementCustomerAccount);
             $stmt->execute(
                 [
                     ':customer_id' => $customer_ID,
-                    ':password' => $password
+                    ':password' => $hashed_password
                 ]
             );
 
@@ -341,7 +367,7 @@ if (isset($_POST['customerRegister'])) {
     <p class="mt-6 text-sm text-center text-[#df927f]">
         Already have an account?
         <a
-            href="loginPage.html"
+            href="loginPage.php"
             class="text-[#df927f] hover:underline font-medium">Log-in</a>
     </p>
 </form>
