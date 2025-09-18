@@ -1,13 +1,15 @@
 <?php
 $host = "localhost";
-$dbname = "car_rental_db";
+$port = 3307;
+$dbName = "car_rentral_db";
 $user = "root";
-$passord = "";
+$password = "";
 
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbName;charset=utf8mb4";
+    $conn = new PDO($dsn, $user, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("DB Connection failed: " . $e->getMessage());
 }
