@@ -1,40 +1,3 @@
-let currentStep = 0;
-const steps = document.querySelectorAll(".step");
-function showStep(n) {
-  steps.forEach((step, i) => step.classList.remove("active"));
-  steps[n].classList.add("active");
-}
-
-function nextStep() {
-  if (currentStep === 3) updateSummary();
-  if (currentStep < steps.length - 1) currentStep++;
-  showStep(currentStep);
-}
-
-function toggleNext(checkbox) {
-  document.getElementById("nextBtn").disabled = !checkbox.checked;
-}
-
-function selectCar(name, price) {
-  window.selectedCar = { name, price };
-  alert(name + " selected for PHP " + price);
-}
-
-function updateSummary() {
-  document.getElementById("summaryTrip").innerText =
-    document.getElementById("tripDetails").value;
-  document.getElementById("summaryPickUp").innerText =
-    document.getElementById("pickUpDate").value;
-  document.getElementById("summaryDropOff").innerText =
-    document.getElementById("dropOffDate").value;
-  document.getElementById("summaryCar").innerText = selectedCar
-    ? selectedCar.name
-    : "";
-  document.getElementById("summaryPrice").innerText = selectedCar
-    ? selectedCar.price
-    : "";
-}
-
 const checkbox2 = document.getElementById("checkbox2");
 const checkmark2 = document.getElementById("checkmark2");
 const openModal = document.getElementById("openModal");
@@ -42,7 +5,12 @@ const modalOverlay = document.getElementById("modalOverlay");
 const closeModal = document.getElementById("closeModal");
 const acceptModal = document.getElementById("acceptModal");
 const declineModal = document.getElementById("declineModal");
+const customerBooking = document.getElementById("customer_booking");
 let agreed2 = false;
+
+// Initially disable booking button
+customerBooking.disabled = true;
+customerBooking.classList.add("cursor-not-allowed", "opacity-50");
 
 openModal.addEventListener("click", () => {
   modalOverlay.classList.remove("hidden");
@@ -61,6 +29,10 @@ acceptModal.addEventListener("click", () => {
   checkmark2.classList.remove("hidden");
   modalOverlay.classList.add("hidden");
   modalOverlay.classList.remove("flex", "fade-in");
+
+  // Enable booking button
+  customerBooking.disabled = false;
+  customerBooking.classList.remove("cursor-not-allowed", "opacity-50");
 });
 
 declineModal.addEventListener("click", () => {
@@ -70,6 +42,10 @@ declineModal.addEventListener("click", () => {
   checkmark2.classList.add("hidden");
   modalOverlay.classList.add("hidden");
   modalOverlay.classList.remove("flex", "fade-in");
+
+  // Disable booking button again if declined
+  customerBooking.disabled = true;
+  customerBooking.classList.add("cursor-not-allowed", "opacity-50");
 });
 
 // Close modal when clicking outside

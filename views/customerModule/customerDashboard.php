@@ -1,4 +1,6 @@
 <?php
+include "../../config/db.php";
+
 session_start();
 
 if (!isset($_SESSION['customer_name'])) {
@@ -30,12 +32,49 @@ if (!isset($_SESSION['customer_name'])) {
     href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&display=swap"
     rel="stylesheet" />
   <style>
-    .step {
-      display: none;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
     }
 
-    .step.active {
-      display: block;
+    .slide-in {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.2s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .terms-item {
+      transition: all 0.2s ease;
+    }
+
+    .terms-item:hover {
+      background-color: #f9fafb;
+      transform: translateX(4px);
     }
   </style>
   <title>Customer's Dashboard</title>
@@ -48,7 +87,7 @@ if (!isset($_SESSION['customer_name'])) {
       data-drawer-toggle="logo-sidebar"
       aria-controls="logo-sidebar"
       type="button"
-      class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+      class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 ">
       <span class="sr-only">Open sidebar</span>
       <svg
         class="w-6 h-6"
@@ -153,10 +192,10 @@ if (!isset($_SESSION['customer_name'])) {
         <!-- Left: Title -->
         <div class="mb-4 sm:mb-0">
           <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
-            Car Rentals Dashboard
+            Car Rental Customer Dashboard
           </h1>
           <p class="text-xs sm:text-sm text-gray-500">
-            Manage vehicles, reservations, and reports
+            Book vehicles, track your reservations, and view payment status
           </p>
         </div>
         <div
@@ -260,140 +299,135 @@ if (!isset($_SESSION['customer_name'])) {
         <h2 class="text-2xl font-bold mb-2 text-gray-800">Book a Vehicle</h2>
         <p class="text-sm text-gray-500 mb-6">Complete the steps to reserve your vehicle.</p>
 
-        <!-- Step Container -->
-        <div class="flex flex-col items-center space-y-6">
+        <form action="submitBooking.php" method="POST" class="w-fit mx-auto bg-white p-8 rounded-xl shadow space-y-6">
 
-          <!-- Step 1: Booking Details -->
-          <div class="step active w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 1: Booking Details</h2>
-            <div class="mb-5">
-              <label class="block mb-2 text-sm font-medium text-gray-700">Details About the Trip:</label>
-              <input type="text" id="tripDetails"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
-            </div>
-            <div class="grid md:grid-cols-2 gap-4 mb-5">
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">Pick-up Date</label>
-                <input type="date" id="pickUpDate"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
-              </div>
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">Drop-off Date</label>
-                <input type="date" id="dropOffDate"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
-              </div>
-            </div>
-            <div class="grid md:grid-cols-2 gap-4 mb-5">
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">Pick-up Time</label>
-                <input type="time" id="pickUpTime"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
-              </div>
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-700">Drop-off Time</label>
-                <input type="time" id="dropOffTime"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
-              </div>
-            </div>
-            <button onclick="nextStep()"
-              class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
-              Next
-            </button>
+          <h2 class="text-xl font-bold text-gray-800 mb-4">Book a Vehicle</h2>
+
+          <!-- Trip Details -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-700">Trip Details</label>
+            <input type="text" name="tripDetails" class="w-full p-2.5 border rounded" required>
           </div>
 
-          <!-- Step 2: Car Selection -->
-          <div class="step w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 2: Select Your Car</h2>
+          <!-- Dates & Times -->
+          <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
 
-            <div class="flex flex-wrap justify-center gap-4">
-              <!-- Car 1 -->
-              <label class="relative cursor-pointer w-72">
-                <input type="radio" name="selectedCar" value="Toyota Vios XLE 2022" class="hidden peer" checked />
-                <div
-                  class="bg-gray-50 border border-[#df927f] rounded-lg p-4 w-full hover:shadow-md transition peer-checked:ring-2 peer-checked:ring-[#df927f] peer-checked:bg-orange-50">
-                  <img src="../../src/images/carsImage/toyotaviospearlwhite.png" alt="Toyota Vios"
-                    class="w-full h-40 object-contain mb-2" />
-                  <h3 class="text-gray-800 font-bold text-center">Toyota Vios XLE 2022</h3>
-                  <p class="text-gray-500 text-center mt-1">4 Passenger • Automatic • Blue Metallic</p>
-                  <p class="text-[#df927f] font-semibold text-center mt-2">PHP 2,000</p>
+            <div id="date-range-picker" date-rangepicker class="flex items-center">
+              <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg class="w-4 h-4 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                  </svg>
                 </div>
-              </label>
-
-              <!-- Car 2 -->
-              <label class="relative cursor-pointer w-72">
-                <input type="radio" name="selectedCar" value="Honda Civic 2023" class="hidden peer" />
-                <div
-                  class="bg-gray-50 border border-[#df927f] rounded-lg p-4 w-full hover:shadow-md transition peer-checked:ring-2 peer-checked:ring-[#df927f] peer-checked:bg-orange-50">
-                  <img src="../../src/images/carsImage/blueviosXLE2022.png" alt="Honda Civic"
-                    class="w-full h-40 object-contain mb-2" />
-                  <h3 class="text-gray-800 font-bold text-center">Honda Civic 2023</h3>
-                  <p class="text-gray-500 text-center mt-1">4 Passenger • Automatic • Red</p>
-                  <p class="text-[#df927f] font-semibold text-center mt-2">PHP 2,500</p>
-                </div>
-              </label>
-            </div>
-
-            <button onclick="nextStep()"
-              class="w-full mt-5 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
-              Next
-            </button>
-          </div>
-
-
-          <!-- Step 3: Terms & Conditions -->
-          <div class="step w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 3: Terms & Conditions</h2>
-            <div class="bg-gray-50 p-4 rounded-lg max-h-[50vh] overflow-y-auto text-sm text-gray-700">
-              <ol class="list-decimal list-inside space-y-2">
-                <li>Package includes vehicle, fuel, toll fees, driver.</li>
-                <li>Extra hours incur additional fees.</li>
-                <li>Payments via cash or GCash.</li>
-                <li>No-show within 3 hours = canceled reservation.</li>
-                <li>Cleaning fees PHP 500 for mess caused by client.</li>
-                <li>Renter responsible for damages.</li>
-                <li>Must provide valid ID.</li>
-              </ol>
-              <div class="mt-4 flex items-center gap-2">
-                <input type="checkbox" id="agree" onclick="toggleNext(this)" />
-                <label for="agree" class="text-gray-700">I agree to the terms & conditions</label>
+                <input id="datepicker-range-start" name="start" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start">
               </div>
-              <button id="nextBtn" onclick="nextStep()" disabled
-                class="w-full mt-4 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
-                Next
+              <span class="mx-4 text-black">to</span>
+              <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg class="w-4 h-4 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                  </svg>
+                </div>
+                <input id="datepicker-range-end" name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end">
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <!-- Car Selection -->
+          <?php
+          include "../../includes/customerBookAVehicle.php";
+          ?>
+
+          <!-- Terms & Conditions -->
+          <div class="bg-white rounded-xl  p-6">
+
+            <div class="flex items-start space-x-3">
+              <button id="checkbox2" class="mt-1 w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center hover:border-blue-400 transition-colors">
+                <svg id="checkmark2" class="w-3 h-3 text-white hidden" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
               </button>
+              <div>
+                <p class="text-gray-700">
+                  I agree to the
+                  <button id="openModal" class="text-blue-600 hover:text-blue-800 underline font-medium hover:no-underline transition-all duration-200">
+                    Terms & Conditions
+                  </button>
+                  of this rental agreement.
+                </p>
+                <p class="text-xs text-gray-500 mt-1">Click to read the full terms and conditions</p>
+              </div>
             </div>
           </div>
 
-          <!-- Step 4: Summary -->
-          <div class="step w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 4: Summary</h2>
-            <div class="bg-gray-50 p-6 rounded-lg text-sm space-y-2">
-              <p><strong>Trip Details:</strong> <span id="summaryTrip"></span></p>
-              <p><strong>Pick-up Date:</strong> <span id="summaryPickUp"></span></p>
-              <p><strong>Drop-off Date:</strong> <span id="summaryDropOff"></span></p>
-              <p><strong>Car Selected:</strong> <span id="summaryCar"></span></p>
-              <p><strong>Total:</strong> PHP <span id="summaryPrice"></span></p>
+
+
+
+
+          <!-- Modal Overlay -->
+          <div id="modalOverlay" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+              <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800">Terms & Conditions</h2>
+                <button id="closeModal" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="p-6 overflow-y-auto max-h-[60vh]">
+                <div class="space-y-4 text-sm text-gray-600">
+                  <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                    <h4 class="font-semibold text-gray-800 mb-2">1. Package Inclusions</h4>
+                    <p>The rental package includes the vehicle, fuel, toll fees, and a professional driver for the duration of your booking.</p>
+                  </div>
+                  <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                    <h4 class="font-semibold text-gray-800 mb-2">2. Additional Hours</h4>
+                    <p>Any extra hours beyond the agreed rental period will incur additional fees according to our standard rate card.</p>
+                  </div>
+                  <div class="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                    <h4 class="font-semibold text-gray-800 mb-2">3. Payment Methods</h4>
+                    <p>We accept both cash payments and GCash digital transactions for your convenience and security.</p>
+                  </div>
+                  <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                    <h4 class="font-semibold text-gray-800 mb-2">4. No-Show Policy</h4>
+                    <p>Failure to show up within 3 hours of the scheduled pickup time will result in automatic cancellation of your reservation.</p>
+                  </div>
+                  <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                    <h4 class="font-semibold text-gray-800 mb-2">5. Cleaning Fees</h4>
+                    <p>A cleaning fee of PHP 500 will be charged if any mess or damage is caused by the client during the rental period.</p>
+                  </div>
+                  <div class="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                    <h4 class="font-semibold text-gray-800 mb-2">6. Damage Liability</h4>
+                    <p>The renter is fully responsible for any damages to the vehicle that occur during the rental period.</p>
+                  </div>
+                  <div class="p-4 bg-teal-50 rounded-lg border-l-4 border-teal-400">
+                    <h4 class="font-semibold text-gray-800 mb-2">7. Identification Requirement</h4>
+                    <p>A valid government-issued identification document must be provided before vehicle pickup.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+                <button id="declineModal" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+                  Decline
+                </button>
+                <button id="acceptModal" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                  Accept Terms
+                </button>
+              </div>
             </div>
-            <button onclick="nextStep()"
-              class="w-full mt-5 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
-              Proceed to Payment
-            </button>
           </div>
 
-          <!-- Step 5: Payment -->
-          <div class="step w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 5: Payment</h2>
-            <div class="bg-gray-50 p-6 rounded-lg flex flex-col items-center">
-              <p class="mb-4">Scan GCash QR to pay:</p>
-              <img src="https://via.placeholder.com/200x200" alt="GCash QR Code" class="mb-4" />
-              <button
-                class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
-                Upload Receipt
-              </button>
-            </div>
-          </div>
+          <!-- Submit Button -->
+          <button type="submit" id="customer_booking" name="customer_booking" class="w-full bg-orange-400 hover:bg-orange-500 text-white p-3 rounded-lg font-bold">
+            Book Now
+          </button>
 
-        </div>
+        </form>
+
       </section>
 
 
@@ -521,8 +555,10 @@ if (!isset($_SESSION['customer_name'])) {
   </div>
   <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
   <script src="../../js/customerModules.js"></script>
+  <script src="../../js/customerModules.js"></script>
   <script src="../../js/adminDropdownLogout.js"></script>
   <script src="../../js/customerModuleBookAVehicle.js"></script>
+  <script src="../../js/customerModuleTerms&Condition.js"></script>
 
   <!--
     ===================================================================================================================================================================================================================================================
