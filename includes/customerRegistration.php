@@ -185,14 +185,19 @@ if (isset($_POST['customerRegister'])) {
             // if there no error the rest of the transaction is saved
             $conn->commit();
             $customer_register_message = "
-               <script>
+                 <script>
                     Swal.fire({
-                    icon: 'success',
-                    title: 'Your account is registered!',
-                    showConfirmButton: false,
-                    timer: 1500
+                        icon: 'success',
+                        title: 'Your account is registered!',
+                        showConfirmButton: false,
+                        timer: 2000 // show for 2s
                     });
-               </script>";
+
+                    // Redirect after 2s
+                    setTimeout(() => {
+                        window.location.href = '../unRegistedUserModule/loginPage.php';
+                    }, 2000);
+                </script>";
         } catch (PDOException $e) {
             // if there an error the rest of the transaction is reverted into initial value like nothing happen
             $conn->rollBack();
