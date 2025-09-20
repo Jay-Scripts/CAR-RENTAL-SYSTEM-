@@ -55,7 +55,7 @@ if (isset($_POST['customerRegister'])) {
         $customer_input_message['email'] = "<p class='text-red-500 text-sm'>Please enter a valid email format.</p>";
     } else {
         $select_statement_existing_email = "SELECT COUNT(*) 
-                                            FROM customer_details   
+                                            FROM user_details   
                                             WHERE email = :email;";
 
         $stmt = $conn->prepare($select_statement_existing_email);
@@ -112,7 +112,7 @@ if (isset($_POST['customerRegister'])) {
         $customer_input_message['phone'] = "<p class='text-red-500 text-sm'>Enter a valid phone number (11 digits).</p>";
     } else {
         $select_statement_existing_phone = "SELECT COUNT(*) 
-                                            FROM customer_details   
+                                            FROM user_details   
                                             WHERE phone = :phone;";
 
         $stmt = $conn->prepare($select_statement_existing_phone);
@@ -153,7 +153,7 @@ if (isset($_POST['customerRegister'])) {
             $conn->beginTransaction();
 
             // first data insert customer_details table
-            $insertStatementCustomerDetails = "INSERT INTO customer_details(first_name, last_name, gender, email, phone, address)
+            $insertStatementCustomerDetails = "INSERT INTO user_details(first_name, last_name, gender, email, phone, address)
                                                VALUES(:first_name, :last_name, :gender, :email, :phone, :address);";
             $stmt = $conn->prepare($insertStatementCustomerDetails);
             $stmt->execute(
@@ -171,7 +171,7 @@ if (isset($_POST['customerRegister'])) {
             // second data insert customer_accounts table, if first transaction is successful 
 
             $hashed_password = password_hash($sanitized_password, PASSWORD_ARGON2ID); // hashing password before insertion
-            $insertStatementCustomerAccount = "INSERT INTO customer_account(customer_id, password)
+            $insertStatementCustomerAccount = "INSERT INTO user_account(user_id, password)
                                                VALUE(:customer_id, :password)";
             $stmt = $conn->prepare($insertStatementCustomerAccount);
             $stmt->execute(

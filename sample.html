@@ -5,48 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Car Booking Flow</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://unpkg.com/flowbite@1.7.0/dist/flowbite.min.css"
-      rel="stylesheet"
-    />
     <style>
       .step {
         display: none;
       }
       .step.active {
         display: block;
+        animation: fadeIn 0.4s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     </style>
   </head>
-  <body class="bg-gray-100">
-    <div class="mb-5">
-      <label
-        for="password"
-        class="block mb-2 text-sm font-medium text-[#df927f]"
-        >Password</label
-      >
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Enter your password"
-        class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5"
-      />
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Enter your password"
-        class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5"
-      />
+  <body
+    class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white"
+  >
+    <section
+      id="bookAVehicle"
+      class="p-6 mt-6 flex flex-col items-center min-h-screen"
+    >
+      <h2 class="text-3xl font-bold mb-8 text-[#df927f] drop-shadow-lg">
+        Book a Vehicle
+      </h2>
 
-      <label class="flex items-center gap-2 mt-2 text-sm text-gray-600">
-        <input
-          type="checkbox"
-          onclick="document.getElementById('password').type = this.checked ? 'text' : 'password'"
-        />
-        Show Password
-      </label>
-    </div>
+      <!-- Step Container -->
+      <div
+        class="step active w-full max-w-3xl bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-xl p-8"
+      >
+        <h2 class="text-2xl font-bold text-center mb-6 text-[#df927f]">
+          Step 1: Booking Details
+        </h2>
+
+        <div class="mb-5">
+          <label class="block mb-2 text-sm font-medium">Trip Details</label>
+          <input
+            type="text"
+            id="tripDetails"
+            class="w-full p-3 rounded-xl bg-white/20 text-white border border-white/20 focus:ring-2 focus:ring-[#df927f] outline-none placeholder-gray-300"
+            placeholder="Enter trip purpose..."
+          />
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-5">
+          <div>
+            <label class="block mb-2 text-sm font-medium">Pick-up Date</label>
+            <input
+              type="date"
+              id="pickUpDate"
+              class="w-full p-3 rounded-xl bg-white/20 text-white border border-white/20 focus:ring-2 focus:ring-[#df927f] outline-none"
+            />
+          </div>
+          <div>
+            <label class="block mb-2 text-sm font-medium">Drop-off Date</label>
+            <input
+              type="date"
+              id="dropOffDate"
+              class="w-full p-3 rounded-xl bg-white/20 text-white border border-white/20 focus:ring-2 focus:ring-[#df927f] outline-none"
+            />
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-5">
+          <div>
+            <label class="block mb-2 text-sm font-medium">Pick-up Time</label>
+            <input
+              type="time"
+              id="pickUpTime"
+              class="w-full p-3 rounded-xl bg-white/20 text-white border border-white/20 focus:ring-2 focus:ring-[#df927f] outline-none"
+            />
+          </div>
+          <div>
+            <label class="block mb-2 text-sm font-medium">Drop-off Time</label>
+            <input
+              type="time"
+              id="dropOffTime"
+              class="w-full p-3 rounded-xl bg-white/20 text-white border border-white/20 focus:ring-2 focus:ring-[#df927f] outline-none"
+            />
+          </div>
+        </div>
+
+        <button
+          onclick="nextStep()"
+          class="w-full bg-[#df927f] hover:bg-[#c97c65] text-white font-semibold py-3 rounded-xl transition shadow-lg hover:shadow-[#df927f]/40"
+        >
+          Next →
+        </button>
+      </div>
+    </section>
   </body>
 </html>

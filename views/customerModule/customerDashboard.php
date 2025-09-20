@@ -255,123 +255,96 @@ if (!isset($_SESSION['customer_name'])) {
           </div>
         </div>
       </section>
-
       <!-- Book a Vehicle -->
-      <section
-        id="bookAVehicle"
-        class="hidden bg-gray-100 p-6 rounded-lg shadow mt-6">
-        <h2 class="text-2xl font-bold mb-2">Book a Vehicle</h2>
-        <section class="flex flex-col items-center p-6 min-h-screen">
+      <section id="bookAVehicle" class="hidden bg-gray-100 p-6 rounded-lg shadow mt-6">
+        <h2 class="text-2xl font-bold mb-2 text-gray-800">Book a Vehicle</h2>
+        <p class="text-sm text-gray-500 mb-6">Complete the steps to reserve your vehicle.</p>
+
+        <!-- Step Container -->
+        <div class="flex flex-col items-center space-y-6">
+
           <!-- Step 1: Booking Details -->
-          <div
-            class="step active w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup">
-            <h2 class="text-2xl font-bold text-white mb-6 text-center">
-              Step 1: Booking Details
-            </h2>
+          <div class="step active w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 1: Booking Details</h2>
             <div class="mb-5">
-              <label class="block mb-2 text-sm font-medium text-white">Details About the Trip:</label>
-              <input
-                type="text"
-                id="tripDetails"
-                class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
+              <label class="block mb-2 text-sm font-medium text-gray-700">Details About the Trip:</label>
+              <input type="text" id="tripDetails"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
             </div>
             <div class="grid md:grid-cols-2 gap-4 mb-5">
               <div>
-                <labelF class="block mb-2 text-sm font-medium text-white">Pick-up Date</labelF>
-                <input
-                  type="date"
-                  id="pickUpDate"
-                  class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
+                <label class="block mb-2 text-sm font-medium text-gray-700">Pick-up Date</label>
+                <input type="date" id="pickUpDate"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
               </div>
               <div>
-                <label class="block mb-2 text-sm font-medium text-white">Drop-off Date</label>
-                <input
-                  type="date"
-                  id="dropOffDate"
-                  class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
+                <label class="block mb-2 text-sm font-medium text-gray-700">Drop-off Date</label>
+                <input type="date" id="dropOffDate"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
               </div>
             </div>
             <div class="grid md:grid-cols-2 gap-4 mb-5">
               <div>
-                <label class="block mb-2 text-sm font-medium text-white">Pick-up Time</label>
-                <input
-                  type="time"
-                  id="pickUpTime"
-                  class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
+                <label class="block mb-2 text-sm font-medium text-gray-700">Pick-up Time</label>
+                <input type="time" id="pickUpTime"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
               </div>
               <div>
-                <label class="block mb-2 text-sm font-medium text-white">Drop-off Time</label>
-                <input
-                  type="time"
-                  id="dropOffTime"
-                  class="shadow-xs bg-gray-50 border border-[#df927f] text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
+                <label class="block mb-2 text-sm font-medium text-gray-700">Drop-off Time</label>
+                <input type="time" id="dropOffTime"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#df927f] focus:border-[#df927f] block w-full p-2.5" />
               </div>
             </div>
-            <button
-              class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              onclick="nextStep()">
+            <button onclick="nextStep()"
+              class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
               Next
             </button>
           </div>
 
           <!-- Step 2: Car Selection -->
-          <div
-            class="step w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup">
-            <h2 class="text-2xl font-bold text-white mb-6 text-center">
-              Step 2: Select Your Car
-            </h2>
+          <div class="step w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 2: Select Your Car</h2>
+
             <div class="flex flex-wrap justify-center gap-4">
-              <!-- Car Card Example -->
-              <div
-                class="bg-black/20 border border-[#df927f] rounded-lg p-4 w-72 hover:bg-black/30 transition cursor-pointer"
-                onclick="selectCar('Toyota Vios XLE 2022', 2000)">
-                <img
-                  src="../../src/images/carsImage/toyotaviospearlwhite.png"
-                  alt="Car Image"
-                  class="w-full h-auto object-contain mb-2" />
-                <h3 class="text-white font-bold text-center">
-                  Toyota Vios XLE 2022
-                </h3>
-                <p class="text-gray-300 text-center mt-1">
-                  4 Passenger • Automatic • Blue Metallic
-                </p>
-                <p class="text-[#df927f] font-semibold text-center mt-2">
-                  PHP 2,000
-                </p>
-              </div>
-              <div
-                class="bg-black/20 border border-[#df927f] rounded-lg p-4 w-72 hover:bg-black/30 transition cursor-pointer"
-                onclick="selectCar('Honda Civic 2023', 2500)">
-                <img
-                  src="../../src/images/carsImage/blueviosXLE2022.png"
-                  alt="Car Image"
-                  class="w-full h-auto object-contain mb-2" />
-                <h3 class="text-white font-bold text-center">
-                  Honda Civic 2023
-                </h3>
-                <p class="text-gray-300 text-center mt-1">
-                  4 Passenger • Automatic • Red
-                </p>
-                <p class="text-[#df927f] font-semibold text-center mt-2">
-                  PHP 2,500
-                </p>
-              </div>
+              <!-- Car 1 -->
+              <label class="relative cursor-pointer w-72">
+                <input type="radio" name="selectedCar" value="Toyota Vios XLE 2022" class="hidden peer" checked />
+                <div
+                  class="bg-gray-50 border border-[#df927f] rounded-lg p-4 w-full hover:shadow-md transition peer-checked:ring-2 peer-checked:ring-[#df927f] peer-checked:bg-orange-50">
+                  <img src="../../src/images/carsImage/toyotaviospearlwhite.png" alt="Toyota Vios"
+                    class="w-full h-40 object-contain mb-2" />
+                  <h3 class="text-gray-800 font-bold text-center">Toyota Vios XLE 2022</h3>
+                  <p class="text-gray-500 text-center mt-1">4 Passenger • Automatic • Blue Metallic</p>
+                  <p class="text-[#df927f] font-semibold text-center mt-2">PHP 2,000</p>
+                </div>
+              </label>
+
+              <!-- Car 2 -->
+              <label class="relative cursor-pointer w-72">
+                <input type="radio" name="selectedCar" value="Honda Civic 2023" class="hidden peer" />
+                <div
+                  class="bg-gray-50 border border-[#df927f] rounded-lg p-4 w-full hover:shadow-md transition peer-checked:ring-2 peer-checked:ring-[#df927f] peer-checked:bg-orange-50">
+                  <img src="../../src/images/carsImage/blueviosXLE2022.png" alt="Honda Civic"
+                    class="w-full h-40 object-contain mb-2" />
+                  <h3 class="text-gray-800 font-bold text-center">Honda Civic 2023</h3>
+                  <p class="text-gray-500 text-center mt-1">4 Passenger • Automatic • Red</p>
+                  <p class="text-[#df927f] font-semibold text-center mt-2">PHP 2,500</p>
+                </div>
+              </label>
             </div>
-            <button
-              class="w-full mt-5 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              onclick="nextStep()">
+
+            <button onclick="nextStep()"
+              class="w-full mt-5 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
               Next
             </button>
           </div>
 
+
           <!-- Step 3: Terms & Conditions -->
-          <div
-            class="step w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup">
-            <h2 class="text-2xl font-bold text-white mb-6 text-center">
-              Step 3: Terms & Conditions
-            </h2>
-            <div class="bg-white p-4 rounded-lg max-h-[50vh] overflow-y-auto">
-              <ol class="list-decimal list-inside space-y-2 text-gray-700">
+          <div class="step w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 3: Terms & Conditions</h2>
+            <div class="bg-gray-50 p-4 rounded-lg max-h-[50vh] overflow-y-auto text-sm text-gray-700">
+              <ol class="list-decimal list-inside space-y-2">
                 <li>Package includes vehicle, fuel, toll fees, driver.</li>
                 <li>Extra hours incur additional fees.</li>
                 <li>Payments via cash or GCash.</li>
@@ -381,74 +354,48 @@ if (!isset($_SESSION['customer_name'])) {
                 <li>Must provide valid ID.</li>
               </ol>
               <div class="mt-4 flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="agree"
-                  onclick="toggleNext(this)" />
-                <label class="text-gray-700">I agree to the terms & conditions</label>
+                <input type="checkbox" id="agree" onclick="toggleNext(this)" />
+                <label for="agree" class="text-gray-700">I agree to the terms & conditions</label>
               </div>
-              <button
-                id="nextBtn"
-                class="w-full mt-4 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                disabled
-                onclick="nextStep()">
+              <button id="nextBtn" onclick="nextStep()" disabled
+                class="w-full mt-4 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
                 Next
               </button>
             </div>
           </div>
 
           <!-- Step 4: Summary -->
-          <div
-            class="step w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup">
-            <h2 class="text-2xl font-bold text-white mb-6 text-center">
-              Step 4: Summary
-            </h2>
-            <div class="bg-white p-6 rounded-lg">
-              <p>
-                <strong>Trip Details:</strong> <span id="summaryTrip"></span>
-              </p>
-              <p>
-                <strong>Pick-up Date:</strong>
-                <span id="summaryPickUp"></span>
-              </p>
-              <p>
-                <strong>Drop-off Date:</strong>
-                <span id="summaryDropOff"></span>
-              </p>
-              <p>
-                <strong>Car Selected:</strong> <span id="summaryCar"></span>
-              </p>
-              <p>
-                <strong>Total:</strong> PHP <span id="summaryPrice"></span>
-              </p>
+          <div class="step w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 4: Summary</h2>
+            <div class="bg-gray-50 p-6 rounded-lg text-sm space-y-2">
+              <p><strong>Trip Details:</strong> <span id="summaryTrip"></span></p>
+              <p><strong>Pick-up Date:</strong> <span id="summaryPickUp"></span></p>
+              <p><strong>Drop-off Date:</strong> <span id="summaryDropOff"></span></p>
+              <p><strong>Car Selected:</strong> <span id="summaryCar"></span></p>
+              <p><strong>Total:</strong> PHP <span id="summaryPrice"></span></p>
             </div>
-            <button
-              class="w-full mt-5 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              onclick="nextStep()">
+            <button onclick="nextStep()"
+              class="w-full mt-5 text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
               Proceed to Payment
             </button>
           </div>
 
-          <!-- Step 5: Payment QR Code -->
-          <div
-            class="step w-full max-w-3xl bg-black/30 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup">
-            <h2 class="text-2xl font-bold text-white mb-6 text-center">
-              Step 5: Payment
-            </h2>
-            <div class="bg-white p-6 rounded-lg flex flex-col items-center">
+          <!-- Step 5: Payment -->
+          <div class="step w-full max-w-3xl bg-white p-8 rounded-xl shadow border border-[#df927f]">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Step 5: Payment</h2>
+            <div class="bg-gray-50 p-6 rounded-lg flex flex-col items-center">
               <p class="mb-4">Scan GCash QR to pay:</p>
-              <img
-                src="https://via.placeholder.com/200x200"
-                alt="GCash QR Code"
-                class="mb-4" />
+              <img src="https://via.placeholder.com/200x200" alt="GCash QR Code" class="mb-4" />
               <button
-                class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                class="w-full text-white bg-[#df927f] hover:bg-[#c97c65] font-medium rounded-lg text-sm px-5 py-2.5">
                 Upload Receipt
               </button>
             </div>
           </div>
-        </section>
+
+        </div>
       </section>
+
 
       <!-- My Bookings -->
       <section

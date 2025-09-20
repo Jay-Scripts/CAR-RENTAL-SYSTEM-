@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $port = 3307;
-$dbName = "car_rentral_db";
+$dbName = "car_rental_db";
 $user = "root";
 $password = "";
 

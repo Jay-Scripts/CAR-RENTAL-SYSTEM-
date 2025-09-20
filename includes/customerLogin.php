@@ -40,21 +40,22 @@ if (isset($_POST['customerLogin'])) {
     if (!$hasErrors) {
         try {
             $select_statement_existing_customer = "
-                SELECT ca.customer_id, ca.password, cd.first_name 
-                FROM customer_account ca
-                JOIN customer_details cd ON ca.customer_id = cd.customer_id
-                WHERE cd.email = :email
+                SELECT ua.user_id, ua.password, ud.role, ud.first_name 
+                FROM user_account ua
+                JOIN user_details ud ON ua.user_id = ud.user_id
+                WHERE ud.email = :email
             ;";
             $stmt = $conn->prepare($select_statement_existing_customer);
             $stmt->execute([':email' => $sanitized_email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($sanitized_password, $user['password'])) {
-                // Store first name in session
-                $_SESSION['customer_name'] = $user['first_name'];
+                if ($user['role'] === 'customer') {
+                    // Store first name in session
+                    $_SESSION['customer_name'] = $user['first_name'];
 
-                // ✅ SweetAlert + JS redirect
-                $login_message = "
+                    // ✅ SweetAlert + JS redirect
+                    $login_message = "
                 <script>
                     Swal.fire({
                         icon: 'success',
@@ -65,6 +66,16 @@ if (isset($_POST['customerLogin'])) {
                         window.location.href = '../customerModule/customerDashboard.php';
                     });
                 </script>";
+                } else {
+                    $login_message = "
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid credentials',
+                        text: 'Email or password is incorrect.'
+                    });
+                </script>";
+                }
             } else {
                 $login_message = "
                 <script>
