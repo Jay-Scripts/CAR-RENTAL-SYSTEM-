@@ -319,7 +319,7 @@ if (!isset($_SESSION['customer_name'])) {
                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                   </svg>
                 </div>
-                <input id="datepicker-range-start" name="start" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start">
+                <input id="datepicker-range-start" name="start" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" required>
               </div>
               <span class="mx-4 text-black">to</span>
               <div class="relative">
@@ -328,7 +328,7 @@ if (!isset($_SESSION['customer_name'])) {
                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                   </svg>
                 </div>
-                <input id="datepicker-range-end" name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end">
+                <input id="datepicker-range-end" name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" required>
               </div>
             </div>
 
@@ -345,7 +345,7 @@ if (!isset($_SESSION['customer_name'])) {
           <div class="bg-white rounded-xl  p-6">
 
             <div class="flex items-start space-x-3">
-              <button id="checkbox2" class="mt-1 w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center hover:border-blue-400 transition-colors">
+              <button id="checkbox2" type="button" class="mt-1 w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center hover:border-blue-400 transition-colors">
                 <svg id="checkmark2" class="w-3 h-3 text-white hidden" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                 </svg>
@@ -353,7 +353,7 @@ if (!isset($_SESSION['customer_name'])) {
               <div>
                 <p class="text-gray-700">
                   I agree to the
-                  <button id="openModal" class="text-blue-600 hover:text-blue-800 underline font-medium hover:no-underline transition-all duration-200">
+                  <button id="openModal" type="button" class="text-blue-600 hover:text-blue-800 underline font-medium hover:no-underline transition-all duration-200">
                     Terms & Conditions
                   </button>
                   of this rental agreement.
@@ -411,18 +411,22 @@ if (!isset($_SESSION['customer_name'])) {
                 </div>
               </div>
               <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
-                <button id="declineModal" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+                <button id="declineModal" type="button" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
                   Decline
                 </button>
-                <button id="acceptModal" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <button id="acceptModal" type="button" type="button" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                   Accept Terms
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Submit Button -->
-          <button type="submit" id="customer_booking" name="customer_booking" class="w-full bg-orange-400 hover:bg-orange-500 text-white p-3 rounded-lg font-bold">
+          <button
+            type="submit"
+            id="customer_booking"
+            name="customer_booking"
+            disabled
+            class="w-full bg-orange-400 hover:bg-orange-500 text-white p-3 rounded-lg font-bold cursor-not-allowed opacity-50">
             Book Now
           </button>
 
