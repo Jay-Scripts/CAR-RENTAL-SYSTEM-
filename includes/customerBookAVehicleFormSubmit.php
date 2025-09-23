@@ -1,0 +1,283 @@
+<?php
+include "../../config/db.php";
+
+// setting notification variables to inform the customers
+$booking_input_message = [
+    "car_id" => "",
+    "pickup_date" => "",
+    "dropoff_date" => "",
+    "trip_details" => "",
+];
+
+// setting the var value as null as default to avoid error when asign as values in input fields
+$booking_message =
+    $sanitized_car_id =
+    $sanitized_pickup_date =
+    $sanitized_dropff_date =
+    $sanitized_trip_details = "";
+
+// Helper: Convert text date into MySQL format
+function normalizeDate($dateInput)
+{
+    $formats = ['Y-m-d', 'm/d/Y', 'd-m-Y', 'd/m/Y']; // accepted input formats
+    foreach ($formats as $format) {
+        $d = DateTime::createFromFormat($format, $dateInput);
+        if ($d && $d->format($format) === $dateInput) {
+            return $d->format('Y-m-d'); // MySQL format
+        }
+    }
+    return null; // invalid date
+}
+
+// If form submitted
+if (isset($_POST['customer_booking'])) {
+
+    // 1. Trim
+    $car_id       = trim($_POST['car_id'] ?? '');
+    $pickup_date  = trim($_POST['pickup_date'] ?? '');
+    $dropoff_date = trim($_POST['dropoff_date'] ?? '');
+    $trip_details = trim($_POST['tripDetails'] ?? '');
+
+    // 2. Sanitize + Normalize
+    $sanitized_car_id       = filter_var($car_id, FILTER_SANITIZE_NUMBER_INT);
+    $sanitized_pickup_date  = normalizeDate($pickup_date);
+    $sanitized_dropoff_date = normalizeDate($dropoff_date);
+    $sanitized_trip_details = htmlspecialchars($trip_details, ENT_QUOTES, 'UTF-8');
+
+    // 3. Validation
+    if (empty($sanitized_trip_details)) {
+        $booking_input_message['trip_details'] = "<p class='text-red-500 text-sm'>Please fill this field.</p>";
+    }
+    if (empty($sanitized_car_id)) {
+        $booking_input_message['car_id'] = "<p class='text-red-500 text-sm'>Please select a car.</p>";
+    }
+    if (empty($sanitized_pickup_date)) {
+        $booking_input_message['pickup_date'] = "<p class='text-red-500 text-sm'>Pickup date is required.</p>";
+    }
+    if (empty($sanitized_dropoff_date)) {
+        $booking_input_message['dropoff_date'] = "<p class='text-red-500 text-sm'>Drop-off date is required.</p>";
+    } elseif (!empty($sanitized_pickup_date) && $sanitized_dropoff_date < $sanitized_pickup_date) {
+        $booking_input_message['dropoff_date'] = "<p class='text-red-500 text-sm'>Drop-off date cannot be earlier than pickup date.</p>";
+    }
+
+    // 4. Check for errors
+    $hasErrorsBooking = false;
+    foreach ($booking_input_message as $msg) {
+        if (!empty($msg)) {
+            $hasErrorsBooking = true;
+            $booking_message = "
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Forgotten input fields',
+                    text: 'Please correct the highlighted fields.',
+                });
+            </script>";
+        }
+    }
+
+    // Insert into DB
+    if (!$hasErrorsBooking) {
+        try {
+            $conn->beginTransaction();
+
+            $insertStatementBookingDetails = "INSERT INTO CUSTOMER_BOOKING_DETAILS 
+                (USER_ID, CAR_ID, PICKUP_DATE, DROP_OFF_DATE, TRIP_DETAILS, STATUS)
+                VALUES (:user_id, :car_id, :pickup_date, :dropoff_date, :trip_details, 'PENDING')";
+
+            $stmt = $conn->prepare($insertStatementBookingDetails);
+            $stmt->execute([
+                ':user_id'      => $_SESSION['user_id'],
+                ':car_id'       => $sanitized_car_id,
+                ':pickup_date'  => $sanitized_pickup_date,
+                ':dropoff_date' => $sanitized_dropoff_date,
+                ':trip_details' => $sanitized_trip_details
+            ]);
+
+            $conn->commit();
+
+            $booking_message = "
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Booking successful!',
+                    text: 'Go to payment module to secure your slot.',
+                    showConfirmButton: false,
+                    timer: 5000
+                });
+            </script>";
+        } catch (PDOException $e) {
+            $conn->rollBack();
+            $booking_message = "Database error: " . $e->getMessage();
+        }
+    } else {
+        $booking_message = "
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Forgotten input fields',
+                text: 'Please correct the highlighted fields.',
+            });
+        </script>";
+    }
+}
+?>
+
+<form method="POST" class="w-fit mx-auto bg-white p-8 rounded-xl shadow space-y-6">
+
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Book a Vehicle</h2>
+
+    <!-- Trip Details -->
+    <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Trip Details</label>
+        <input
+            value="<?php echo $sanitized_trip_details; ?>"
+            type="text"
+            name="tripDetails"
+            class="w-full p-2.5 border rounded">
+        <?php
+        echo $booking_input_message['trip_details'];
+        ?>
+    </div>
+
+    <!-- Date Range Picker -->
+    <div id="date-range-picker" date-rangepicker class="flex items-center">
+        <!-- Pickup -->
+        <input
+            id="pickup_date"
+            name="pickup_date"
+            type="text"
+            value="<?= htmlspecialchars($sanitized_pickup_date ?? '') ?>"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Select pickup date">
+        <span class="mx-4 text-black">to</span>
+        <!-- Dropoff -->
+        <input
+            id="dropoff_date"
+            name="dropoff_date"
+            type="text"
+            value="<?= htmlspecialchars($sanitized_dropoff_date ?? '') ?>"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Select drop-off date">
+
+        <?= $booking_input_message['pickup_date'] ?? '' ?>
+        <?= $booking_input_message['dropoff_date'] ?? '' ?>
+    </div>
+
+
+
+    <!-- Car Selection -->
+
+    <div>
+        <label class="block mb-2 text-sm font-medium text-gray-700">Select Your Car</label>
+        <div class="flex flex-wrap justify-center items-center gap-4">
+            <?php
+            $stmt = $conn->prepare("SELECT * FROM CAR_DETAILS WHERE STATUS = 'AVAILABLE'");
+            $stmt->execute();
+            $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo $booking_input_message['car_id'];
+            foreach ($cars as $car):
+            ?>
+                <label class="car-option cursor-pointer">
+                    <input type="radio" name="car_id" value="<?php echo $car['CAR_ID']; ?>">
+
+                    <div class="car-content border rounded p-4 w-100 hover:shadow-md">
+                        <img src="<?= $car['THUMBNAIL_PATH'] ?>" class="w-full h-40 object-contain mb-2">
+                        <div class="text-center font-bold"><?= $car['CAR_NAME'] ?></div>
+                        <div class="text-center">• <?= $car['CAPACITY'] ?> Passenger • <?= $car['COLOR'] ?></div>
+                        <div class="text-center text-orange-500 font-semibold">PHP <?= number_format($car['PRICE'], 2) ?></div>
+                    </div>
+                </label>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions -->
+    <div class="bg-white rounded-xl  p-6">
+
+        <div class="flex items-start space-x-3">
+            <button id="checkbox2" type="button" class="mt-1 w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center hover:border-blue-400 transition-colors">
+                <svg id="checkmark2" class="w-3 h-3 text-white hidden" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+            <div>
+                <p class="text-gray-700">
+                    I agree to the
+                    <button id="openModal" type="button" class="text-blue-600 hover:text-blue-800 underline font-medium hover:no-underline transition-all duration-200">
+                        Terms & Conditions
+                    </button>
+                    of this rental agreement.
+                </p>
+                <p class="text-xs text-gray-500 mt-1">Click to read the full terms and conditions</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800">Terms & Conditions</h2>
+                <button id="closeModal" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[60vh]">
+                <div class="space-y-4 text-sm text-gray-600">
+                    <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                        <h4 class="font-semibold text-gray-800 mb-2">1. Package Inclusions</h4>
+                        <p>The rental package includes the vehicle, fuel, toll fees, and a professional driver for the duration of your booking.</p>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                        <h4 class="font-semibold text-gray-800 mb-2">2. Additional Hours</h4>
+                        <p>Any extra hours beyond the agreed rental period will incur additional fees according to our standard rate card.</p>
+                    </div>
+                    <div class="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                        <h4 class="font-semibold text-gray-800 mb-2">3. Payment Methods</h4>
+                        <p>We accept both cash payments and GCash digital transactions for your convenience and security.</p>
+                    </div>
+                    <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                        <h4 class="font-semibold text-gray-800 mb-2">4. No-Show Policy</h4>
+                        <p>Failure to show up within 3 hours of the scheduled pickup time will result in automatic cancellation of your reservation.</p>
+                    </div>
+                    <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                        <h4 class="font-semibold text-gray-800 mb-2">5. Cleaning Fees</h4>
+                        <p>A cleaning fee of PHP 500 will be charged if any mess or damage is caused by the client during the rental period.</p>
+                    </div>
+                    <div class="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                        <h4 class="font-semibold text-gray-800 mb-2">6. Damage Liability</h4>
+                        <p>The renter is fully responsible for any damages to the vehicle that occur during the rental period.</p>
+                    </div>
+                    <div class="p-4 bg-teal-50 rounded-lg border-l-4 border-teal-400">
+                        <h4 class="font-semibold text-gray-800 mb-2">7. Identification Requirement</h4>
+                        <p>A valid government-issued identification document must be provided before vehicle pickup.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+                <button id="declineModal" type="button" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+                    Decline
+                </button>
+                <button id="acceptModal" type="button" type="button" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    Accept Terms
+                </button>
+            </div>
+        </div>
+    </div>
+    <button
+        type="submit"
+        id="customer_booking"
+        name="customer_booking"
+        class="w-full bg-orange-400 hover:bg-orange-500 text-white p-3 rounded-lg font-bold cursor-not-allowed opacity-50">
+        Book Now
+    </button>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php echo $booking_message; ?>

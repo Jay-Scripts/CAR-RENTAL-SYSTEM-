@@ -52,7 +52,9 @@ if (isset($_POST['customerLogin'])) {
             if ($user && password_verify($sanitized_password, $user['password'])) {
                 if ($user['role'] === 'customer') {
                     // Store first name in session
+                    $_SESSION['user_id'] = $user['user_id'];
                     $_SESSION['customer_name'] = $user['first_name'];
+
 
                     // ✅ SweetAlert + JS redirect
                     $login_message = "

@@ -2,6 +2,8 @@
 include "../../config/db.php";
 
 session_start();
+$userId = $_SESSION['user_id'] ?? null;
+
 
 if (!isset($_SESSION['customer_name'])) {
   header("Location: ../unRegistedUserModule/loginPage.php");
@@ -76,7 +78,26 @@ if (!isset($_SESSION['customer_name'])) {
       background-color: #f9fafb;
       transform: translateX(4px);
     }
+
+    .car-option {
+      transition: all 0.3s ease;
+    }
+
+    .car-option input[type="radio"] {
+      display: none;
+    }
+
+    .car-option input[type="radio"]:checked+.car-content {
+      background-color: gray;
+      color: white;
+      transform: scale(1.02);
+    }
+
+    .car-option input[type="radio"]:checked+.car-content .text-orange-500 {
+      color: #fbbf24 !important;
+    }
   </style>
+
   <title>Customer's Dashboard</title>
 </head>
 
@@ -299,138 +320,9 @@ if (!isset($_SESSION['customer_name'])) {
         <h2 class="text-2xl font-bold mb-2 text-gray-800">Book a Vehicle</h2>
         <p class="text-sm text-gray-500 mb-6">Complete the steps to reserve your vehicle.</p>
 
-        <form action="submitBooking.php" method="POST" class="w-fit mx-auto bg-white p-8 rounded-xl shadow space-y-6">
-
-          <h2 class="text-xl font-bold text-gray-800 mb-4">Book a Vehicle</h2>
-
-          <!-- Trip Details -->
-          <div>
-            <label class="block mb-2 text-sm font-medium text-gray-700">Trip Details</label>
-            <input type="text" name="tripDetails" class="w-full p-2.5 border rounded" required>
-          </div>
-
-          <!-- Dates & Times -->
-          <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-
-            <div id="date-range-picker" date-rangepicker class="flex items-center">
-              <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  <svg class="w-4 h-4 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                  </svg>
-                </div>
-                <input id="datepicker-range-start" name="start" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" required>
-              </div>
-              <span class="mx-4 text-black">to</span>
-              <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  <svg class="w-4 h-4 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                  </svg>
-                </div>
-                <input id="datepicker-range-end" name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" required>
-              </div>
-            </div>
-
-          </div>
-
-
-
-          <!-- Car Selection -->
-          <?php
-          include "../../includes/customerBookAVehicle.php";
-          ?>
-
-          <!-- Terms & Conditions -->
-          <div class="bg-white rounded-xl  p-6">
-
-            <div class="flex items-start space-x-3">
-              <button id="checkbox2" type="button" class="mt-1 w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center hover:border-blue-400 transition-colors">
-                <svg id="checkmark2" class="w-3 h-3 text-white hidden" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                </svg>
-              </button>
-              <div>
-                <p class="text-gray-700">
-                  I agree to the
-                  <button id="openModal" type="button" class="text-blue-600 hover:text-blue-800 underline font-medium hover:no-underline transition-all duration-200">
-                    Terms & Conditions
-                  </button>
-                  of this rental agreement.
-                </p>
-                <p class="text-xs text-gray-500 mt-1">Click to read the full terms and conditions</p>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-          <!-- Modal Overlay -->
-          <div id="modalOverlay" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
-              <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800">Terms & Conditions</h2>
-                <button id="closeModal" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
-              </div>
-              <div class="p-6 overflow-y-auto max-h-[60vh]">
-                <div class="space-y-4 text-sm text-gray-600">
-                  <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-                    <h4 class="font-semibold text-gray-800 mb-2">1. Package Inclusions</h4>
-                    <p>The rental package includes the vehicle, fuel, toll fees, and a professional driver for the duration of your booking.</p>
-                  </div>
-                  <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
-                    <h4 class="font-semibold text-gray-800 mb-2">2. Additional Hours</h4>
-                    <p>Any extra hours beyond the agreed rental period will incur additional fees according to our standard rate card.</p>
-                  </div>
-                  <div class="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
-                    <h4 class="font-semibold text-gray-800 mb-2">3. Payment Methods</h4>
-                    <p>We accept both cash payments and GCash digital transactions for your convenience and security.</p>
-                  </div>
-                  <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
-                    <h4 class="font-semibold text-gray-800 mb-2">4. No-Show Policy</h4>
-                    <p>Failure to show up within 3 hours of the scheduled pickup time will result in automatic cancellation of your reservation.</p>
-                  </div>
-                  <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
-                    <h4 class="font-semibold text-gray-800 mb-2">5. Cleaning Fees</h4>
-                    <p>A cleaning fee of PHP 500 will be charged if any mess or damage is caused by the client during the rental period.</p>
-                  </div>
-                  <div class="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
-                    <h4 class="font-semibold text-gray-800 mb-2">6. Damage Liability</h4>
-                    <p>The renter is fully responsible for any damages to the vehicle that occur during the rental period.</p>
-                  </div>
-                  <div class="p-4 bg-teal-50 rounded-lg border-l-4 border-teal-400">
-                    <h4 class="font-semibold text-gray-800 mb-2">7. Identification Requirement</h4>
-                    <p>A valid government-issued identification document must be provided before vehicle pickup.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
-                <button id="declineModal" type="button" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
-                  Decline
-                </button>
-                <button id="acceptModal" type="button" type="button" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                  Accept Terms
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            id="customer_booking"
-            name="customer_booking"
-            disabled
-            class="w-full bg-orange-400 hover:bg-orange-500 text-white p-3 rounded-lg font-bold cursor-not-allowed opacity-50">
-            Book Now
-          </button>
-
-        </form>
+        <?php
+        include "../../includes/customerBookAVehicleFormSubmit.php";
+        ?>
 
       </section>
 

@@ -1,11 +1,11 @@
 function showModule(moduleId) {
   const modules = [
-    "overview", // overview of accoung
+    "overview", // overview of account
     "bookAVehicle", // step by step booking
-    "myBookings", // ption to view details, cancel, or modify reservations
-    "payment", // for payment hist
-    "account", //Personal info, contact details, and preferences. Change password or PIN.
-    "help", // FAQs, contact support,
+    "myBookings", // option to view details, cancel, or modify reservations
+    "payment", // for payment history
+    "account", // personal info, contact details, and preferences
+    "help", // FAQs, contact support
   ];
 
   // hide all
@@ -15,10 +15,15 @@ function showModule(moduleId) {
 
   // show the selected one
   document.getElementById(moduleId).classList.remove("hidden");
+
+  // save last opened
+  localStorage.setItem("lastModule", moduleId);
 }
 
 window.addEventListener("load", () => {
-  showModule("overview");
+  // get saved module or default to overview
+  const lastModule = localStorage.getItem("lastModule") || "overview";
+  showModule(lastModule);
 });
 
 // click handler for nav items
