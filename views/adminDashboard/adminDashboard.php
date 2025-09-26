@@ -462,22 +462,9 @@ if (!isset($_SESSION['admin_name'])) {
     =================================================================================================================================================================================================================================================== 
     -->
       <section id="dashboard" class="bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Car Rental Dashboard</h2>
-        <p class="text-gray-600 mb-4">Overview of system activity</p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="bg-white p-4 rounded-lg shadow">
-            <p class="text-gray-500 text-sm">Active Reservations</p>
-            <p class="text-2xl font-bold">42</p>
-          </div>
-          <div class="bg-white p-4 rounded-lg shadow">
-            <p class="text-gray-500 text-sm">Vehicles Available</p>
-            <p class="text-2xl font-bold">15</p>
-          </div>
-          <div class="bg-white p-4 rounded-lg shadow">
-            <p class="text-gray-500 text-sm">Payments Today</p>
-            <p class="text-2xl font-bold">$3,280</p>
-          </div>
-        </div>
+        <?php
+        include "../../includes/adminDashboard.php"
+        ?>
       </section>
       <!-- 
     ===================================================================================================================================================================================================================================================
