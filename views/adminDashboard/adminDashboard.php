@@ -461,7 +461,7 @@ if (!isset($_SESSION['admin_name'])) {
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-      <section id="dashboard" class="bg-gray-500/20 rounded-lg shadow p-6">
+      <section id="dashboard" class="bg-gray-500/20 rounded-lg shadow p-6 animate-fadeSlide">
         <?php
         include "../../includes/adminDashboard.php"
         ?>
@@ -484,33 +484,9 @@ if (!isset($_SESSION['admin_name'])) {
       <section
         id="vehicleStatus"
         class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Vehicle Status</h2>
-        <table class="w-full text-sm text-left text-gray-600 mt-4">
-          <thead class="text-xs uppercase bg-gray-200">
-            <tr>
-              <th class="px-4 py-2">Car</th>
-              <th class="px-4 py-2">Status</th>
-              <th class="px-4 py-2">Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="px-4 py-2">Toyota Vios</td>
-              <td class="px-4 py-2 text-green-600">Available</td>
-              <td class="px-4 py-2">Garage A</td>
-            </tr>
-            <tr>
-              <td class="px-4 py-2">Honda Civic</td>
-              <td class="px-4 py-2 text-yellow-600">In Use</td>
-              <td class="px-4 py-2">Client #101</td>
-            </tr>
-            <tr>
-              <td class="px-4 py-2">Ford Ranger</td>
-              <td class="px-4 py-2 text-red-600">Maintenance</td>
-              <td class="px-4 py-2">Workshop</td>
-            </tr>
-          </tbody>
-        </table>
+        <?php
+        include "../../includes/adminVehicleStatus.php"
+        ?>
       </section>
       <!-- 
     ===================================================================================================================================================================================================================================================
