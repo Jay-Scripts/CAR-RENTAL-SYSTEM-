@@ -78,7 +78,7 @@
     class="flex flex-col justify-around h-[100vh] fade-in bg-[url('../../src/images/mainbg.jpg')] bg-cover bg-center w-full"
     style="animation-delay: 0.2s">
     <section
-      class="flex items-center justify-center mx-4 sm:mx-10 
+      class="flex  justify-center mx-4 sm:mx-10 
          max-h-screen sm:max-h-screen 
          overflow-y-auto p-4 m-7 rounded-lg w-full">
       <?php include "../../includes/customerRegistration.php" ?>

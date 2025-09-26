@@ -155,6 +155,8 @@ if (isset($_POST['customer_booking'])) {
         <input
             id="pickup_date"
             name="pickup_date"
+            autocomplete="off"
+            pattern="[0-9/]*"
             type="text"
             value="<?= htmlspecialchars($sanitized_pickup_date ?? '') ?>"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -164,6 +166,8 @@ if (isset($_POST['customer_booking'])) {
         <input
             id="dropoff_date"
             name="dropoff_date"
+            autocomplete="off"
+            pattern="[0-9/]*"
             type="text"
             value="<?= htmlspecialchars($sanitized_dropoff_date ?? '') ?>"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"

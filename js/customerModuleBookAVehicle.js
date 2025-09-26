@@ -79,3 +79,9 @@ modalOverlay.addEventListener("click", (e) => {
     modalOverlay.classList.remove("flex", "fade-in");
   }
 });
+
+document.querySelectorAll(".dateInput").forEach((input) => {
+  input.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9/]/g, ""); // allow only numbers and "/"
+  });
+});

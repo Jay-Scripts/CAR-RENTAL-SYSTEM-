@@ -209,7 +209,7 @@ if (isset($_POST['customerRegister'])) {
 
 
 <form method="POST"
-    class="max-w-md w-full mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup">
+    class="max-w-md w-fit h-fit mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-[#df927f] animate-popup">
     <h2 class="text-2xl font-bold text-[#df927f] mb-6 text-center">
         Create Your Account
     </h2>
