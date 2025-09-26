@@ -1,40 +1,52 @@
+<?php
+include "../../config/db.php";
+
+session_start();
+$userId = $_SESSION['user_id'] ?? null;
+
+
+if (!isset($_SESSION['admin_name'])) {
+  header("Location: ../unRegistedUserModule/loginPage.php");
+  exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../../css/styles.css" />
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="../../src/images/fav/systemLogo.ico"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&family=Yeseva+One&display=swap"
-      rel="stylesheet"
-    />
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&display=swap"
-      rel="stylesheet"
-    />
-    <title>Admin Dashboard</title>
-  </head>
-  <body class="[#f0f0f0] h-screen">
-    <!-- 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="../../src/images/fav/systemLogo.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&family=Yeseva+One&display=swap"
+    rel="stylesheet" />
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&display=swap"
+    rel="stylesheet" />
+  <title>Admin Dashboard</title>
+</head>
+
+<body class="[#f0f0f0] h-screen">
+  <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    LOGIN MODAL - STARTS HERE                                                                                                    =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-    <!-- Login Modal (default visible) -->
+  <!-- Login Modal (default visible) -->
 
-    <!-- <div
+  <!-- <div
       id="loginModal"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
     >
@@ -102,409 +114,372 @@
       </div>
     </div> -->
 
-    <!-- 
+  <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    LOGIN MODAL - ENDS HERE                                                                                                      =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-    <div class="flex items-center justify-start rtl:justify-end">
-      <button
-        data-drawer-target="logo-sidebar"
-        data-drawer-toggle="logo-sidebar"
-        aria-controls="logo-sidebar"
-        type="button"
-        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-      >
-        <span class="sr-only">Open sidebar</span>
-        <svg
-          class="w-6 h-6"
-          aria-hidden="true"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            clip-rule="evenodd"
-            fill-rule="evenodd"
-            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-          ></path>
-        </svg>
-      </button>
-    </div>
-    <aside
-      id="logo-sidebar"
-      class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-      aria-label="Sidebar"
-    >
-      <!-- 
+  <div class="flex items-center justify-start rtl:justify-end">
+    <button
+      data-drawer-target="logo-sidebar"
+      data-drawer-toggle="logo-sidebar"
+      aria-controls="logo-sidebar"
+      type="button"
+      class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+      <span class="sr-only">Open sidebar</span>
+      <svg
+        class="w-6 h-6"
+        aria-hidden="true"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          clip-rule="evenodd"
+          fill-rule="evenodd"
+          d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+      </svg>
+    </button>
+  </div>
+  <aside
+    id="logo-sidebar"
+    class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+    aria-label="Sidebar">
+    <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    SIDEBAR - STARTS HERE                                                                                                        =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-      <div class="w-64 bg-white text-black flex flex-col h-screen">
-        <img
-          class="animate-fadeSlide"
-          src="../../src/svg/systemLogo.jpg"
-          alt=""
-        />
-        <nav class="flex-1 p-4 space-y-2 border-t-2 border-[#986555]">
-          <!--
+    <div class="w-64 bg-white text-black flex flex-col h-screen">
+      <img
+        class="animate-fadeSlide"
+        src="../../src/svg/systemLogo.jpg"
+        alt="" />
+      <nav class="flex-1 p-4 space-y-2 border-t-2 border-[#986555]">
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             DASHBOARD NAVBAR - STARTS HERE                                                                                                      =
     =================================================================================================================================================================================================================================================== 
     -->
-          <a
-            href="#"
-            class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
-            data-module="dashboard"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3 12h7V3H3v9zM14 21h7v-9h-7v9zM14 3v6h7V3h-7zM3 21h7v-6H3v6z"
-              />
-            </svg>
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="dashboard">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 12h7V3H3v9zM14 21h7v-9h-7v9zM14 3v6h7V3h-7zM3 21h7v-6H3v6z" />
+          </svg>
 
-            Dashboard
-          </a>
-          <!--
+          Dashboard
+        </a>
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             DASHBOARD NAVBAR - ENDS HERE                                                                                                        =
     =================================================================================================================================================================================================================================================== 
     -->
 
-          <!--
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             VEHICLE STATUS NAVBAR - STARTS HERE                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-          <a
-            href="#"
-            class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
-            data-module="vehicleStatus"
-          >
-            <!-- Car Icon -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="w-7 h-7"
-            >
-              <path
-                d="M3 13h1l2-4h12l2 4h1a2 2 0 0 1 2 2v4H1v-4a2 2 0 0 1 2-2z"
-              />
-              <path d="M7 9l2-3h6l2 3" />
-              <path d="M7 13V9" />
-              <path d="M17 13V9" />
-              <circle cx="7" cy="17" r="2" fill="currentColor" />
-              <circle cx="17" cy="17" r="2" fill="currentColor" />
-            </svg>
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="vehicleStatus">
+          <!-- Car Icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-7 h-7">
+            <path
+              d="M3 13h1l2-4h12l2 4h1a2 2 0 0 1 2 2v4H1v-4a2 2 0 0 1 2-2z" />
+            <path d="M7 9l2-3h6l2 3" />
+            <path d="M7 13V9" />
+            <path d="M17 13V9" />
+            <circle cx="7" cy="17" r="2" fill="currentColor" />
+            <circle cx="17" cy="17" r="2" fill="currentColor" />
+          </svg>
 
-            Vehicle Status
-          </a>
-          <!--
+          Vehicle Status
+        </a>
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             VEHICLE STATUS NAVBAR - ENDS HERE                                                                                                   =
     =================================================================================================================================================================================================================================================== 
     -->
 
-          <!--
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             RESERVATIONS NAVBAR - STARTS HERE                                                                                                   =
     =================================================================================================================================================================================================================================================== 
     -->
-          <a
-            href="#"
-            class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
-            data-module="reservations"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              class="w-7 h-7"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <!-- Calendar frame -->
-              <rect x="3" y="4" width="18" height="16" rx="2" ry="2" />
-              <path d="M16 2v4M8 2v4" transform="translate(0,0)" />
-              <path d="M3 10h18" />
-              <circle cx="17" cy="14" r="3" />
-              <path d="M17 13v1.5l1 0.6" />
-            </svg>
-            Reservations
-          </a>
-          <!--
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="reservations">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <!-- Calendar frame -->
+            <rect x="3" y="4" width="18" height="16" rx="2" ry="2" />
+            <path d="M16 2v4M8 2v4" transform="translate(0,0)" />
+            <path d="M3 10h18" />
+            <circle cx="17" cy="14" r="3" />
+            <path d="M17 13v1.5l1 0.6" />
+          </svg>
+          Reservations
+        </a>
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             RESERVATIONS NAVBAR - ENDS HERE                                                                                                     =
     =================================================================================================================================================================================================================================================== 
     -->
 
-          <!--
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             PAYMENTS NAVBAR - STARTS HERE                                                                                                       =
     =================================================================================================================================================================================================================================================== 
     -->
-          <a
-            href="#"
-            class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
-            data-module="payments"
-          >
-            <!-- Credit Card Icon -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              class="w-7 h-7"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="2" y="5" width="20" height="14" rx="2" ry="2" />
-              <path d="M2 9h20" />
-              <path d="M6 15h2" />
-              <path d="M10 15h4" />
-            </svg>
-            Payments
-          </a>
-          <!--
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="payments">
+          <!-- Credit Card Icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2" ry="2" />
+            <path d="M2 9h20" />
+            <path d="M6 15h2" />
+            <path d="M10 15h4" />
+          </svg>
+          Payments
+        </a>
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             PAYMENTS NAVBAR - ENDS HERE                                                                                                         =
     =================================================================================================================================================================================================================================================== 
     -->
 
-          <!--
+        <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             VEHICLE INVENTORY NAVBAR - STARTS HERE                                                                                              =
     =================================================================================================================================================================================================================================================== 
     -->
-          <a
-            href="#"
-            class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
-            data-module="vehicleInventory"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              class="w-7 h-7"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="9" y="2" width="6" height="6" rx="1" ry="1" />
-              <path d="M9 5h6" />
-              <rect x="3" y="10" width="6" height="6" rx="1" ry="1" />
-              <path d="M3 13h6" />
-              <rect x="15" y="10" width="6" height="6" rx="1" ry="1" />
-              <path d="M15 13h6" />
-            </svg>
-            Vehicle Inventory
-          </a>
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="vehicleInventory">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="6" rx="1" ry="1" />
+            <path d="M9 5h6" />
+            <rect x="3" y="10" width="6" height="6" rx="1" ry="1" />
+            <path d="M3 13h6" />
+            <rect x="15" y="10" width="6" height="6" rx="1" ry="1" />
+            <path d="M15 13h6" />
+          </svg>
+          Vehicle Inventory
+        </a>
 
-          <a
-            href="#"
-            class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
-            data-module="reports"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              class="w-7 h-7"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <!-- Document outline -->
-              <path
-                d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"
-              />
-              <path d="M14 2v6h6" />
-              <line x1="9" y1="17" x2="9" y2="13" />
-              <line x1="12" y1="17" x2="12" y2="11" />
-              <line x1="15" y1="17" x2="15" y2="15" />
-            </svg>
-            Reports
-          </a>
-        </nav>
-        <!--
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="reports">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <!-- Document outline -->
+            <path
+              d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+            <path d="M14 2v6h6" />
+            <line x1="9" y1="17" x2="9" y2="13" />
+            <line x1="12" y1="17" x2="12" y2="11" />
+            <line x1="15" y1="17" x2="15" y2="15" />
+          </svg>
+          Reports
+        </a>
+      </nav>
+      <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             VEHICLE INVENTORY NAVBAR - ENDS HERE                                                                                                =
     =================================================================================================================================================================================================================================================== 
     -->
-      </div>
-      <!-- 
+    </div>
+    <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    SIDEBAR - ENDS HERE                                                                                                          =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
-    --></aside>
+    -->
+  </aside>
 
-    <div class="sm:ml-64">
-      <!-- 
+  <div class="sm:ml-64">
+    <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    MAIN CONTENT - STARTS HERE                                                                                                   =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-      <main class="flex-1 p-6 overflow-y-auto h-screen bg-[#f0f0f0]">
-        <!-- 
+    <main class="flex-1 p-6 overflow-y-auto h-screen bg-[#f0f0f0]">
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    HEADER - STARTS HERE                                                                                                         =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-        <header
-          class="animate-fadeSlide flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white shadow px-4 sm:px-6 py-4 rounded-lg mb-6"
-        >
-          <!-- Left: Title -->
-          <div class="mb-4 sm:mb-0">
-            <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
-              Car Rentals Dashboard
-            </h1>
-            <p class="text-xs sm:text-sm text-gray-500">
-              Manage vehicles, reservations, and reports
-            </p>
-          </div>
-          <div
-            class="flex items-center justify-between sm:justify-end space-x-4"
-          >
-            <!--
+      <header
+        class="animate-fadeSlide flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white shadow px-4 sm:px-6 py-4 rounded-lg mb-6">
+        <!-- Left: Title -->
+        <div class="mb-4 sm:mb-0">
+          <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
+            Car Rental Admin Dashboard
+          </h1>
+          <p class="text-xs sm:text-sm text-gray-500">
+            Monitor vehicles, track your reservations, and view payment status
+          </p>
+        </div>
+        <div
+          class="flex items-center justify-between sm:justify-end space-x-4">
+          <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                                    USER PROFILE                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-            <div class="flex items-center space-x-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                class="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <!-- User head -->
-                <circle cx="9" cy="7" r="4" />
-                <path d="M2 21v-2a4 4 0 0 1 4-4h6" />
-                <path
-                  d="M17 11l5 2v3a7 7 0 0 1-5 6.7A7 7 0 0 1 12 16v-3l5-2z"
-                />
-              </svg>
-              <div class="relative inline-block text-left">
-                <button
-                  id="userMenuBtn"
-                  class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                >
-                  <div class="text-left">
-                    <p class="font-medium text-gray-700">Admin User</p>
-                    <p class="text-gray-500 text-xs">Manager</p>
-                  </div>
-                  <svg
-                    class="w-4 h-4 text-gray-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <!--
+          <div class="flex items-center space-x-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <!-- User head -->
+              <circle cx="9" cy="7" r="4" />
+              <path d="M2 21v-2a4 4 0 0 1 4-4h6" />
+              <path
+                d="M17 11l5 2v3a7 7 0 0 1-5 6.7A7 7 0 0 1 12 16v-3l5-2z" />
+            </svg>
+            <div class="relative inline-block text-left">
+              <button
+                id="userMenuBtn"
+                class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md">
+                <div class="text-left">
+                  <p class="font-medium text-gray-700">
+                    <?php echo htmlspecialchars($_SESSION['admin_name']); ?>
+                  </p>
+                  <p class="text-gray-500 text-xs">Admin</p>
+                </div>
+                <svg
+                  class="w-4 h-4 text-gray-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                                    DROP DOWN                                                                                                                    =
     =================================================================================================================================================================================================================================================== 
     -->
-                <div
-                  id="userDropdown"
-                  class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg hidden"
-                >
-                  <a
-                    href="#profile"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Profile</a
-                  >
-                  <a
-                    href="#settings"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Settings</a
-                  >
-                  <div class="border-t border-gray-200"></div>
-                  <a
-                    href="#logout"
-                    class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                    >Logout</a
-                  >
-                </div>
+              <div
+                id="userDropdown"
+                class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg hidden">
+                <div class="border-t border-gray-200"></div>
+                <a
+                  href="../../includes/adminLogout.php"
+                  class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</a>
               </div>
             </div>
           </div>
-        </header>
-        <!-- 
+        </div>
+      </header>
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    HEADER - ENDS HERE                                                                                                     =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-        <!-- 
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    DASHBOARDS - STARTS HERE                                                                                                     =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-        <section id="dashboard" class="bg-gray-500/20 rounded-lg shadow p-6">
-          <h2 class="text-2xl font-bold mb-2">Car Rental Dashboard</h2>
-          <p class="text-gray-600 mb-4">Overview of system activity</p>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="bg-white p-4 rounded-lg shadow">
-              <p class="text-gray-500 text-sm">Active Reservations</p>
-              <p class="text-2xl font-bold">42</p>
-            </div>
-            <div class="bg-white p-4 rounded-lg shadow">
-              <p class="text-gray-500 text-sm">Vehicles Available</p>
-              <p class="text-2xl font-bold">15</p>
-            </div>
-            <div class="bg-white p-4 rounded-lg shadow">
-              <p class="text-gray-500 text-sm">Payments Today</p>
-              <p class="text-2xl font-bold">$3,280</p>
-            </div>
+      <section id="dashboard" class="bg-gray-500/20 rounded-lg shadow p-6">
+        <h2 class="text-2xl font-bold mb-2">Car Rental Dashboard</h2>
+        <p class="text-gray-600 mb-4">Overview of system activity</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded-lg shadow">
+            <p class="text-gray-500 text-sm">Active Reservations</p>
+            <p class="text-2xl font-bold">42</p>
           </div>
-        </section>
-        <!-- 
+          <div class="bg-white p-4 rounded-lg shadow">
+            <p class="text-gray-500 text-sm">Vehicles Available</p>
+            <p class="text-2xl font-bold">15</p>
+          </div>
+          <div class="bg-white p-4 rounded-lg shadow">
+            <p class="text-gray-500 text-sm">Payments Today</p>
+            <p class="text-2xl font-bold">$3,280</p>
+          </div>
+        </div>
+      </section>
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    DASHBOARDS - ENDS HERE                                                                                                       =
@@ -512,46 +487,45 @@
     =================================================================================================================================================================================================================================================== 
     -->
 
-        <!-- 
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    VEHICLE STATUS - STARTS HERE                                                                                                 =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-        <section
-          id="vehicleStatus"
-          class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6"
-        >
-          <h2 class="text-2xl font-bold mb-2">Vehicle Status</h2>
-          <table class="w-full text-sm text-left text-gray-600 mt-4">
-            <thead class="text-xs uppercase bg-gray-200">
-              <tr>
-                <th class="px-4 py-2">Car</th>
-                <th class="px-4 py-2">Status</th>
-                <th class="px-4 py-2">Location</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="px-4 py-2">Toyota Vios</td>
-                <td class="px-4 py-2 text-green-600">Available</td>
-                <td class="px-4 py-2">Garage A</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-2">Honda Civic</td>
-                <td class="px-4 py-2 text-yellow-600">In Use</td>
-                <td class="px-4 py-2">Client #101</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-2">Ford Ranger</td>
-                <td class="px-4 py-2 text-red-600">Maintenance</td>
-                <td class="px-4 py-2">Workshop</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <!-- 
+      <section
+        id="vehicleStatus"
+        class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
+        <h2 class="text-2xl font-bold mb-2">Vehicle Status</h2>
+        <table class="w-full text-sm text-left text-gray-600 mt-4">
+          <thead class="text-xs uppercase bg-gray-200">
+            <tr>
+              <th class="px-4 py-2">Car</th>
+              <th class="px-4 py-2">Status</th>
+              <th class="px-4 py-2">Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="px-4 py-2">Toyota Vios</td>
+              <td class="px-4 py-2 text-green-600">Available</td>
+              <td class="px-4 py-2">Garage A</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Honda Civic</td>
+              <td class="px-4 py-2 text-yellow-600">In Use</td>
+              <td class="px-4 py-2">Client #101</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Ford Ranger</td>
+              <td class="px-4 py-2 text-red-600">Maintenance</td>
+              <td class="px-4 py-2">Workshop</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    VEHICLE STATUS - ENDS HERE                                                                                                   =
@@ -559,34 +533,33 @@
     =================================================================================================================================================================================================================================================== 
     -->
 
-        <!-- 
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    RESERVATIONS - STARTS HERE                                                                                                   =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-        <section
-          id="reservations"
-          class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6"
-        >
-          <h2 class="text-2xl font-bold mb-2">Reservations</h2>
-          <ul class="mt-4 space-y-2">
-            <li class="bg-white p-3 rounded shadow flex justify-between">
-              <span>John Doe – Toyota Vios</span>
-              <span class="text-yellow-600">Pending</span>
-            </li>
-            <li class="bg-white p-3 rounded shadow flex justify-between">
-              <span>Jane Smith – Honda Civic</span>
-              <span class="text-green-600">Confirmed</span>
-            </li>
-            <li class="bg-white p-3 rounded shadow flex justify-between">
-              <span>Mark Lee – Ford Ranger</span>
-              <span class="text-red-600">Canceled</span>
-            </li>
-          </ul>
-        </section>
-        <!-- 
+      <section
+        id="reservations"
+        class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
+        <h2 class="text-2xl font-bold mb-2">Reservations</h2>
+        <ul class="mt-4 space-y-2">
+          <li class="bg-white p-3 rounded shadow flex justify-between">
+            <span>John Doe – Toyota Vios</span>
+            <span class="text-yellow-600">Pending</span>
+          </li>
+          <li class="bg-white p-3 rounded shadow flex justify-between">
+            <span>Jane Smith – Honda Civic</span>
+            <span class="text-green-600">Confirmed</span>
+          </li>
+          <li class="bg-white p-3 rounded shadow flex justify-between">
+            <span>Mark Lee – Ford Ranger</span>
+            <span class="text-red-600">Canceled</span>
+          </li>
+        </ul>
+      </section>
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    RESERVATIONS - ENDS HERE                                                                                                     =
@@ -594,50 +567,49 @@
     =================================================================================================================================================================================================================================================== 
     -->
 
-        <!-- 
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    PAYMENTS - STARTS HERE                                                                                                       =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-        <section
-          id="payments"
-          class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6"
-        >
-          <h2 class="text-2xl font-bold mb-2">Payments</h2>
-          <table class="w-full text-sm text-left text-gray-600 mt-4">
-            <thead class="text-xs uppercase bg-gray-200">
-              <tr>
-                <th class="px-4 py-2">Client</th>
-                <th class="px-4 py-2">Amount</th>
-                <th class="px-4 py-2">Method</th>
-                <th class="px-4 py-2">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="px-4 py-2">John Doe</td>
-                <td class="px-4 py-2">$200</td>
-                <td class="px-4 py-2">Credit Card</td>
-                <td class="px-4 py-2">2025-09-10</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-2">Jane Smith</td>
-                <td class="px-4 py-2">$350</td>
-                <td class="px-4 py-2">Cash</td>
-                <td class="px-4 py-2">2025-09-09</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-2">Mark Lee</td>
-                <td class="px-4 py-2">$150</td>
-                <td class="px-4 py-2">GCash</td>
-                <td class="px-4 py-2">2025-09-08</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <!-- 
+      <section
+        id="payments"
+        class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
+        <h2 class="text-2xl font-bold mb-2">Payments</h2>
+        <table class="w-full text-sm text-left text-gray-600 mt-4">
+          <thead class="text-xs uppercase bg-gray-200">
+            <tr>
+              <th class="px-4 py-2">Client</th>
+              <th class="px-4 py-2">Amount</th>
+              <th class="px-4 py-2">Method</th>
+              <th class="px-4 py-2">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="px-4 py-2">John Doe</td>
+              <td class="px-4 py-2">$200</td>
+              <td class="px-4 py-2">Credit Card</td>
+              <td class="px-4 py-2">2025-09-10</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Jane Smith</td>
+              <td class="px-4 py-2">$350</td>
+              <td class="px-4 py-2">Cash</td>
+              <td class="px-4 py-2">2025-09-09</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Mark Lee</td>
+              <td class="px-4 py-2">$150</td>
+              <td class="px-4 py-2">GCash</td>
+              <td class="px-4 py-2">2025-09-08</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    PAYMENTS - ENDS HERE                                                                                                         =
@@ -645,34 +617,33 @@
     =================================================================================================================================================================================================================================================== 
     -->
 
-        <!-- 
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    VEHICLE INVENTORY - STARTS HERE                                                                                              =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-        <section
-          id="vehicleInventory"
-          class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6"
-        >
-          <h2 class="text-2xl font-bold mb-2">Vehicle Inventory</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-            <div class="bg-white p-4 rounded shadow">
-              <p class="font-semibold">Toyota Vios</p>
-              <p class="text-sm text-gray-500">4 units available</p>
-            </div>
-            <div class="bg-white p-4 rounded shadow">
-              <p class="font-semibold">Honda Civic</p>
-              <p class="text-sm text-gray-500">2 units available</p>
-            </div>
-            <div class="bg-white p-4 rounded shadow">
-              <p class="font-semibold">Ford Ranger</p>
-              <p class="text-sm text-gray-500">1 unit available</p>
-            </div>
+      <section
+        id="vehicleInventory"
+        class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
+        <h2 class="text-2xl font-bold mb-2">Vehicle Inventory</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Toyota Vios</p>
+            <p class="text-sm text-gray-500">4 units available</p>
           </div>
-        </section>
-        <!-- 
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Honda Civic</p>
+            <p class="text-sm text-gray-500">2 units available</p>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Ford Ranger</p>
+            <p class="text-sm text-gray-500">1 unit available</p>
+          </div>
+        </div>
+      </section>
+      <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    VEHICLE INVENTORY - ENDS HERE                                                                                                =
@@ -680,37 +651,36 @@
     =================================================================================================================================================================================================================================================== 
     -->
 
-        <!--
+      <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    REPORTS - STARTS HERE                                                                                                        =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-        <section
-          id="reports"
-          class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6"
-        >
-          <h2 class="text-2xl font-bold mb-2">Reports</h2>
-          <div class="mt-4">
-            <p class="font-semibold">Monthly Summary</p>
-            <ul class="list-disc list-inside text-gray-600 mt-2">
-              <li>Total Reservations: 120</li>
-              <li>Total Revenue: $12,500</li>
-              <li>Top Car: Toyota Vios (50 rentals)</li>
-            </ul>
-          </div>
-        </section>
-        <!--
+      <section
+        id="reports"
+        class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
+        <h2 class="text-2xl font-bold mb-2">Reports</h2>
+        <div class="mt-4">
+          <p class="font-semibold">Monthly Summary</p>
+          <ul class="list-disc list-inside text-gray-600 mt-2">
+            <li>Total Reservations: 120</li>
+            <li>Total Revenue: $12,500</li>
+            <li>Top Car: Toyota Vios (50 rentals)</li>
+          </ul>
+        </div>
+      </section>
+      <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    REPORTS - ENDS HERE                                                                                                          =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-      </main>
+    </main>
 
-      <!--
+    <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    MAIN CONTENTS - ENDS HERE                                                                                                    =
@@ -718,23 +688,25 @@
     =================================================================================================================================================================================================================================================== 
     -->
 
-      <!--
+    <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    JAVASCRIPT LINKS STARTS HERE                                                                                                 =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
-    --></div>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-    <script src="../../js/adminModules.js"></script>
-    <script src="../../js/adminDropdownLogout.js"></script>
+    -->
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+  <script src="../../js/adminModules.js"></script>
+  <script src="../../js/adminDropdownLogout.js"></script>
 
-    <!--
+  <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
     =                                                                                                                    JAVASCRIPT LINKS ENDS HERE                                                                                                   =
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-  </body>
+</body>
+
 </html>
