@@ -94,6 +94,15 @@ if (isset($_POST['customer_booking'])) {
                 ':trip_details' => $sanitized_trip_details
             ]);
 
+            $updateStatementCarStatus = "UPDATE CAR_DETAILS
+                                        SET STATUS = 'RESERVED'
+                                        WHERE car_id = :car_id;";
+            $stmt = $conn->prepare($updateStatementCarStatus);
+            $stmt->execute(
+                [
+                    ':car_id'       => $sanitized_car_id,
+                ]
+            );
             $conn->commit();
 
             $booking_message = "
