@@ -343,8 +343,9 @@ if (!isset($_SESSION['customer_name'])) {
       <section
         id="payment"
         class="hidden bg-gray-100 p-6 rounded-lg shadow mt-6">
-        <h2 class="text-2xl font-bold mb-2">Payment</h2>
-        <p>View payment history and status.</p>
+        <?php
+        include "../../includes/customerPayment.php";
+        ?>
 
       </section>
 
