@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Generate new filename
     $newFileName = "receipt_" . $booking_id . "_" . time() . "." . $fileExt;
-    $uploadDir   = __DIR__ . "/../../src/images/e-receiptsFolder/"; // safer absolute path
+    $uploadDir   = __DIR__ . "/../src/images/e-receiptsFolder/"; // safer absolute path
     $uploadPath  = $uploadDir . $newFileName;
 
     if (!is_dir($uploadDir)) {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (move_uploaded_file($fileTmp, $uploadPath)) {
         // Store relative path (for frontend use)
-        $receiptPath = "src/images/e-receiptsFolder/" . $newFileName;
+        $receiptPath = "../src/images/e-receiptsFolder/" . $newFileName;
 
         try {
             $conn->beginTransaction();

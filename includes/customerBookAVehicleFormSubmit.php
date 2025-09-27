@@ -174,7 +174,16 @@ if (isset($_POST['confirm_booking'])) {
 
         $conn->commit();
 
-        $booking_message = "<script>Swal.fire({icon:'success',title:'Booking successful!',text:'Go to payment module to secure your slot within the day.'});</script>";
+        $booking_message = "<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Booking successful!',
+    text: 'Go to payment module to secure your slot within the day.'
+}).then(() => {
+    // Redirect to current page once
+    window.location.href = window.location.pathname;
+});
+</script>";
     } catch (Exception $e) {
         $conn->rollBack();
         $booking_message = "<script>Swal.fire({icon:'error',title:'Transaction failed',text:'" . addslashes($e->getMessage()) . "'});</script>";
