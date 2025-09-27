@@ -35,7 +35,7 @@ $total_income = $conn->query($sql_income)->fetchColumn();
 <!-- KPI Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
     <!-- Active Reservations -->
-    <div class="bg-white rounded-xl shadow-md p-5 flex flex-col justify-between hover:shadow-lg transition border-l-4 border-[#df927f]">
+    <div class="car-content bg-white rounded-xl shadow-md p-5 flex flex-col justify-between hover:shadow-lg transition border-l-4 border-[#df927f]">
         <div class="flex items-center space-x-3">
             <!-- Calendar Icon -->
             <svg class="w-8 h-8 text-[#df927f]" fill="none" stroke="currentColor" stroke-width="2"
@@ -53,7 +53,7 @@ $total_income = $conn->query($sql_income)->fetchColumn();
 
 
     <!-- Vehicles Available -->
-    <div class="bg-white rounded-xl shadow-md p-5 flex flex-col justify-between hover:shadow-lg transition border-l-4 border-green-600">
+    <div class="car-content bg-white rounded-xl shadow-md p-5 flex flex-col justify-between hover:shadow-lg transition border-l-4 border-green-600">
         <div class="flex items-center space-x-3">
             <!-- Car Icon -->
             <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
@@ -71,7 +71,7 @@ $total_income = $conn->query($sql_income)->fetchColumn();
 
 
     <!-- Payments This Month -->
-    <div class="bg-white rounded-xl shadow-md p-5 flex flex-col justify-between hover:shadow-lg transition border-l-4 border-blue-600">
+    <div class="car-content bg-white rounded-xl shadow-md p-5 flex flex-col justify-between hover:shadow-lg transition border-l-4 border-blue-600">
         <div class="flex items-center space-x-3">
             <!-- Wallet Icon -->
             <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
@@ -92,17 +92,17 @@ $total_income = $conn->query($sql_income)->fetchColumn();
 
 <!-- Charts Section -->
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-    <div class="bg-white p-4 rounded-lg shadow col-span-2">
+    <div class="car-content bg-white p-4 rounded-lg shadow col-span-2">
         <h3 class="text-lg font-semibold mb-2">Reservation Trends</h3>
         <canvas id="reservationChart" height="150"></canvas>
     </div>
 
-    <div class="bg-white p-4 rounded-lg shadow col-span-2">
+    <div class="car-content bg-white p-4 rounded-lg shadow col-span-2">
         <h3 class="text-lg font-semibold mb-2">Top Rented Cars</h3>
         <canvas id="topCarsChart" height="150"></canvas>
     </div>
 
-    <div class="bg-white p-4 rounded-lg shadow col-span-2">
+    <div class="car-content bg-white p-4 rounded-lg shadow col-span-2">
         <h3 class="text-lg font-semibold mb-2">Total Income by Car</h3>
         <canvas id="incomePieChart" height="130"></canvas>
     </div>

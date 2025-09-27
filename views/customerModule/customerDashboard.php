@@ -33,6 +33,7 @@ if (!isset($_SESSION['customer_name'])) {
   <link
     href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&display=swap"
     rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -351,21 +352,9 @@ if (!isset($_SESSION['customer_name'])) {
       <section
         id="account"
         class="hidden bg-gray-100 p-6 rounded-lg shadow mt-6">
-        <h2 class="text-2xl font-bold mb-2">Account</h2>
-        <p>
-          Personal info, contact details, preferences, and change
-          password/PIN.
-        </p>
-        <div class="mt-4 space-y-2 bg-white rounded shadow p-4">
-          <p><span class="font-semibold">Name:</span> Juan Dela Cruz</p>
-          <p>
-            <span class="font-semibold">Email:</span> juan.delacruz@email.com
-          </p>
-          <p><span class="font-semibold">Phone:</span> +63 912 345 6789</p>
-          <p>
-            <span class="font-semibold">Preferred Vehicle Type:</span> Sedan
-          </p>
-        </div>
+        <?php
+        include "../../includes/customerAccount.php";
+        ?>
       </section>
 
       <!-- Help -->
@@ -407,7 +396,6 @@ if (!isset($_SESSION['customer_name'])) {
     -->
   </div>
   <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-  <script src="../../js/customerModules.js"></script>
   <script src="../../js/customerModules.js"></script>
   <script src="../../js/adminDropdownLogout.js"></script>
   <script src="../../js/customerModuleBookAVehicle.js"></script>

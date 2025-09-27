@@ -17,8 +17,8 @@ if (!isset($_SESSION['admin_name'])) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <link
     rel="icon"
     type="image/x-icon"
@@ -35,6 +35,52 @@ if (!isset($_SESSION['admin_name'])) {
     rel="stylesheet" />
   <title>Admin Dashboard</title>
 </head>
+<style>
+  @keyframes fadeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .car-content {
+    opacity: 0;
+    animation: fadeSlideUp 0.6s ease forwards;
+  }
+
+  .car-content:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .car-content:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .car-content:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .car-content:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  .car-content:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  .car-content:nth-child(6) {
+    animation-delay: 0.6s;
+  }
+
+  .car-content:nth-child(7) {
+    animation-delay: 0.8s;
+  }
+</style>
 
 <body class="[#f0f0f0] h-screen">
   <!-- 

@@ -1,7 +1,6 @@
 <?php
 include "../../config/db.php";
 
-// setting notification variables to inform the customers
 $booking_input_message = [
     "car_id" => "",
     "pickup_date" => "",
@@ -9,42 +8,39 @@ $booking_input_message = [
     "trip_details" => "",
 ];
 
-// setting the var value as null as default to avoid error when asign as values in input fields
-$booking_message =
-    $sanitized_car_id =
+$sanitized_car_id =
     $sanitized_pickup_date =
-    $sanitized_dropff_date =
-    $sanitized_trip_details = "";
+    $sanitized_dropoff_date =
+    $sanitized_trip_details =
+    $summary_preview =
+    $booking_message = "";
 
-// Helper: Convert text date into MySQL format
+// Convert text date into MySQL format
 function normalizeDate($dateInput)
 {
-    $formats = ['Y-m-d', 'm/d/Y', 'd-m-Y', 'd/m/Y']; // accepted input formats
+    $formats = ['Y-m-d', 'm/d/Y', 'd-m-Y', 'd/m/Y'];
     foreach ($formats as $format) {
         $d = DateTime::createFromFormat($format, $dateInput);
         if ($d && $d->format($format) === $dateInput) {
-            return $d->format('Y-m-d'); // MySQL format
+            return $d->format('Y-m-d');
         }
     }
-    return null; // invalid date
+    return null;
 }
 
-// If form submitted
-if (isset($_POST['customer_booking'])) {
-
-    // 1. Trim
+// STEP 1: User clicked "Book Now"
+if (isset($_POST['customer_booking']) && !isset($_POST['confirm_booking'])) {
     $car_id       = trim($_POST['car_id'] ?? '');
     $pickup_date  = trim($_POST['pickup_date'] ?? '');
     $dropoff_date = trim($_POST['dropoff_date'] ?? '');
-    $trip_details = trim($_POST['tripDetails'] ?? '');
+    $trip_details = trim($_POST['trip_details'] ?? '');
 
-    // 2. Sanitize + Normalize
     $sanitized_car_id       = filter_var($car_id, FILTER_SANITIZE_NUMBER_INT);
     $sanitized_pickup_date  = normalizeDate($pickup_date);
     $sanitized_dropoff_date = normalizeDate($dropoff_date);
     $sanitized_trip_details = htmlspecialchars($trip_details, ENT_QUOTES, 'UTF-8');
 
-    // 3. Validation
+    // Validation
     if (empty($sanitized_trip_details)) {
         $booking_input_message['trip_details'] = "<p class='text-red-500 text-sm'>Please fill this field.</p>";
     }
@@ -56,81 +52,137 @@ if (isset($_POST['customer_booking'])) {
     }
     if (empty($sanitized_dropoff_date)) {
         $booking_input_message['dropoff_date'] = "<p class='text-red-500 text-sm'>Drop-off date is required.</p>";
-    } elseif (!empty($sanitized_pickup_date) && $sanitized_dropoff_date < $sanitized_pickup_date) {
+    } elseif (!empty($sanitized_pickup_date) && strtotime($sanitized_dropoff_date) < strtotime($sanitized_pickup_date)) {
         $booking_input_message['dropoff_date'] = "<p class='text-red-500 text-sm'>Drop-off date cannot be earlier than pickup date.</p>";
     }
 
-    // 4. Check for errors
-    $hasErrorsBooking = false;
-    foreach ($booking_input_message as $msg) {
-        if (!empty($msg)) {
-            $hasErrorsBooking = true;
-            $booking_message = "
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Forgotten input fields',
-                    text: 'Please correct the highlighted fields.',
-                });
-            </script>";
-        }
-    }
+    $hasErrorsBooking = array_filter($booking_input_message);
 
-    // Insert into DB
     if (!$hasErrorsBooking) {
         try {
-            $conn->beginTransaction();
+            $pickup  = new DateTime($sanitized_pickup_date);
+            $dropoff = new DateTime($sanitized_dropoff_date);
+            $interval = $pickup->diff($dropoff);
 
-            $insertStatementBookingDetails = "INSERT INTO CUSTOMER_BOOKING_DETAILS 
-                (USER_ID, CAR_ID, PICKUP_DATE, DROP_OFF_DATE, TRIP_DETAILS, STATUS)
-                VALUES (:user_id, :car_id, :pickup_date, :dropoff_date, :trip_details, 'PENDING')";
+            $total_days = $interval->days ?: 1;
 
-            $stmt = $conn->prepare($insertStatementBookingDetails);
-            $stmt->execute([
-                ':user_id'      => $_SESSION['user_id'],
-                ':car_id'       => $sanitized_car_id,
-                ':pickup_date'  => $sanitized_pickup_date,
-                ':dropoff_date' => $sanitized_dropoff_date,
-                ':trip_details' => $sanitized_trip_details
-            ]);
+            // Fetch car details
+            $stmt = $conn->prepare("SELECT CAR_NAME, COLOR, CAPACITY, PRICE, THUMBNAIL_PATH 
+                                    FROM CAR_DETAILS WHERE CAR_ID = :car_id LIMIT 1");
+            $stmt->execute([':car_id' => $sanitized_car_id]);
+            $carRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $updateStatementCarStatus = "UPDATE CAR_DETAILS
-                                        SET STATUS = 'RESERVED'
-                                        WHERE car_id = :car_id;";
-            $stmt = $conn->prepare($updateStatementCarStatus);
-            $stmt->execute(
-                [
-                    ':car_id'       => $sanitized_car_id,
-                ]
-            );
-            $conn->commit();
+            if (!$carRow) throw new Exception("Car not found.");
 
-            $booking_message = "
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Booking successful!',
-                    text: 'Go to payment module to secure your slot.',
-                    showConfirmButton: false,
-                    timer: 5000
-                });
-            </script>";
-        } catch (PDOException $e) {
-            $conn->rollBack();
-            $booking_message = "Database error: " . $e->getMessage();
+            $car_price  = (float)$carRow['PRICE'];
+            $total_cost = $total_days * $car_price;
+
+            // STEP 2: Show confirmation modal
+            $summary_preview = "
+<script>
+Swal.fire({
+  title: 'Confirm Your Reservation',
+  html: `
+    <div style='text-align:left; font-family:Arial; line-height:1.5;'>
+      <div style='margin-bottom:15px;'>
+        <img src=\"{$carRow['THUMBNAIL_PATH']}\" style='max-width:250px; height:auto; border-radius:8px;'>
+        <h3 style='margin:10px 0 5px; font-size:16px;'>Car Model : {$carRow['CAR_NAME']}</h3>
+        <p style='margin:0; font-size:14px; color:#444;'>
+         • Color: {$carRow['COLOR']} <br> • Capacity: {$carRow['CAPACITY']} Passengers
+        </p>
+      </div>
+      <p><b>Pick-up:</b> {$sanitized_pickup_date}</p>
+      <p><b>Drop-off:</b> {$sanitized_dropoff_date}</p>
+      <table style='width:100%; border-collapse:collapse; font-size:14px;'>
+        <tr><td>Cost of vehicle</td><td style='text-align:right;'>₱ " . number_format($car_price, 2) . "</td></tr>
+        <tr><td>Number of days</td><td style='text-align:right;'>{$total_days}</td></tr>
+        <br>
+        <tr style='font-weight:bold; border-top:1px solid #ccc;'>
+          <td>Total Cost</td><td style='text-align:right;'>₱ " . number_format($total_cost, 2) . "</td></tr>
+      </table>
+    </div>
+  `,
+  width: 600,
+  showCancelButton: true,
+  confirmButtonText: 'Confirm Booking',
+  cancelButtonText: 'Cancel'
+}).then((result) => {
+  if (result.isConfirmed) {
+    // Submit the form again with hidden confirm_booking
+    let form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '';
+    form.innerHTML = `
+      <input type='hidden' name='confirm_booking' value='1'>
+      <input type='hidden' name='car_id' value='{$sanitized_car_id}'>
+      <input type='hidden' name='pickup_date' value='{$sanitized_pickup_date}'>
+      <input type='hidden' name='dropoff_date' value='{$sanitized_dropoff_date}'>
+      <input type='hidden' name='trip_details' value='{$sanitized_trip_details}'>
+    `;
+    document.body.appendChild(form);
+    form.submit();
+  }
+});
+</script>";
+        } catch (Exception $e) {
+            $booking_message = "<script>Swal.fire({icon:'error',title:'System error',text:'" . addslashes($e->getMessage()) . "'});</script>";
         }
     } else {
-        $booking_message = "
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Forgotten input fields',
-                text: 'Please correct the highlighted fields.',
-            });
-        </script>";
+        $booking_message = "<script>Swal.fire({icon:'error',title:'Forgotten input fields',text:'Please correct the highlighted fields.'});</script>";
+    }
+}
+
+// STEP 3: User confirmed → commit transaction
+if (isset($_POST['confirm_booking'])) {
+    try {
+        $conn->beginTransaction();
+
+        $car_id       = $_POST['car_id'];
+        $pickup_date  = $_POST['pickup_date'];
+        $dropoff_date = $_POST['dropoff_date'];
+        $trip_details = $_POST['trip_details'];
+
+        // Recalculate cost for safety
+        $stmt = $conn->prepare("SELECT PRICE FROM CAR_DETAILS WHERE CAR_ID = :car_id LIMIT 1");
+        $stmt->execute([':car_id' => $car_id]);
+        $carRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$carRow) throw new Exception("Car not found.");
+
+        $pickup  = new DateTime($pickup_date);
+        $dropoff = new DateTime($dropoff_date);
+        $interval = $pickup->diff($dropoff);
+        $total_days = $interval->days ?: 1;
+        $total_cost = $total_days * (float)$carRow['PRICE'];
+
+        // Insert booking
+        $stmt = $conn->prepare("INSERT INTO CUSTOMER_BOOKING_DETAILS 
+            (USER_ID, CAR_ID, PICKUP_DATE, DROP_OFF_DATE, TRIP_DETAILS, STATUS, TOTAL_COST)
+            VALUES (:user_id, :car_id, :pickup_date, :dropoff_date, :trip_details, 'PENDING', :total_cost)");
+        $stmt->execute([
+            ':user_id'      => $_SESSION['user_id'],
+            ':car_id'       => $car_id,
+            ':pickup_date'  => $pickup_date,
+            ':dropoff_date' => $dropoff_date,
+            ':trip_details' => $trip_details,
+            ':total_cost'   => $total_cost
+        ]);
+
+        // Update car status
+        $stmt = $conn->prepare("UPDATE CAR_DETAILS SET STATUS = 'RESERVED' WHERE CAR_ID = :car_id");
+        $stmt->execute([':car_id' => $car_id]);
+
+        $conn->commit();
+
+        $booking_message = "<script>Swal.fire({icon:'success',title:'Booking successful!',text:'Go to payment module to secure your slot within the day.'});</script>";
+    } catch (Exception $e) {
+        $conn->rollBack();
+        $booking_message = "<script>Swal.fire({icon:'error',title:'Transaction failed',text:'" . addslashes($e->getMessage()) . "'});</script>";
     }
 }
 ?>
+
+
 
 <form method="POST" class="w-fit mx-auto bg-white p-8 rounded-xl shadow space-y-6">
 
@@ -142,7 +194,7 @@ if (isset($_POST['customer_booking'])) {
         <input
             value="<?php echo $sanitized_trip_details; ?>"
             type="text"
-            name="tripDetails"
+            name="trip_details"
             class="w-full p-2.5 border rounded">
         <?php
         echo $booking_input_message['trip_details'];
@@ -159,7 +211,7 @@ if (isset($_POST['customer_booking'])) {
             pattern="[0-9/]*"
             type="text"
             value="<?= htmlspecialchars($sanitized_pickup_date ?? '') ?>"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dateInput"
             placeholder="Select pickup date">
         <span class="mx-4 text-black">to</span>
         <!-- Dropoff -->
@@ -170,14 +222,17 @@ if (isset($_POST['customer_booking'])) {
             pattern="[0-9/]*"
             type="text"
             value="<?= htmlspecialchars($sanitized_dropoff_date ?? '') ?>"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dateInput"
             placeholder="Select drop-off date">
 
-        <?= $booking_input_message['pickup_date'] ?? '' ?>
-        <?= $booking_input_message['dropoff_date'] ?? '' ?>
+
     </div>
-
-
+    <p>
+        <?= $booking_input_message['pickup_date'] ?? '' ?>
+    </p>
+    <p>
+        <?= $booking_input_message['dropoff_date'] ?? '' ?>
+    </p>
 
     <!-- Car Selection -->
 
@@ -188,7 +243,6 @@ if (isset($_POST['customer_booking'])) {
             $stmt = $conn->prepare("SELECT * FROM CAR_DETAILS WHERE STATUS = 'AVAILABLE'");
             $stmt->execute();
             $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo $booking_input_message['car_id'];
             foreach ($cars as $car):
             ?>
                 <label class="car-option cursor-pointer">
@@ -204,7 +258,12 @@ if (isset($_POST['customer_booking'])) {
             <?php endforeach; ?>
         </div>
     </div>
+    <p>
+        <?php
+        echo $booking_input_message['car_id'];
 
+        ?>
+    </p>
     <!-- Terms & Conditions -->
     <div class="bg-white rounded-xl  p-6">
 
@@ -278,7 +337,7 @@ if (isset($_POST['customer_booking'])) {
                 <button id="declineModal" type="button" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
                     Decline
                 </button>
-                <button id="acceptModal" type="button" type="button" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <button id="acceptModal" type="button" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                     Accept Terms
                 </button>
             </div>
@@ -293,4 +352,5 @@ if (isset($_POST['customer_booking'])) {
     </button>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php echo $summary_preview; ?>
 <?php echo $booking_message; ?>
