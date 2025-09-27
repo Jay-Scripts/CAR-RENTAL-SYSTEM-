@@ -6,7 +6,7 @@ $userId = $_SESSION['user_id'] ?? null;
 
 
 if (!isset($_SESSION['admin_name'])) {
-  header("Location: ../unRegistedUserModule/loginPage.php");
+  header("Location: ../adminDashboard/adminLoginPage.php");
   exit;
 }
 ?>
@@ -24,6 +24,7 @@ if (!isset($_SESSION['admin_name'])) {
     type="image/x-icon"
     href="../../src/images/fav/systemLogo.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Sarina&family=Shrikhand&family=Yeseva+One&display=swap"
@@ -552,21 +553,9 @@ if (!isset($_SESSION['admin_name'])) {
       <section
         id="reservations"
         class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Reservations</h2>
-        <ul class="mt-4 space-y-2">
-          <li class="bg-white p-3 rounded shadow flex justify-between">
-            <span>John Doe – Toyota Vios</span>
-            <span class="text-yellow-600">Pending</span>
-          </li>
-          <li class="bg-white p-3 rounded shadow flex justify-between">
-            <span>Jane Smith – Honda Civic</span>
-            <span class="text-green-600">Confirmed</span>
-          </li>
-          <li class="bg-white p-3 rounded shadow flex justify-between">
-            <span>Mark Lee – Ford Ranger</span>
-            <span class="text-red-600">Canceled</span>
-          </li>
-        </ul>
+        <?php
+        include "../../includes/adminReservation.php"
+        ?>
       </section>
       <!-- 
     ===================================================================================================================================================================================================================================================

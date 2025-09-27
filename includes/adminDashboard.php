@@ -108,8 +108,6 @@ $total_income = $conn->query($sql_income)->fetchColumn();
     </div>
 </div>
 
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     // Example Data (replace with PHP echo from DB later)

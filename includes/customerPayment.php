@@ -1,5 +1,6 @@
 <?php
 
+
 try {
     $sql = "
         SELECT 
@@ -17,10 +18,12 @@ try {
         FROM CUSTOMER_BOOKING_DETAILS b
         INNER JOIN CAR_DETAILS c ON b.CAR_ID = c.CAR_ID
         INNER JOIN USER_DETAILS u ON b.USER_ID = u.USER_ID
-        WHERE b.STATUS = 'PENDING'
+        WHERE b.STATUS = 'PENDING' AND b.USER_ID = :userId
         ORDER BY b.CREATED_AT DESC
     ";
+
     $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
     $stmt->execute();
     $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -63,11 +66,17 @@ try {
                     <span class="px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
                         <?= htmlspecialchars($booking['STATUS']) ?>
                     </span>
-                    <button
-                        onclick="openPaymentModal(<?= $booking['BOOKING_ID'] ?>, <?= $booking['TOTAL_COST'] ?>)"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-                        Pay Now
-                    </button>
+                    <div id="btn_container" class="gap-3">
+                        <button
+                            onclick="openPaymentModal(<?= $booking['BOOKING_ID'] ?>, <?= $booking['TOTAL_COST'] ?>)"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                            Pay Now
+                        </button> <button
+                            onclick="cancelBooking(<?= $booking['BOOKING_ID'] ?>)"
+                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -107,6 +116,46 @@ try {
 <script>
     let currentBookingId = null;
     let currentAmount = null;
+
+    function cancelBooking(bookingId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to cancel this booking?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('../../includes/customerPaymentCancel.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'booking_id=' + bookingId
+                    })
+                    .then(res => res.text())
+                    .then(data => {
+                        if (data.trim() === 'success') {
+                            Swal.fire(
+                                'Cancelled!',
+                                'Your booking has been cancelled.',
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire('Error', data, 'error');
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire('Server Error', err, 'error');
+                    });
+            }
+        })
+    }
+
 
     function openPaymentModal(bookingId, amount) {
         currentBookingId = bookingId;

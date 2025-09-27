@@ -8,17 +8,22 @@ function showModule(moduleId) {
     "reports",
   ];
 
-  // hide all
+  // hide all modules
   modules.forEach((module) => {
     document.getElementById(module).classList.add("hidden");
   });
 
-  // show the selected one
+  // show the selected module
   document.getElementById(moduleId).classList.remove("hidden");
+
+  // remember last module
+  localStorage.setItem("lastModule", moduleId);
 }
 
+// on page load
 window.addEventListener("load", () => {
-  showModule("dashboard");
+  const lastModule = localStorage.getItem("lastModule") || "dashboard";
+  showModule(lastModule);
 });
 
 // click handler for nav items
