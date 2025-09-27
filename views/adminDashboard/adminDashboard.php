@@ -575,37 +575,9 @@ if (!isset($_SESSION['admin_name'])) {
       <section
         id="payments"
         class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Payments</h2>
-        <table class="w-full text-sm text-left text-gray-600 mt-4">
-          <thead class="text-xs uppercase bg-gray-200">
-            <tr>
-              <th class="px-4 py-2">Client</th>
-              <th class="px-4 py-2">Amount</th>
-              <th class="px-4 py-2">Method</th>
-              <th class="px-4 py-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="px-4 py-2">John Doe</td>
-              <td class="px-4 py-2">$200</td>
-              <td class="px-4 py-2">Credit Card</td>
-              <td class="px-4 py-2">2025-09-10</td>
-            </tr>
-            <tr>
-              <td class="px-4 py-2">Jane Smith</td>
-              <td class="px-4 py-2">$350</td>
-              <td class="px-4 py-2">Cash</td>
-              <td class="px-4 py-2">2025-09-09</td>
-            </tr>
-            <tr>
-              <td class="px-4 py-2">Mark Lee</td>
-              <td class="px-4 py-2">$150</td>
-              <td class="px-4 py-2">GCash</td>
-              <td class="px-4 py-2">2025-09-08</td>
-            </tr>
-          </tbody>
-        </table>
+        <?php
+        include "../../includes/adminPayments.php"
+        ?>
       </section>
       <!-- 
     ===================================================================================================================================================================================================================================================
