@@ -5,6 +5,7 @@ function showModule(moduleId) {
     "vehicleInspection",
     "payments",
     "turnoverVehicle",
+    "reports",
   ];
 
   // hide all

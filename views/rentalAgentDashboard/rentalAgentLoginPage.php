@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
+  <title>Rental Agent Login</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link
     href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
     rel="stylesheet" />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -80,7 +81,7 @@
     style="animation-delay: 0.2s">
     <section class="flex items-center justify-center mx-10">
       <?php
-      include "../../includes/customerLogin.php";
+      include "../../includes/rentalAgentLogin.php";
       ?>
     </section>
   </main>

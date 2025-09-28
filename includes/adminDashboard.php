@@ -1,23 +1,23 @@
 <?php
 
 // 1. Active Reservations
-$sql_active = "
+$select_query_active_reservation = "
     SELECT COUNT(*) AS active_count
     FROM CUSTOMER_BOOKING_DETAILS
     WHERE STATUS NOT IN ('COMPLETED', 'CANCELED')
 ";
-$active_count = $conn->query($sql_active)->fetchColumn();
+$active_count = $conn->query($select_query_active_reservation)->fetchColumn();
 
 // 2. Vehicles Available
-$sql_available = "
+$select_query_active_vehicles = "
     SELECT COUNT(*) AS available_count
     FROM CAR_DETAILS
     WHERE STATUS = 'AVAILABLE'
 ";
-$available_count = $conn->query($sql_available)->fetchColumn();
+$available_count = $conn->query($select_query_active_vehicles)->fetchColumn();
 
 // 3. Payments This Month
-$sql_income = "
+$select_query_total_sale_this_month = "
     SELECT COALESCE(SUM(
         (DATEDIFF(DROP_OFF_DATE, PICKUP_DATE) + 1) * c.PRICE
     ), 0) AS total_income
@@ -27,7 +27,7 @@ $sql_income = "
       AND MONTH(cbd.CREATED_AT) = MONTH(CURRENT_DATE())
       AND YEAR(cbd.CREATED_AT) = YEAR(CURRENT_DATE())
 ";
-$total_income = $conn->query($sql_income)->fetchColumn();
+$total_income = $conn->query($select_query_total_sale_this_month)->fetchColumn();
 ?>
 <h2 class="text-2xl font-bold mb-2">Car Rental Dashboard</h2>
 <p class="text-gray-600 mb-6">Overview of system activity</p>

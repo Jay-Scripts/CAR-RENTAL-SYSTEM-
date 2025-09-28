@@ -1,6 +1,3 @@
-<?php
-$ses
-?>
 <!DOCTYPE html>
 <html lang="en">
 
