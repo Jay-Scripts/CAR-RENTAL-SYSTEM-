@@ -421,20 +421,9 @@ if (!isset($_SESSION['rental_agent_name'])) {
       <section
         id="vehicleInspection"
         class="hidden bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Vehicle Inspection</h2>
-        <p class="text-gray-600 mb-4">
-          Inspection records of vehicles before/after rentals.
-        </p>
-        <ul class="space-y-2 text-sm">
-          <li class="bg-white rounded shadow p-3 flex justify-between">
-            <span>Toyota Fortuner</span>
-            <span class="text-green-600">Passed</span>
-          </li>
-          <li class="bg-white rounded shadow p-3 flex justify-between">
-            <span>Mitsubishi L300</span>
-            <span class="text-red-600">Needs Repair</span>
-          </li>
-        </ul>
+        <?php
+        include "../../includes/rentalAgentForInspection.php";
+        ?>
       </section>
 
       <!-- Payments -->

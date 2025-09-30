@@ -7,97 +7,182 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-50">
-    <td class="px-3 py-2">
-      <button
-        onclick="OpenEpayment()"
-        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
-      >
-        View E-Receipt
-      </button>
-    </td>
-    <!-- Payment Modal -->
+    <!-- Popup Modal -->
     <div
-      id="paymentModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+      id="popupForm"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
     >
-      <div class="bg-white w-full max-w-lg rounded-lg shadow-lg p-6 relative">
-        <!-- Step 1: QR Scan -->
-        <div id="step1">
-          <h2 class="text-xl font-bold mb-4">E-Receipt</h2>
-          <p class="mb-2">Booking ID</p>
-          <img
-            src="receiptpath here"
-            alt="GCash QR"
-            class="mx-auto w-48 mb-4"
-          />
-          <span class="flex">
+      <div class="bg-white w-full max-w-2xl rounded-lg shadow-lg p-6 relative">
+        <h2 class="text-xl font-bold mb-4">Exterior Checking</h2>
+
+        <form id="verificationForm" enctype="multipart/form-data">
+          <input type="hidden" name="booking_id" id="formBookingId" />
+
+          <!-- Checklist -->
+          <div class="space-y-4">
+            <!-- One condition -->
+            <div>
+              <label class="block font-medium"
+                >Body condition (no dents/scratches)</label
+              >
+              <div class="flex gap-3 mt-1">
+                <label
+                  ><input
+                    type="radio"
+                    name="body_condition"
+                    value="OK"
+                    required
+                  />
+                  ✅</label
+                >
+                <label
+                  ><input type="radio" name="body_condition" value="NOT_OK" />
+                  ❌</label
+                >
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium"
+                >Windows & Windshield (no scratches)</label
+              >
+              <div class="flex gap-3 mt-1">
+                <label
+                  ><input
+                    type="radio"
+                    name="windows_scratches"
+                    value="OK"
+                    required
+                  />
+                  ✅</label
+                >
+                <label
+                  ><input
+                    type="radio"
+                    name="windows_scratches"
+                    value="NOT_OK"
+                  />
+                  ❌</label
+                >
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium"
+                >Windows & Windshield (no cracks)</label
+              >
+              <div class="flex gap-3 mt-1">
+                <label
+                  ><input
+                    type="radio"
+                    name="windows_cracks"
+                    value="OK"
+                    required
+                  />
+                  ✅</label
+                >
+                <label
+                  ><input type="radio" name="windows_cracks" value="NOT_OK" />
+                  ❌</label
+                >
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium">Side mirror intact</label>
+              <div class="flex gap-3 mt-1">
+                <label
+                  ><input type="radio" name="side_mirror" value="OK" required />
+                  ✅</label
+                >
+                <label
+                  ><input type="radio" name="side_mirror" value="NOT_OK" />
+                  ❌</label
+                >
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium">All lights functional</label>
+              <div class="flex gap-3 mt-1">
+                <label
+                  ><input type="radio" name="lights" value="OK" required />
+                  ✅</label
+                >
+                <label
+                  ><input type="radio" name="lights" value="NOT_OK" /> ❌</label
+                >
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium">Tires in good condition</label>
+              <div class="flex gap-3 mt-1">
+                <label
+                  ><input type="radio" name="tires" value="OK" required />
+                  ✅</label
+                >
+                <label
+                  ><input type="radio" name="tires" value="NOT_OK" /> ❌</label
+                >
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium"
+                >Wiper blades in good condition</label
+              >
+              <div class="flex gap-3 mt-1">
+                <label
+                  ><input type="radio" name="wipers" value="OK" required />
+                  ✅</label
+                >
+                <label
+                  ><input type="radio" name="wipers" value="NOT_OK" /> ❌</label
+                >
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div>
+              <label class="block font-medium">Notes for extra info</label>
+              <textarea
+                name="notes"
+                class="w-full border rounded p-2 mt-1"
+              ></textarea>
+            </div>
+
+            <!-- Image Upload -->
+            <div>
+              <label class="block font-medium">Upload Proof Images</label>
+              <input
+                type="file"
+                name="images[]"
+                multiple
+                accept="image/*"
+                class="mt-1 border rounded p-2 w-full"
+              />
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex justify-end gap-2 mt-6">
             <button
-              onclick="nextStep()"
-              class="bg-blue-500 text-white px-4 py-2 rounded w-full"
+              type="button"
+              onclick="closeForm()"
+              class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
             >
-              Approve
+              Cancel
             </button>
             <button
-              onclick="nextStep()"
-              class="bg-red-500 text-white px-4 py-2 rounded w-full"
+              type="submit"
+              class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
             >
-              Declined
-            </button></span
-          >
-        </div>
-
-        <!-- Step 2: Upload Receipt -->
-        <div id="step2" class="hidden">
-          <h2 class="text-xl font-bold mb-4">Upload E-Receipt</h2>
-          <input
-            type="file"
-            id="receiptUpload"
-            class="border p-2 w-full mb-4"
-          />
-          <button
-            onclick="submitReceipt()"
-            class="bg-green-500 text-white px-4 py-2 rounded w-full"
-          >
-            Submit Payment
-          </button>
-        </div>
-
-        <!-- Close Btn -->
-        <button
-          onclick="closeModal()"
-          class="absolute top-2 right-2 text-gray-500"
-        >
-          &times;
-        </button>
+              Confirm
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-    <script>
-      function OpenEpayment(car, amount) {
-        document.getElementById("paymentModal").classList.remove("hidden");
-        // You can also display booking details dynamically if needed
-      }
-
-      function closeModal() {
-        document.getElementById("paymentModal").classList.add("hidden");
-        document.getElementById("step1").classList.remove("hidden");
-        document.getElementById("step2").classList.add("hidden");
-      }
-
-      function nextStep() {
-        document.getElementById("step1").classList.add("hidden");
-        document.getElementById("step2").classList.remove("hidden");
-      }
-
-      function submitReceipt() {
-        let file = document.getElementById("receiptUpload").files[0];
-        if (!file) {
-          alert("Please upload a receipt!");
-          return;
-        }
-        // TODO: AJAX/Fetch to upload file and update payment status
-        alert("Receipt submitted successfully!");
-        closeModal();
-      }
-    </script>
   </body>
 </html>
