@@ -19,14 +19,19 @@ $available_count = $conn->query($select_query_active_vehicles)->fetchColumn();
 // 3. Payments This Month
 $select_query_total_sale_this_month = "
     SELECT COALESCE(SUM(
-        (DATEDIFF(DROP_OFF_DATE, PICKUP_DATE) + 1) * c.PRICE
+        (DATEDIFF(cbd.DROP_OFF_DATE, cbd.PICKUP_DATE) + 1) * c.PRICE
     ), 0) AS total_income
     FROM CUSTOMER_BOOKING_DETAILS cbd
-    JOIN CAR_DETAILS c ON cbd.CAR_ID = c.CAR_ID
+    JOIN CAR_DETAILS c 
+        ON cbd.CAR_ID = c.CAR_ID
+    JOIN BOOKING_PAYMENT_DETAILS bpd 
+        ON cbd.BOOKING_ID = bpd.BOOKING_ID
     WHERE cbd.STATUS = 'COMPLETED'
+      AND bpd.PAYMENT_TYPE = 'BOOKING FEE'
       AND MONTH(cbd.CREATED_AT) = MONTH(CURRENT_DATE())
       AND YEAR(cbd.CREATED_AT) = YEAR(CURRENT_DATE())
 ";
+
 $total_income = $conn->query($select_query_total_sale_this_month)->fetchColumn();
 ?>
 <h2 class="text-2xl font-bold mb-2">Car Rental Dashboard</h2>

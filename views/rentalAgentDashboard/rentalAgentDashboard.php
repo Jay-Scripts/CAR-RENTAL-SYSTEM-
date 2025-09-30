@@ -201,7 +201,7 @@ if (!isset($_SESSION['rental_agent_name'])) {
             <circle cx="17" cy="14" r="3" />
             <path d="M17 13v1.5l1 0.6" />
           </svg>
-          Reservations
+          For Pickup
         </a>
 
         <!-- Vehicle Inspection -->
@@ -403,24 +403,9 @@ if (!isset($_SESSION['rental_agent_name'])) {
     -->
       <!-- Dashboard -->
       <section id="dashboard" class="bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Dashboard</h2>
-        <p class="text-gray-600">
-          Quick overview of rentals and system status.
-        </p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-          <div class="bg-white rounded shadow p-4">
-            <h3 class="font-semibold">Active Rentals</h3>
-            <p class="text-2xl font-bold">12</p>
-          </div>
-          <div class="bg-white rounded shadow p-4">
-            <h3 class="font-semibold">Pending Reservations</h3>
-            <p class="text-2xl font-bold">5</p>
-          </div>
-          <div class="bg-white rounded shadow p-4">
-            <h3 class="font-semibold">Available Vehicles</h3>
-            <p class="text-2xl font-bold">23</p>
-          </div>
-        </div>
+        <?php
+        include "../../includes/rentalAgentDashboard.php";
+        ?>
       </section>
 
       <!-- Reservations -->

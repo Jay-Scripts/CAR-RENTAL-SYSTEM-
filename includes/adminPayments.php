@@ -34,8 +34,8 @@ try {
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
     <?php if (!empty($bookings)): ?>
         <?php foreach ($bookings as $b): ?>
-            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-                <img src="<?= htmlspecialchars($b['THUMBNAIL_PATH']) ?>" alt="Car Image" class="object-cover">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 ">
+                <img src="<?= htmlspecialchars($b['THUMBNAIL_PATH']) ?>" alt="Car Image" class="object-cover rounded-2xl p-5">
                 <div class="p-4">
                     <h3 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($b['CAR_NAME']) ?> (<?= htmlspecialchars($b['COLOR']) ?>)</h3>
                     <p class="text-sm text-gray-600">Booked by: <?= htmlspecialchars($b['FIRST_NAME'] . ' ' . $b['LAST_NAME']) ?></p>
