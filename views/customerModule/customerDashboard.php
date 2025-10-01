@@ -141,12 +141,12 @@ if (!isset($_SESSION['customer_name'])) {
         src="../../src/svg/systemLogo.jpg"
         alt="" />
       <nav class="flex-1 p-4 space-y-2 border-t-2 border-[#986555]">
-        <a
+        <!-- <a
           href="#"
           class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-200"
           data-module="overview">
           Overview
-        </a>
+        </a> -->
         <a
           href="#"
           class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-200"

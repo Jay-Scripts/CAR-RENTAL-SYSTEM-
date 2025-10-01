@@ -22,10 +22,8 @@ $select_query_total_sale_this_month = "
         (DATEDIFF(cbd.DROP_OFF_DATE, cbd.PICKUP_DATE) + 1) * c.PRICE
     ), 0) AS total_income
     FROM CUSTOMER_BOOKING_DETAILS cbd
-    JOIN CAR_DETAILS c 
-        ON cbd.CAR_ID = c.CAR_ID
-    JOIN BOOKING_PAYMENT_DETAILS bpd 
-        ON cbd.BOOKING_ID = bpd.BOOKING_ID
+    JOIN CAR_DETAILS c ON cbd.CAR_ID = c.CAR_ID
+    JOIN BOOKING_PAYMENT_DETAILS bpd ON cbd.BOOKING_ID = bpd.BOOKING_ID
     WHERE cbd.STATUS = 'COMPLETED'
       AND bpd.PAYMENT_TYPE = 'BOOKING FEE'
       AND MONTH(cbd.CREATED_AT) = MONTH(CURRENT_DATE())
