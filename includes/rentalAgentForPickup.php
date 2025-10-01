@@ -77,25 +77,53 @@ try {
         <p class="text-gray-600 col-span-full">No bookings waiting for pickup.</p>
     <?php endif; ?>
 </div>
+<!-- Add SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     function updateBookingStatus(bookingId) {
-        if (!confirm("Mark this booking as ONGOING?")) return;
-
-        fetch('../../includes/rentalAgentForPickupUpdateStatus.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'booking_id=' + bookingId + '&new_status=ONGOING'
-            })
-            .then(res => res.text())
-            .then(data => {
-                if (data.trim() === 'success') {
-                    location.reload();
-                } else {
-                    alert('Error: ' + data);
-                }
-            });
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This booking will be marked as ONGOING.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#16A34A', // green
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, mark it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('../../includes/rentalAgentForPickupUpdateStatus.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'booking_id=' + bookingId + '&new_status=ONGOING'
+                    })
+                    .then(res => res.text())
+                    .then(data => {
+                        if (data.trim() === 'success') {
+                            Swal.fire({
+                                title: 'Updated!',
+                                text: 'Booking status has been changed to ONGOING.',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data,
+                                icon: 'error',
+                                confirmButtonColor: '#d33'
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire('Error!', err, 'error');
+                    });
+            }
+        });
     }
 </script>

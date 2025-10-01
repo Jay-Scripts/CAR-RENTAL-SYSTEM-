@@ -200,7 +200,7 @@ try {
                 if (data.trim() === "success") {
                     Swal.fire({
                         title: "E-Receipt Sent!",
-                        text: "We will inform you once your vehicle is ready for pickup.",
+                        text: "We will inform you via once your vehicle is ready for pickup also bring a valid ID upon pickup!.",
                         icon: "success",
                     }).then(() => {
                         closeModal();

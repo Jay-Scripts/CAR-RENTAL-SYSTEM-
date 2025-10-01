@@ -56,7 +56,7 @@ if (isset($_POST['customerLogin'])) {
                     $_SESSION['customer_name'] = $user['first_name'];
 
 
-                    // ✅ SweetAlert + JS redirect
+                    //  SweetAlert + JS redirect
                     $login_message = "
                 <script>
                     Swal.fire({

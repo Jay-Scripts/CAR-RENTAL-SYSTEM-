@@ -1,129 +1,107 @@
 <?php
-try {
-    $sql = "
-        SELECT 
-            b.BOOKING_ID, 
-            b.PICKUP_DATE, 
-            b.DROP_OFF_DATE, 
-            b.TRIP_DETAILS,
-            b.TOTAL_COST,
-            b.STATUS,
-            c.CAR_NAME, 
-            c.COLOR, 
-            c.THUMBNAIL_PATH,
-            u.FIRST_NAME, 
-            u.LAST_NAME
-        FROM CUSTOMER_BOOKING_DETAILS b
-        INNER JOIN CAR_DETAILS c ON b.CAR_ID = c.CAR_ID
-        INNER JOIN USER_DETAILS u ON b.USER_ID = u.USER_ID
-        WHERE b.STATUS = 'FOR CHECKING'
-        ORDER BY b.CREATED_AT DESC
-    ";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error fetching bookings: " . $e->getMessage());
+require_once '../config/db.php';
+$inspection_message = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $booking_id = intval($_POST['booking_id'] ?? 0);
+    $notes      = trim($_POST['notes'] ?? '');
+    $penalty    = floatval($_POST['penalty'] ?? 0);
+    $penalty = max($penalty, 0);
+
+    if ($booking_id <= 0) {
+        echo "Invalid booking ID";
+        exit;
+    }
+
+    if (!isset($_FILES['images']) || empty($_FILES['images']['name'][0])) {
+        echo "No images uploaded";
+        exit;
+    }
+
+    $uploadDir = __DIR__ . "/../src/images/inspection_proof/";
+    if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+
+    $uploadedPaths = [];
+    foreach ($_FILES['images']['tmp_name'] as $index => $tmpName) {
+        if ($_FILES['images']['error'][$index] !== UPLOAD_ERR_OK) continue;
+        $fileName = basename($_FILES['images']['name'][$index]);
+        $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        if (!in_array($fileExt, ['jpg', 'jpeg', 'png', 'gif'])) continue;
+
+        $newFileName = "inspection_{$booking_id}_" . uniqid() . "." . $fileExt;
+        $uploadPath = $uploadDir . $newFileName;
+
+        if (move_uploaded_file($tmpName, $uploadPath)) {
+            $uploadedPaths[] = "../src/images/inspection_proof/" . $newFileName;
+        }
+    }
+
+    if (empty($uploadedPaths)) {
+        echo "<script>Swal.fire('Error', 'No valid images uploaded', 'error');</script>";
+        exit;
+    }
+
+    try {
+        $conn->beginTransaction();
+
+        // 1️ Insert inspection report
+        $stmt = $conn->prepare("
+            INSERT INTO BOOKING_VEHICLE_INSPECTION 
+            (BOOKING_ID, IMAGE_PATH, NOTES, PENALTY, CREATED_AT)
+            VALUES (:booking_id, :image_path, :notes, :penalty, NOW())
+        ");
+        $stmt->execute([
+            ':booking_id' => $booking_id,
+            ':image_path' => json_encode($uploadedPaths),
+            ':notes'      => $notes,
+            ':penalty'    => $penalty
+        ]);
+
+        // 2️ Update car status to MAINTENANCE
+        $stmt = $conn->prepare("
+            UPDATE CAR_DETAILS c
+            INNER JOIN CUSTOMER_BOOKING_DETAILS b ON c.CAR_ID = b.CAR_ID
+            SET c.STATUS = 'MAINTENANCE'
+            WHERE b.BOOKING_ID = :booking_id
+        ");
+        $stmt->execute([':booking_id' => $booking_id]);
+
+        // 3️ Handle booking status
+        if ($penalty > 0) {
+            // Create a penalty payment
+            $stmt = $conn->prepare("
+                INSERT INTO BOOKING_PAYMENT_DETAILS 
+                (BOOKING_ID, RECEIPT_PATH, PAYMENT_TYPE, AMOUNT, STATUS, CREATED_AT)
+                VALUES (:booking_id, '', 'PENALTY', :amount, 'UNPAID', NOW())
+            ");
+            $stmt->execute([
+                ':booking_id' => $booking_id,
+                ':amount'     => $penalty
+            ]);
+            // Booking remains CHECKING
+            $stmt = $conn->prepare("
+                UPDATE CUSTOMER_BOOKING_DETAILS
+                SET STATUS = 'CHECKING'
+                WHERE BOOKING_ID = :booking_id
+            ");
+            $stmt->execute([':booking_id' => $booking_id]);
+        } else {
+            // No penalty → mark booking COMPLETED
+            $stmt = $conn->prepare("
+                UPDATE CUSTOMER_BOOKING_DETAILS
+                SET STATUS = 'COMPLETED'
+                WHERE BOOKING_ID = :booking_id
+            ");
+            $stmt->execute([':booking_id' => $booking_id]);
+        }
+
+        $conn->commit();
+
+        // After everything succeeds
+        echo "success";
+        exit;
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        echo "<script>Swal.fire('Error', '" . $e->getMessage() . "', 'error');</script>";
+    }
 }
-?>
-
-<h2 class="text-2xl font-bold mb-4">Bookings for Checking</h2>
-
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <?php if (!empty($bookings)): ?>
-        <?php foreach ($bookings as $b): ?>
-            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-                <img src="<?= htmlspecialchars($b['THUMBNAIL_PATH']) ?>"
-                    alt="Car Image"
-                    class="object-cover rounded-2xl p-5">
-
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold text-gray-800">
-                        <?= htmlspecialchars($b['CAR_NAME']) ?> (<?= htmlspecialchars($b['COLOR']) ?>)
-                    </h3>
-                    <p class="text-sm text-gray-600">
-                        Booked by: <?= htmlspecialchars($b['FIRST_NAME'] . ' ' . $b['LAST_NAME']) ?>
-                    </p>
-                    <p class="text-sm text-gray-600">
-                        Pickup: <?= date("M d, Y H:i", strtotime($b['PICKUP_DATE'])) ?>
-                    </p>
-                    <p class="text-sm text-gray-600">
-                        Drop-off: <?= date("M d, Y H:i", strtotime($b['DROP_OFF_DATE'])) ?>
-                    </p>
-                    <p class="mt-2 font-bold text-orange-600">
-                        ₱<?= number_format($b['TOTAL_COST'], 2) ?>
-                    </p>
-                </div>
-
-                <div class="flex justify-between items-center bg-gray-50 p-3">
-                    <span class="px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                        <?= htmlspecialchars($b['STATUS']) ?>
-                    </span>
-
-                    <button
-                        onclick="openForm(<?= $b['BOOKING_ID'] ?>)"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-                        Verify
-                    </button>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p class="text-gray-600 col-span-full">No bookings for checking.</p>
-    <?php endif; ?>
-</div>
-
-<!-- Popup Modal -->
-<div id="popupForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-6 relative">
-        <h2 class="text-xl font-bold mb-4">Verification Form</h2>
-
-        <form id="verificationForm">
-            <input type="hidden" name="booking_id" id="formBookingId">
-
-            <label class="block mb-2 font-medium">Remarks</label>
-            <textarea name="remarks" class="w-full border rounded p-2 mb-4" required></textarea>
-
-            <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeForm()"
-                    class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">
-                    Cancel
-                </button>
-                <button type="submit"
-                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-                    Confirm
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-    function openForm(bookingId) {
-        document.getElementById("formBookingId").value = bookingId;
-        document.getElementById("popupForm").classList.remove("hidden");
-    }
-
-    function closeForm() {
-        document.getElementById("popupForm").classList.add("hidden");
-    }
-
-    document.getElementById("verificationForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-
-        fetch('../../includes/updateBookingStatus.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.text())
-            .then(data => {
-                if (data.trim() === 'success') {
-                    closeForm();
-                    location.reload();
-                } else {
-                    alert("Error: " + data);
-                }
-            });
-    });
-</script>

@@ -1,6 +1,5 @@
 <?php
 
-$inspection_message = '';
 
 try {
     // Fetch bookings with CHECKING status
@@ -30,87 +29,7 @@ try {
 } catch (PDOException $e) {
     die("Error fetching bookings: " . $e->getMessage());
 }
-
-if (isset($_POST['submit_inspection_report'])) {
-    $booking_id = intval($_POST['booking_id'] ?? 0);
-    $notes      = trim($_POST['notes'] ?? '');
-    $penalty    = floatval($_POST['penalty'] ?? 0);
-    if ($penalty < 0) $penalty = 0;
-
-    if ($booking_id <= 0) {
-        $inspection_message = "<script>Swal.fire('Error', 'Invalid booking ID', 'error');</script>";
-    } elseif (!isset($_FILES['images']) || empty($_FILES['images']['name'][0])) {
-        $inspection_message = "<script>Swal.fire('Error', 'No images uploaded', 'error');</script>";
-    } else {
-        $uploadDir = __DIR__ . "/../src/images/inspection_proof/";
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
-
-        $uploadedPaths = [];
-        foreach ($_FILES['images']['tmp_name'] as $index => $tmpName) {
-            if ($_FILES['images']['error'][$index] !== UPLOAD_ERR_OK) continue;
-            $fileName = basename($_FILES['images']['name'][$index]);
-            $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            $allowed  = ['jpg', 'jpeg', 'png', 'gif'];
-            if (!in_array($fileExt, $allowed)) continue;
-
-            $newFileName = "inspection_" . $booking_id . "_" . uniqid() . "." . $fileExt;
-            $uploadPath = $uploadDir . $newFileName;
-
-            if (move_uploaded_file($tmpName, $uploadPath)) {
-                $uploadedPaths[] = "../src/images/inspection_proof/" . $newFileName;
-            }
-        }
-
-        if (empty($uploadedPaths)) {
-            $inspection_message = "<script>Swal.fire('Error', 'No valid images uploaded', 'error');</script>";
-        } else {
-            try {
-                $conn->beginTransaction();
-
-                // Insert inspection report
-                $stmt = $conn->prepare("
-                    INSERT INTO BOOKING_VEHICLE_INSPECTION 
-                    (BOOKING_ID, IMAGE_PATH, NOTES, PENALTY, CREATED_AT)
-                    VALUES (:booking_id, :image_path, :notes, :penalty, NOW())
-                ");
-                $stmt->execute([
-                    ':booking_id' => $booking_id,
-                    ':image_path' => json_encode($uploadedPaths),
-                    ':notes'      => $notes,
-                    ':penalty'    => $penalty
-                ]);
-
-                // Update car status to MAINTENANCE
-                $stmt = $conn->prepare("
-                    UPDATE CAR_DETAILS c
-                    INNER JOIN CUSTOMER_BOOKING_DETAILS b ON c.CAR_ID = b.CAR_ID
-                    SET c.STATUS = 'MAINTENANCE'
-                    WHERE b.BOOKING_ID = :booking_id
-                ");
-                $stmt->execute([':booking_id' => $booking_id]);
-
-                $conn->commit();
-
-                $inspection_message = "<script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Inspection submitted!',
-                        text: 'Car status updated to MAINTENANCE',
-                    });
-                </script>";
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                $inspection_message = "<script>
-                    Swal.fire('Error', '" . $e->getMessage() . "', 'error');
-                </script>";
-            }
-        }
-    }
-}
 ?>
-
-
-
 
 <h2 class="text-2xl font-bold mb-4">Bookings for Exterior Checking</h2>
 
@@ -131,7 +50,7 @@ if (isset($_POST['submit_inspection_report'])) {
                     <button
                         onclick="openForm(<?= $b['BOOKING_ID'] ?>)"
                         class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-                        Exterior Check
+                        Upload Diagnostic
                     </button>
                 </div>
             </div>
@@ -144,8 +63,7 @@ if (isset($_POST['submit_inspection_report'])) {
 <!-- Popup Form -->
 <div id="popupForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white w-full max-w-2xl rounded-lg shadow-lg p-6 relative">
-        <form method="POST" enctype="multipart/form-data" class="m-5">
-
+        <form id="inspectionForm" method="POST" enctype="multipart/form-data" class="m-5">
             <input type="hidden" name="booking_id" id="formBookingId">
 
             <div>
@@ -155,7 +73,7 @@ if (isset($_POST['submit_inspection_report'])) {
 
             <div>
                 <label class="block font-medium text-gray-700">Penalty Amount:</label>
-                <input name="penalty" type="number" class="w-full border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-blue-500">
+                <input name="penalty" type="number" class="w-full border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-blue-500" min="0">
             </div>
 
             <div>
@@ -168,16 +86,16 @@ if (isset($_POST['submit_inspection_report'])) {
                 <button type="button" onclick="closeForm()" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">
                     Cancel
                 </button>
-                <button type="submit" name="submit_inspection_report" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
                     Confirm
                 </button>
             </div>
         </form>
-        <p> <?php
-            echo $inspection_message;
-            ?></p>
     </div>
 </div>
+
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     function openForm(bookingId) {
@@ -188,4 +106,38 @@ if (isset($_POST['submit_inspection_report'])) {
     function closeForm() {
         document.getElementById("popupForm").classList.add("hidden");
     }
+
+    document.getElementById("inspectionForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // prevent default form submission
+
+        const formData = new FormData(this);
+
+        fetch('../../includes/rentalAgentForInspectionUpdateStatus.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.text())
+            .then(data => {
+                data = data.trim();
+                if (data === 'success') {
+                    Swal.fire({
+                        title: 'Inspection submitted!',
+                        text: 'Car status updated to MAINTENANCE',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        closeForm();
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data,
+                        icon: 'error'
+                    });
+                }
+            })
+            .catch(err => Swal.fire('Error!', err, 'error'));
+    });
 </script>
