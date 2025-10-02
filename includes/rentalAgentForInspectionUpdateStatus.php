@@ -1,12 +1,11 @@
 <?php
 require_once '../config/db.php';
-$inspection_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $booking_id = intval($_POST['booking_id'] ?? 0);
     $notes      = trim($_POST['notes'] ?? '');
     $penalty    = floatval($_POST['penalty'] ?? 0);
-    $penalty = max($penalty, 0);
+    $penalty    = max($penalty, 0);
 
     if ($booking_id <= 0) {
         echo "Invalid booking ID";
@@ -21,23 +20,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $uploadDir = __DIR__ . "/../src/images/inspection_proof/";
     if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
-    $uploadedPaths = [];
+    $lastUploadedPath = '';
     foreach ($_FILES['images']['tmp_name'] as $index => $tmpName) {
         if ($_FILES['images']['error'][$index] !== UPLOAD_ERR_OK) continue;
         $fileName = basename($_FILES['images']['name'][$index]);
         $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         if (!in_array($fileExt, ['jpg', 'jpeg', 'png', 'gif'])) continue;
 
-        $newFileName = "inspection_{$booking_id}_" . uniqid() . "." . $fileExt;
+        $newFileName = "inspection_{$booking_id}_" . time() . "_" . ($index + 1) . "." . $fileExt;
         $uploadPath = $uploadDir . $newFileName;
 
         if (move_uploaded_file($tmpName, $uploadPath)) {
-            $uploadedPaths[] = "../src/images/inspection_proof/" . $newFileName;
+            // Store **single string path** like receipt upload
+            $lastUploadedPath = "../src/images/inspection_proof/" . $newFileName;
         }
     }
 
-    if (empty($uploadedPaths)) {
-        echo "<script>Swal.fire('Error', 'No valid images uploaded', 'error');</script>";
+    if (!$lastUploadedPath) {
+        echo "File upload failed";
         exit;
     }
 
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ");
         $stmt->execute([
             ':booking_id' => $booking_id,
-            ':image_path' => json_encode($uploadedPaths),
+            ':image_path' => $lastUploadedPath, // single string
             ':notes'      => $notes,
             ':penalty'    => $penalty
         ]);
@@ -78,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':booking_id' => $booking_id,
                 ':amount'     => $penalty
             ]);
+
             // Booking remains CHECKING
             $stmt = $conn->prepare("
                 UPDATE CUSTOMER_BOOKING_DETAILS
@@ -96,12 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $conn->commit();
-
-        // After everything succeeds
         echo "success";
         exit;
     } catch (PDOException $e) {
         $conn->rollBack();
-        echo "<script>Swal.fire('Error', '" . $e->getMessage() . "', 'error');</script>";
+        echo "Error: " . $e->getMessage();
     }
 }

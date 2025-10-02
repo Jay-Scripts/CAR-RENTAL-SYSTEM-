@@ -430,31 +430,9 @@ if (!isset($_SESSION['rental_agent_name'])) {
       <section
         id="payments"
         class="hidden bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Payments</h2>
-        <p class="text-gray-600 mb-4">Client payment details and history.</p>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead class="bg-gray-200">
-              <tr>
-                <th class="px-3 py-2 text-left">Customer</th>
-                <th class="px-3 py-2 text-left">Amount</th>
-                <th class="px-3 py-2 text-left">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-b">
-                <td class="px-3 py-2">Pedro Lopez</td>
-                <td class="px-3 py-2">₱5,000</td>
-                <td class="px-3 py-2 text-green-600">Paid</td>
-              </tr>
-              <tr class="border-b">
-                <td class="px-3 py-2">Anna Dela Cruz</td>
-                <td class="px-3 py-2">₱3,500</td>
-                <td class="px-3 py-2 text-yellow-600">Pending</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <?php
+        include "../../includes/rentalAgentPaymentPenalty.php";
+        ?>
       </section>
 
       <!-- Turnover Vehicle -->
