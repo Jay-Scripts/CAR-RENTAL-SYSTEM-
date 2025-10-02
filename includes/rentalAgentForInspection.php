@@ -1,6 +1,5 @@
 <?php
 
-
 try {
     // Fetch bookings with CHECKING status
     $sql = "

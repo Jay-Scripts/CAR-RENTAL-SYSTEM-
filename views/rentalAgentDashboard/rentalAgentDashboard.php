@@ -439,25 +439,9 @@ if (!isset($_SESSION['rental_agent_name'])) {
       <section
         id="turnoverVehicle"
         class="hidden bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Turnover Vehicle</h2>
-        <p class="text-gray-600 mb-4">
-          Track vehicles being handed over to clients.
-        </p>
-        <div class="space-y-3">
-          <div class="bg-white rounded shadow p-3">
-            <p><span class="font-semibold">Vehicle:</span> Nissan Almera</p>
-            <p><span class="font-semibold">Client:</span> Carlo Reyes</p>
-            <p><span class="font-semibold">Status:</span> Ready for pickup</p>
-          </div>
-          <div class="bg-white rounded shadow p-3">
-            <p><span class="font-semibold">Vehicle:</span> Hyundai Accent</p>
-            <p><span class="font-semibold">Client:</span> Lea Mendoza</p>
-            <p>
-              <span class="font-semibold">Status:</span> Returned - Inspection
-              pending
-            </p>
-          </div>
-        </div>
+        <?php
+        include "../../includes/rentalAgentTurnOverVehicle.php";
+        ?>
       </section>
       <!--
     ===================================================================================================================================================================================================================================================

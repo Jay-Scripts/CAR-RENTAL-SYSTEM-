@@ -53,10 +53,10 @@ if (isset($_POST['rentalAgentLogin'])) {
                 if ($user['role'] === 'rental-agent') {
                     // Store first name in session
                     $_SESSION['user_id'] = $user['user_id'];
+                    $_SESSION['ROLE']       = $user['role'];
                     $_SESSION['rental_agent_name'] = $user['first_name'];
 
-
-                    // ✅ SweetAlert + JS redirect
+                    //  SweetAlert + JS redirect
                     $rental_agent_login_message = "
                 <script>
                     Swal.fire({
