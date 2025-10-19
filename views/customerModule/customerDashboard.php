@@ -359,17 +359,114 @@ if (!isset($_SESSION['customer_name'])) {
       </section>
 
       <!-- Help -->
-      <section
-        id="help"
-        class="hidden bg-gray-100 p-6 rounded-lg shadow mt-6">
-        <h2 class="text-2xl font-bold mb-2">Help</h2>
-        <p>FAQs, contact support, and guidance.</p>
-        <ul class="mt-4 space-y-2 bg-white rounded shadow p-4">
-          <li>How do I cancel a booking?</li>
-          <li>How do I update my personal information?</li>
-          <li>How can I contact customer support?</li>
-        </ul>
+      <section id="help" class="bg-gray-100 p-4 md:p-8 rounded-lg shadow mt-6">
+        <h2 class="text-xl md:text-2xl font-bold mb-2 text-gray-800">Help & FAQs</h2>
+        <p class="text-gray-600 mb-4">Find answers to common questions below.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- FAQ Item -->
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">How do I make a car rental reservation?</summary>
+            <p class="mt-2 text-gray-600">Reservations can be made online through our booking
+              platform by selecting your preferred vehicle, rental
+              dates, and completing the required information.
+
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">What documents do I need to rent a car?</summary>
+            <p class="mt-2 text-gray-600">You will need a valid id such as driver’s license or any
+              government-issued ID,
+
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">Can I modify or cancel my reservation?</summary>
+            <p class="mt-2 text-gray-600"> Yes, reservations can be modified or canceled prior to the pickup
+              time. Please note that cancellation fees may apply within 24 hours.</p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">Can I extend my rental period?</summary>
+            <p class="mt-2 text-gray-600">Yes, extensions must be requested before your scheduled return
+              date. Additional charges will apply.
+
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800"> What if I return the car late?</summary>
+            <p class="mt-2 text-gray-600">Late returns may result in extra charges per hour or day.
+              We recommend contacting the rental office in advance if you
+              anticipate a delay.
+
+
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">What is the minimum age requirement?</summary>
+            <p class="mt-2 text-gray-600">The minimum age requirement is typically 21 years old.
+
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">Are there extra charges?</summary>
+            <p class="mt-2 text-gray-600">Extra fees may apply for fuel, cleaning, extra hour, or damage.
+
+
+
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">Is fuel included in the rental price?</summary>
+            <p class="mt-2 text-gray-600">No, fuel is typically not included. Cars are usually provided with
+              a full tank, and you are expected to return them refueled to the
+              same level.
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">What types of payment do you accept?</summary>
+            <p class="mt-2 text-gray-600">We accept Gcash or cash payment. Always check the payment
+              options for your chosen location.
+
+              .</p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">Can I return the car to a different
+              branch/location?</summary>
+            <p class="mt-2 text-gray-600">Yes, our rental companies offer a “one-way rental” option,
+              but additional fees may apply depending on distance and location.
+
+
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">What happens if I get a traffic ticket or toll
+              charge?</summary>
+            <p class="mt-2 text-gray-600">Any fines, tickets, or toll charges incurred during the rental period
+              are the responsibility of the renter and may be charged to your
+              account.
+
+
+            </p>
+          </details>
+
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="cursor-pointer font-medium text-gray-800">Do I need to pay a deposit?</summary>
+            <p class="mt-2 text-gray-600">Yes, our rentals require a refundable security deposit at the
+              time of pickup. .</p>
+          </details>
+        </div>
       </section>
+
 
       <!--
     ===================================================================================================================================================================================================================================================

@@ -1,6 +1,7 @@
 <?php
 require_once '../config/db.php';
 session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $booking_id = intval($_POST['booking_id'] ?? 0);
     $notes      = trim($_POST['notes'] ?? '');
@@ -8,7 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $penalty    = max($penalty, 0);
 
     // ✅ Get logged-in rental agent USER_ID from session
-    $user_id = $_SESSION['USER_ID'] ?? 0;
+    $user_id = $_SESSION['user_id'] ?? 0;
+
 
     if ($booking_id <= 0 || $user_id <= 0) {
         echo "Invalid booking or user";

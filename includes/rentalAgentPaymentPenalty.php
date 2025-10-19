@@ -59,7 +59,7 @@ try {
                     <th class="border px-4 py-2 text-left">Penalty</th>
                     <th class="border px-4 py-2 text-left">Notes</th>
                     <th class="border px-4 py-2 text-left">Actions</th>
-                    <th class="border px-4 py-2 text-left">Inspector</th>
+                    <th class="border px-4 py-2 text-left">Rental Agent</th>
 
                 </tr>
             </thead>
@@ -70,7 +70,7 @@ try {
 
                         <!-- Customer column now shows Inspector -->
                         <td class="border px-4 py-2">
-                            <?= htmlspecialchars(($p['INSPECTOR_FIRST'] ?? '') . ' ' . ($p['INSPECTOR_LAST'] ?? '')) ?>
+                            <?= htmlspecialchars(($p['CUSTOMER_FIRST'] ?? '') . ' ' . ($p['CUSTOMER_LAST'] ?? '')) ?>
                         </td>
 
                         <td class="border px-4 py-2"><?= htmlspecialchars($p['CAR_NAME'] . ' (' . $p['COLOR'] . ')') ?></td>
@@ -95,10 +95,11 @@ try {
                             <?php endif; ?>
                         </td>
 
-                        <!-- Inspector column now shows Customer -->
+                        <!-- Rental Agent column -->
                         <td class="border px-4 py-2">
-                            <?= htmlspecialchars($p['CUSTOMER_FIRST'] . ' ' . $p['CUSTOMER_LAST']) ?>
+                            <?= htmlspecialchars(($p['INSPECTOR_FIRST'] ?? '') . ' ' . ($p['INSPECTOR_LAST'] ?? '')) ?>
                         </td>
+
                     </tr>
 
 

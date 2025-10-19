@@ -47,85 +47,7 @@ if (!isset($_SESSION['rental_agent_name'])) {
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-  <!-- Login Modal (default visible) -->
 
-  <!-- 
-    <div
-      id="loginModal"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
-    >
-      <div
-        class="relative w-full max-w-sm sm:max-w-md md:max-w-lg p-6 bg-white rounded-2xl shadow-2xl"
-      >
-        <div class="flex justify-center mb-4">
-          <img
-            class="h-20 sm:h-28 md:h-32 animate-fadeSlide"
-            src="../../src/svg/systemLogo.jpg"
-            alt="System Logo"
-          />
-        </div>
-        <h2
-          class="text-center text-xl sm:text-2xl font-bold mb-2 text-gray-800"
-        >
-          Welcome Back
-        </h2>
-        <p class="text-center text-sm text-gray-500 mb-6">
-          Please log in to access the rental agent dashboard
-        </p>
-        <form
-          action="loginRentalAgentDashboard.php"
-          method="POST"
-          class="space-y-5"
-        >
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              Username
-            </label>
-            <input
-              type="text"
-              name="username"
-              required
-              placeholder="Enter your username"
-              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              required
-              placeholder="Enter your password"
-              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base"
-            />
-            <div class="text-right mt-1">
-              <a href="#" class="text-xs text-blue-600 hover:underline"
-                >Forgot password?</a
-              >
-            </div>
-          </div>
-          <button
-            type="submit"
-            class="w-full py-3 bg-blue-600 text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Log In
-          </button>
-        </form>
-        <p class="mt-6 text-center text-xs text-gray-500">
-          Need help? Contact your system administrator.
-        </p>
-      </div>
-    </div> -->
-
-  <!-- 
-    ===================================================================================================================================================================================================================================================
-    =                                                                                                                                                                                                                                                 =
-    =                                                                                                                    LOGIN MODAL - ENDS HERE                                                                                                      =
-    =                                                                                                                                                                                                                                                 =
-    =================================================================================================================================================================================================================================================== 
-    -->
   <div class="flex items-center justify-start rtl:justify-end">
     <button
       data-drawer-target="logo-sidebar"
@@ -258,29 +180,7 @@ if (!isset($_SESSION['rental_agent_name'])) {
           </svg>
           Turnover Vehicle
         </a>
-        <a
-          href="#"
-          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
-          data-module="reports">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            class="w-7 h-7"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-            <!-- Document outline -->
-            <path
-              d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
-            <path d="M14 2v6h6" />
-            <line x1="9" y1="17" x2="9" y2="13" />
-            <line x1="12" y1="17" x2="12" y2="11" />
-            <line x1="15" y1="17" x2="15" y2="15" />
-          </svg>
-          Reports
-        </a>
+
       </nav>
       <!--
     ===================================================================================================================================================================================================================================================

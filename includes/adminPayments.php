@@ -39,8 +39,9 @@
                     <div class="p-4">
                         <h3 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($b['CAR_NAME']) ?> (<?= htmlspecialchars($b['COLOR']) ?>)</h3>
                         <p class="text-sm text-gray-600">Booked by: <?= htmlspecialchars($b['FIRST_NAME'] . ' ' . $b['LAST_NAME']) ?></p>
-                        <p class="text-sm text-gray-600">Pickup: <?= date("M d, Y H:i", strtotime($b['PICKUP_DATE'])) ?></p>
-                        <p class="text-sm text-gray-600">Drop-off: <?= date("M d, Y H:i", strtotime($b['DROP_OFF_DATE'])) ?></p>
+                        <p class="text-sm text-gray-600">Pickup: <?= date("M d, Y", strtotime($b['PICKUP_DATE'])) ?></p>
+                        <p class="text-sm text-gray-600">Drop-off: <?= date("M d, Y", strtotime($b['DROP_OFF_DATE'])) ?></p>
+
                         <?php if (!empty($b['TRIP_DETAILS'])): ?>
                             <p class="text-sm text-gray-600 italic">"<?= htmlspecialchars($b['TRIP_DETAILS']) ?>"</p>
                         <?php endif; ?>

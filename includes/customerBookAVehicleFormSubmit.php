@@ -236,6 +236,7 @@ Swal.fire({
 
 
     </div>
+
     <p>
         <?= $booking_input_message['pickup_date'] ?? '' ?>
     </p>
@@ -285,9 +286,7 @@ Swal.fire({
             <div>
                 <p class="text-gray-700">
                     I agree to the
-                    <button id="openModal" type="button" class="text-blue-600 hover:text-blue-800 underline font-medium hover:no-underline transition-all duration-200">
-                        Terms & Conditions
-                    </button>
+                    Terms & Conditions
                     of this rental agreement.
                 </p>
                 <p class="text-xs text-gray-500 mt-1">Click to read the full terms and conditions</p>
@@ -313,7 +312,7 @@ Swal.fire({
             <div class="p-6 overflow-y-auto max-h-[60vh]">
                 <div class="space-y-4 text-sm text-gray-600">
                     <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-                        <h4 class="font-semibold text-gray-800 mb-2">1. Package Inclusions</h4>
+                        <h4 class="font-semibold text-gray-800 mb-2">1. Package Exclusion </h4>
                         <p>The rental package includes the vehicle, fuel, toll fees, and a professional driver for the duration of your booking.</p>
                     </div>
                     <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">

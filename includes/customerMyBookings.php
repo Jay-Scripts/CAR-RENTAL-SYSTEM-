@@ -7,14 +7,17 @@
             <th class="px-3 py-2 text-left">Price</th>
             <th class="px-3 py-2 text-left">Status</th>
             <th class="px-3 py-2 text-left">Date Booked</th>
+            <th class="px-3 py-2 text-left">Invoice</th>
         </tr>
     </thead>
     <tbody>
         <?php
         $user_id = $_SESSION['user_id'];
 
+        // Fetch bookings including the BOOKING_ID for invoice link
         $selectBookings = "
             SELECT 
+                cbd.BOOKING_ID,
                 c.CAR_NAME AS car,
                 DATE_FORMAT(cbd.PICKUP_DATE, '%b %d, %Y') AS pickup_date,
                 DATE_FORMAT(cbd.DROP_OFF_DATE, '%b %d, %Y') AS dropoff_date,
@@ -52,10 +55,18 @@
                     <td class='px-3 py-2'>₱" . number_format($r['amount'], 2) . "</td>
                     <td class='px-3 py-2 font-semibold {$statusColor}'>{$r['status']}</td>
                     <td class='px-3 py-2'>{$r['created_at']}</td>
+                    <td class='px-3 py-2'>
+                       <a href='../../includes/customerGenerateInvoice.php?booking_id={$r['BOOKING_ID']}' 
+   target='_blank' 
+   class='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs'>
+   Generate
+</a>
+
+                    </td>
                 </tr>";
             }
         } else {
-            echo "<tr><td colspan='6' class='text-center py-4 text-gray-500'>No bookings found</td></tr>";
+            echo "<tr><td colspan='7' class='text-center py-4 text-gray-500'>No bookings found</td></tr>";
         }
         ?>
     </tbody>
