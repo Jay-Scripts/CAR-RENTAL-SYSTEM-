@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Generate new filename
     $newFileName = "receipt_" . $booking_id . "_" . time() . "." . $fileExt;
-    $uploadDir   = __DIR__ . "/../src/images/e-receiptsFolder/"; // safer absolute path
+    $uploadDir   = __DIR__ . "/../src/images/e-receiptsFolder/";
     $uploadPath  = $uploadDir . $newFileName;
 
     if (!is_dir($uploadDir)) {

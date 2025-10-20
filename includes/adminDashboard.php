@@ -26,7 +26,7 @@ $available_count = $row['available_count'];
 // 3. Payments (Income) This Month
 $select_query_total_sale_this_month = "
     SELECT COALESCE(SUM(
-        (DATEDIFF(cbd.DROP_OFF_DATE, cbd.PICKUP_DATE) + 1) * c.PRICE
+        (DATEDIFF(cbd.DROP_OFF_DATE, cbd.PICKUP_DATE)) * c.PRICE
     ), 0) AS total_income
     FROM CUSTOMER_BOOKING_DETAILS cbd
     JOIN CAR_DETAILS c ON cbd.CAR_ID = c.CAR_ID
@@ -86,6 +86,24 @@ $incomeQuery = "
     GROUP BY c.CAR_ID
     ORDER BY total_income DESC
 ";
+
+// 7. Penalty Summary
+$penaltyQuery = "
+    SELECT 
+        CONCAT(u.FIRST_NAME, ' ', u.LAST_NAME) AS agent_name,
+        SUM(bvi.PENALTY) AS total_penalty
+    FROM BOOKING_VEHICLE_INSPECTION bvi
+    JOIN USER_DETAILS u ON bvi.USER_ID = u.USER_ID
+    WHERE bvi.PENALTY > 0
+    GROUP BY u.USER_ID
+    ORDER BY total_penalty DESC
+    LIMIT 5
+";
+$penaltyResult = $conn->query($penaltyQuery)->fetchAll(PDO::FETCH_ASSOC);
+
+$penaltyLabels = array_column($penaltyResult, 'agent_name');
+$penaltyData   = array_column($penaltyResult, 'total_penalty');
+
 $incomeResult = $conn->query($incomeQuery)->fetchAll(PDO::FETCH_ASSOC);
 
 $incomeLabels = array_column($incomeResult, 'CAR_NAME');
@@ -144,21 +162,34 @@ $incomeData   = array_column($incomeResult, 'total_income');
 
 <!-- Charts Section -->
 <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- Reservation Trends -->
     <div class="bg-white p-4 rounded-lg shadow">
         <h3 class="text-base sm:text-lg font-semibold mb-2">Reservation Trends (This Month)</h3>
         <canvas id="reservationChart" class="w-full" height="150"></canvas>
     </div>
 
+    <!-- Top Rented Cars -->
     <div class="bg-white p-4 rounded-lg shadow">
         <h3 class="text-base sm:text-lg font-semibold mb-2">Top Rented Cars</h3>
         <canvas id="topCarsChart" class="w-full" height="150"></canvas>
     </div>
 
-    <div class="bg-white p-4 rounded-lg shadow lg:col-span-2">
+    <!-- Total Income by Car -->
+    <div class="bg-white p-4 rounded-lg shadow flex flex-col items-center">
         <h3 class="text-base sm:text-lg font-semibold mb-2">Total Income by Car</h3>
-        <canvas id="incomePieChart" class="w-full" height="130"></canvas>
+        <div class="w-60 h-60">
+            <canvas id="incomePieChart"></canvas>
+        </div>
+    </div>
+
+
+    <!-- Penalty Summary -->
+    <div class="bg-white p-4 rounded-lg shadow">
+        <h3 class="text-base sm:text-lg font-semibold mb-2">Penalty Summary (Top 5 Agents)</h3>
+        <canvas id="penaltyChart" class="w-full" height="150"></canvas>
     </div>
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -223,6 +254,43 @@ $incomeData   = array_column($incomeResult, 'total_income');
             plugins: {
                 legend: {
                     position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Penalty Summary Chart
+    new Chart(document.getElementById('penaltyChart'), {
+        type: 'bar',
+        data: {
+            labels: <?php echo json_encode($penaltyLabels); ?>,
+            datasets: [{
+                label: 'Total Penalty (₱)',
+                data: <?php echo json_encode($penaltyData); ?>,
+                backgroundColor: ['#EF4444', '#F59E0B', '#3B82F6', '#10B981', '#8B5CF6']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return '₱' + context.formattedValue;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Total Penalty (₱)'
+                    }
                 }
             }
         }

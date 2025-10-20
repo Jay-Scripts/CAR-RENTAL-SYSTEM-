@@ -1,6 +1,6 @@
 <?php
 include "../../config/db.php";
-
+ob_clean(); // clear unwanted output
 session_start();
 $userId = $_SESSION['user_id'] ?? null;
 
@@ -607,19 +607,11 @@ if (!isset($_SESSION['admin_name'])) {
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
-      <section
-        id="reports"
-        class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-2">Reports</h2>
-        <div class="mt-4">
-          <p class="font-semibold">Monthly Summary</p>
-          <ul class="list-disc list-inside text-gray-600 mt-2">
-            <li>Total Reservations: 120</li>
-            <li>Total Revenue: $12,500</li>
-            <li>Top Car: Toyota Vios (50 rentals)</li>
-          </ul>
-        </div>
-      </section>
+
+      <?php
+      include "../../includes/adminReports.php";
+      ?>
+
       <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =

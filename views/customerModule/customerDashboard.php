@@ -333,7 +333,7 @@ if (!isset($_SESSION['customer_name'])) {
         id="myBookings"
         class="hidden bg-gray-100 p-6 rounded-lg shadow mt-6">
         <h2 class="text-2xl font-bold mb-2">My Bookings</h2>
-        <p>View details, cancel, or modify your reservations.</p>
+        <p>View details about your reservations.</p>
         <?php
         include "../../includes/customerMyBookings.php";
         ?>

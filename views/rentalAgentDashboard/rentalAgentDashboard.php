@@ -218,7 +218,7 @@ if (!isset($_SESSION['rental_agent_name'])) {
         <!-- Left: Title -->
         <div class="mb-4 sm:mb-0">
           <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
-            Car Rental Admin Dashboard
+            Rental Agent Dashboard
           </h1>
           <p class="text-xs sm:text-sm text-gray-500">
             Monitor vehicles, track your reservations, and view payment status

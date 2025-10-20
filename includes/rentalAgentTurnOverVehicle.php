@@ -1,12 +1,16 @@
 <?php
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['car_id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['car_id'], $_POST['action'])) {
     $carId = intval($_POST['car_id']);
+    $action = $_POST['action'];
+
     if ($carId > 0) {
         try {
-            $stmt = $conn->prepare("UPDATE CAR_DETAILS SET STATUS = 'AVAILABLE' WHERE CAR_ID = ?");
-            $stmt->execute([$carId]);
-            $message = "Vehicle status updated to AVAILABLE.";
+            $newStatus = ($action === 'salvage') ? 'SALVAGE' : 'AVAILABLE';
+
+            $stmt = $conn->prepare("UPDATE CAR_DETAILS SET STATUS = ? WHERE CAR_ID = ?");
+            $stmt->execute([$newStatus, $carId]);
+
+            $message = "Vehicle status updated to {$newStatus}.";
             $msgType = "success";
         } catch (Exception $e) {
             $message = "Error: " . $e->getMessage();
@@ -18,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['car_id'])) {
     }
 }
 
-//  Fetch only cars currently under maintenance
+// Fetch only cars currently under maintenance
 try {
     $sql = "
         SELECT 
@@ -38,8 +42,7 @@ try {
 }
 ?>
 
-
-<!--  SweetAlert2 CDN -->
+<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <h2 class="text-2xl font-bold mb-2">Turnover Vehicle</h2>
@@ -71,12 +74,19 @@ try {
                     <p class="mb-2"><span class="font-semibold">Status:</span> <?= htmlspecialchars($v['STATUS']) ?></p>
 
                     <div class="mt-auto">
-                        <!--  Form Button -->
-                        <form method="POST">
+                        <form method="POST" class="space-y-2">
                             <input type="hidden" name="car_id" value="<?= $v['CAR_ID'] ?>">
-                            <button type="submit"
+
+                            <!-- Done Maintenance -->
+                            <button type="submit" name="action" value="available"
                                 class="w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded text-sm">
                                 Done Maintenance
+                            </button>
+
+                            <!-- Mark as Salvage -->
+                            <button type="submit" name="action" value="salvage"
+                                class="w-full bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm">
+                                Mark as Salvage
                             </button>
                         </form>
                     </div>
@@ -94,7 +104,6 @@ try {
             text: '<?= $message ?>',
             confirmButtonColor: '#16a34a'
         }).then(() => {
-            // Reload page after success to update list
             <?php if ($msgType === "success"): ?>
                 location.href = window.location.href;
             <?php endif; ?>

@@ -1,7 +1,7 @@
 CREATE DATABASE CAR_RENTAL_DB;
 
 
-USE CAR_RENTRAL_DB;
+USE CAR_RENTAL_DB;
 CREATE TABLE USER_DETAILS(
     USER_ID INT AUTO_INCREMENT PRIMARY KEY,
     FIRST_NAME VARCHAR(50) NOT NULL,
@@ -23,22 +23,6 @@ CREATE TABLE USER_ACCOUNT(
     FOREIGN KEY (USER_ID) REFERENCES USER_DETAILS(USER_ID) ON DELETE CASCADE
 );
 
--- Insert USER_DETAILS
-INSERT INTO USER_DETAILS (FIRST_NAME, LAST_NAME, GENDER, EMAIL, PHONE, ADDRESS, ROLE)
-VALUES
-('Customer', 'Ako', 'MALE', 'customer@gmail.com', '09171234567', 'Sample Address', 'customer'),
-('Admin', 'Ako', 'MALE', 'admin@gmail.com', '09181234567', 'Sample Address', 'admin'),
-('Agent', 'Ako', 'MALE', 'rentalagent@gmail.com', '09191234567', 'Sample Address', 'rental-agent');
-
--- Insert USER_ACCOUNT with Argon2id-hashed password "Carrental123?"
-INSERT INTO USER_ACCOUNT (USER_ID, PASSWORD, STATUS)
-VALUES
-(1, '$argon2id$v=19$m=65536,t=4,p=1$hhr7pZb6uoePtwQxqBz0xQ$+aRg9ATv7ff6Fi7aqyqWT7m0nENh3IUw7BGSEUO6oPA', 'ACTIVE'),
-(2, '$argon2id$v=19$m=65536,t=4,p=1$JOl5JcspFrX0s2RLeJ31fg$QpG41GbRSMtdzkE9MlErCHszUSeGrME8JmSvSogDoX4', 'ACTIVE'),
-(3, '$argon2id$v=19$m=65536,t=4,p=1$NnoI4GkO7tUPtB3NTl3HkA$4uyIcSniT8M2hJjGnDaKlFwdG07Blgrrjl43CR2E5qQ', 'ACTIVE');
-
-
-
 
 CREATE TABLE CAR_DETAILS (
     CAR_ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,17 +34,6 @@ CREATE TABLE CAR_DETAILS (
     PRICE DECIMAL(10,2) NOT NULL,
     CREATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
-
-INSERT INTO CAR_DETAILS (CAR_NAME, COLOR, THUMBNAIL_PATH, CAPACITY, PRICE)
-VALUES
-('Mitsubishi XPANDER GLS 1.5 AT 2022', 'Sterling Silver Metallic', '../../src/images/carsImage/Mitsubishi XPANDER GLS 1.5 AT 2022.png', 7, 3000.00),
-('Mitsubishi XPANDER GLS 1.5 AT 2023', 'Red Metallic', '../../src/images/carsImage/Mitsubishi XPANDER GLS 1.5 AT 2023.png', 7, 3000.00),
-('INNOVA 2.8 XE 2022', 'BLACK', '../../src/images/carsImage/INNOVA 2.8 XE 2022.png', 7, 3000.00),
-('Toyota Vios XLE 2022', 'Blue Mica Metallic', '../../src/images/carsImage/Toyota Vios XLE 2022.png', 5, 2000.00),
-('Toyota Vios XE 2019', 'Alumina Jade Green', '../../src/images/carsImage/Toyota Vios XE 2019.png', 5, 2000.00),
-('Toyota Vios XE 2022', 'Pearl White', '../../src/images/carsImage/Toyota Vios XE 2022.png', 5, 2000.00);
-
 
 
 
@@ -95,7 +68,7 @@ PAYMENT_TYPE ENUM('BOOKING FEE', 'PENALTY') DEFAULT 'BOOKING FEE',
 AMOUNT DECIMAL(10,2) NOT NULL DEFAULT 0,
 STATUS ENUM('UNPAID', 'PAID') DEFAULT 'UNPAID',
     CREATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (BOOKING_ID) REFERENCES CUSTOMER_BOOKING_DETAILS(BOOKING_ID)
+    FOREIGN KEY (BOOKING_ID) REFERENCES CUSTOMER_BOOKING_DETAILS(BOOKING_ID)  ON DELETE CASCADE
 );
 CREATE TABLE BOOKING_VEHICLE_INSPECTION (
     INSPECTION_ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -108,3 +81,29 @@ CREATE TABLE BOOKING_VEHICLE_INSPECTION (
     FOREIGN KEY (BOOKING_ID) REFERENCES CUSTOMER_BOOKING_DETAILS(BOOKING_ID) ON DELETE CASCADE,
     FOREIGN KEY (USER_ID) REFERENCES USER_DETAILS(USER_ID)ON DELETE CASCADE
 );
+
+
+
+INSERT INTO CAR_DETAILS (CAR_NAME, COLOR, THUMBNAIL_PATH, CAPACITY, PRICE)
+VALUES
+('Mitsubishi XPANDER GLS 1.5 AT 2022', 'Sterling Silver Metallic', '../../src/images/carsImage/Mitsubishi XPANDER GLS 1.5 AT 2022.png', 7, 3000.00),
+('Mitsubishi XPANDER GLS 1.5 AT 2023', 'Red Metallic', '../../src/images/carsImage/Mitsubishi XPANDER GLS 1.5 AT 2023.png', 7, 3000.00),
+('INNOVA 2.8 XE 2022', 'BLACK', '../../src/images/carsImage/INNOVA 2.8 XE 2022.png', 7, 3000.00),
+('Toyota Vios XLE 2022', 'Blue Mica Metallic', '../../src/images/carsImage/Toyota Vios XLE 2022.png', 5, 2000.00),
+('Toyota Vios XE 2019', 'Alumina Jade Green', '../../src/images/carsImage/Toyota Vios XE 2019.png', 5, 2000.00),
+('Toyota Vios XE 2022', 'Pearl White', '../../src/images/carsImage/Toyota Vios XE 2022.png', 5, 2000.00);
+
+
+
+
+-- Insert USER_ACCOUNT with Argon2id-hashed password "Carrental123?"
+INSERT INTO USER_ACCOUNT (USER_ID, PASSWORD, STATUS)
+VALUES
+(1, '$argon2id$v=19$m=65536,t=4,p=1$hhr7pZb6uoePtwQxqBz0xQ$+aRg9ATv7ff6Fi7aqyqWT7m0nENh3IUw7BGSEUO6oPA', 'ACTIVE'),
+(2, '$argon2id$v=19$m=65536,t=4,p=1$JOl5JcspFrX0s2RLeJ31fg$QpG41GbRSMtdzkE9MlErCHszUSeGrME8JmSvSogDoX4', 'ACTIVE'),
+(3, '$argon2id$v=19$m=65536,t=4,p=1$NnoI4GkO7tUPtB3NTl3HkA$4uyIcSniT8M2hJjGnDaKlFwdG07Blgrrjl43CR2E5qQ', 'ACTIVE');
+
+
+
+ALTER TABLE BOOKING_VEHICLE_INSPECTION
+ADD COLUMN TYPE ENUM('BEFORE', 'AFTER') DEFAULT 'AFTER' AFTER PENALTY;

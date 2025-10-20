@@ -313,7 +313,7 @@ Swal.fire({
                 <div class="space-y-4 text-sm text-gray-600">
                     <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
                         <h4 class="font-semibold text-gray-800 mb-2">1. Package Exclusion </h4>
-                        <p>The rental package includes the vehicle, fuel, toll fees, and a professional driver for the duration of your booking.</p>
+                        <p>The rental package does not include fuel, toll fees, or additional services during your booking period.</p>
                     </div>
                     <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
                         <h4 class="font-semibold text-gray-800 mb-2">2. Additional Hours</h4>
