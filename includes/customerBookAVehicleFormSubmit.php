@@ -56,6 +56,25 @@ if (isset($_POST['customer_booking']) && !isset($_POST['confirm_booking'])) {
         $booking_input_message['dropoff_date'] = "<p class='text-red-500 text-sm'>Drop-off date cannot be earlier than pickup date.</p>";
     }
 
+    // ✅ Add this block here
+    if (!empty($sanitized_pickup_date)) {
+        $today = strtotime(date('Y-m-d'));
+        $pickup = strtotime($sanitized_pickup_date);
+        $max_allowed = strtotime('+7 days', $today);
+
+        if ($pickup < $today) {
+            $booking_input_message['pickup_date'] = "<p class='text-red-500 text-sm'>Pickup date cannot be in the past.</p>";
+        } elseif ($pickup > $max_allowed) {
+            $booking_input_message['pickup_date'] = "<p class='text-red-500 text-sm'>Pickup date can only be up to 7 days from today.</p>";
+        }
+    }
+
+    if (empty($sanitized_dropoff_date)) {
+        $booking_input_message['dropoff_date'] = "<p class='text-red-500 text-sm'>Drop-off date is required.</p>";
+    } elseif (!empty($sanitized_pickup_date) && strtotime($sanitized_dropoff_date) < strtotime($sanitized_pickup_date)) {
+        $booking_input_message['dropoff_date'] = "<p class='text-red-500 text-sm'>Drop-off date cannot be earlier than pickup date.</p>";
+    }
+
     $hasErrorsBooking = array_filter($booking_input_message);
 
     if (!$hasErrorsBooking) {
@@ -219,7 +238,6 @@ Swal.fire({
             autocomplete="off"
             pattern="[0-9/]*"
             type="text"
-            value="<?= htmlspecialchars($sanitized_pickup_date ?? '') ?>"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dateInput"
             placeholder="Select pickup date">
         <span class="mx-4 text-black">to</span>
@@ -230,7 +248,6 @@ Swal.fire({
             autocomplete="off"
             pattern="[0-9/]*"
             type="text"
-            value="<?= htmlspecialchars($sanitized_dropoff_date ?? '') ?>"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dateInput"
             placeholder="Select drop-off date">
 

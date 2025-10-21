@@ -92,7 +92,7 @@ try {
         <div id="step1">
             <h2 class="text-xl font-bold mb-4">Scan QR to Pay</h2>
             <p class="mb-2">Use GCash app to scan this QR code:</p>
-            <img src="your-gcash-qr.png" alt="GCash QR" class="mx-auto w-48 mb-4" />
+            <img src="../../src/images/qrCodePayment/qr.png" alt="GCash QR" class="mx-auto w-48 mb-4" />
             <button onclick="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded w-full">
                 Next
             </button>
