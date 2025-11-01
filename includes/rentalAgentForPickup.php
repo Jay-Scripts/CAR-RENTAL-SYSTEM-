@@ -79,12 +79,14 @@ try {
 </div>
 <!-- Add SweetAlert2 CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     function updateBookingStatus(bookingId) {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "This booking will be marked as ONGOING.",
+            title: 'Mark Booking as Ongoing',
+            html: `
+            <p>This booking will be marked as ONGOING.</p>
+            <input type="text" id="carStatusNote" class="swal2-input" placeholder="Enter car status note">
+        `,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#16A34A', // green
@@ -92,12 +94,14 @@ try {
             confirmButtonText: 'Yes, mark it!'
         }).then((result) => {
             if (result.isConfirmed) {
+                const carStatusNote = document.getElementById('carStatusNote').value;
+
                 fetch('../../includes/rentalAgentForPickupUpdateStatus.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         },
-                        body: 'booking_id=' + bookingId + '&new_status=ONGOING'
+                        body: `booking_id=${bookingId}&new_status=ONGOING&car_status_note=${encodeURIComponent(carStatusNote)}`
                     })
                     .then(res => res.text())
                     .then(data => {
@@ -108,9 +112,7 @@ try {
                                 icon: 'success',
                                 timer: 2000,
                                 showConfirmButton: false
-                            }).then(() => {
-                                location.reload();
-                            });
+                            }).then(() => location.reload());
                         } else {
                             Swal.fire({
                                 title: 'Error!',
@@ -120,9 +122,7 @@ try {
                             });
                         }
                     })
-                    .catch(err => {
-                        Swal.fire('Error!', err, 'error');
-                    });
+                    .catch(err => Swal.fire('Error!', err, 'error'));
             }
         });
     }

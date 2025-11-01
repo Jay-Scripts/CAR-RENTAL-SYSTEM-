@@ -3,25 +3,27 @@
 try {
     // Fetch bookings with CHECKING status
     $sql = "
-        SELECT 
-            b.BOOKING_ID, 
-            b.PICKUP_DATE, 
-            b.DROP_OFF_DATE, 
-            b.TRIP_DETAILS,
-            b.TOTAL_COST,
-            b.STATUS,
-            c.CAR_ID,
-            c.CAR_NAME, 
-            c.COLOR, 
-            c.THUMBNAIL_PATH,
-            u.FIRST_NAME, 
-            u.LAST_NAME
-        FROM CUSTOMER_BOOKING_DETAILS b
-        INNER JOIN CAR_DETAILS c ON b.CAR_ID = c.CAR_ID
-        INNER JOIN USER_DETAILS u ON b.USER_ID = u.USER_ID
-        WHERE b.STATUS = 'CHECKING' AND c.STATUS = 'RENTED'
-        ORDER BY b.CREATED_AT DESC
-    ";
+    SELECT 
+        b.BOOKING_ID, 
+        b.PICKUP_DATE, 
+        b.DROP_OFF_DATE, 
+        b.TRIP_DETAILS,
+        b.TOTAL_COST,
+        b.STATUS,
+        b.CAR_STATUS_NOTE,  
+        c.CAR_ID,
+        c.CAR_NAME, 
+        c.COLOR, 
+        c.THUMBNAIL_PATH,
+        u.FIRST_NAME, 
+        u.LAST_NAME
+    FROM CUSTOMER_BOOKING_DETAILS b
+    INNER JOIN CAR_DETAILS c ON b.CAR_ID = c.CAR_ID
+    INNER JOIN USER_DETAILS u ON b.USER_ID = u.USER_ID
+    WHERE b.STATUS = 'CHECKING' AND c.STATUS = 'RENTED'
+    ORDER BY b.CREATED_AT DESC
+";
+
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,7 +45,13 @@ try {
                     <p class="text-sm text-gray-600">Pickup: <?= date("M d, Y H:i", strtotime($b['PICKUP_DATE'])) ?></p>
                     <p class="text-sm text-gray-600">Drop-off: <?= date("M d, Y H:i", strtotime($b['DROP_OFF_DATE'])) ?></p>
                     <p class="mt-2 font-bold text-orange-600">₱<?= number_format($b['TOTAL_COST'], 2) ?></p>
+
+                    <!-- Car Status Notes -->
+                    <p class="mt-1 text-sm text-gray-700 italic">
+                        Car Status Notes: <?= htmlspecialchars($b['CAR_STATUS_NOTE'] ?? 'No notes yet') ?>
+                    </p>
                 </div>
+
                 <div class="flex justify-between items-center bg-gray-50 p-3">
                     <span class="px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full"><?= htmlspecialchars($b['STATUS']) ?></span>
                     <button
@@ -62,6 +70,7 @@ try {
 <!-- Popup Form -->
 <div id="popupForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white w-full max-w-2xl rounded-lg shadow-lg p-6 relative">
+
         <form id="inspectionForm" method="POST" enctype="multipart/form-data" class="m-5">
             <input type="hidden" name="booking_id" id="formBookingId">
 
