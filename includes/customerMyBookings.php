@@ -14,7 +14,6 @@
         <?php
         $user_id = $_SESSION['user_id'];
 
-        // Fetch bookings including the BOOKING_ID for invoice link
         $selectBookings = "
             SELECT 
                 cbd.BOOKING_ID,
@@ -55,15 +54,20 @@
                     <td class='px-3 py-2'>₱" . number_format($r['amount'], 2) . "</td>
                     <td class='px-3 py-2 font-semibold {$statusColor}'>{$r['status']}</td>
                     <td class='px-3 py-2'>{$r['created_at']}</td>
-                    <td class='px-3 py-2'>
-                       <a href='../../includes/customerGenerateInvoice.php?booking_id={$r['BOOKING_ID']}' 
-   target='_blank' 
-   class='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs'>
-   Generate
-</a>
+                    <td class='px-3 py-2'>";
 
-                    </td>
-                </tr>";
+                // Show "Generate" button only for allowed statuses
+                if (in_array($r['status'], ['ONGOING', 'EXTENDED', 'CHECKING', 'COMPLETED'])) {
+                    echo "<a href='../../includes/customerGenerateInvoice.php?booking_id={$r['BOOKING_ID']}' 
+                            target='_blank' 
+                            class='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs'>
+                            Generate
+                          </a>";
+                } else {
+                    echo "<span class='text-gray-400 text-xs'>N/A</span>";
+                }
+
+                echo "</td></tr>";
             }
         } else {
             echo "<tr><td colspan='7' class='text-center py-4 text-gray-500'>No bookings found</td></tr>";
