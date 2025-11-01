@@ -77,6 +77,7 @@
     </div>
 
     <!-- Car Maintenance Reports -->
+    <!-- Car Maintenance Reports -->
     <div>
         <h3 class="text-xl font-semibold mb-2 text-gray-700">Car Maintenance Reports</h3>
         <div class="overflow-x-auto">
@@ -88,6 +89,7 @@
                         <th class="border border-gray-300 px-3 py-2 text-left">Color</th>
                         <th class="border border-gray-300 px-3 py-2 text-left">Capacity</th>
                         <th class="border border-gray-300 px-3 py-2 text-left">Status</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left">Reason</th> <!-- New column -->
                         <th class="border border-gray-300 px-3 py-2 text-left">Added Date</th>
                     </tr>
                 </thead>
@@ -98,25 +100,30 @@
 
                     if ($maintenanceStmt->rowCount() > 0) {
                         foreach ($maintenanceStmt as $car) {
+                            // Default reason for maintenance
+                            $reason = "Oil Change";
+
                             echo "
-              <tr class='hover:bg-gray-50'>
+            <tr class='hover:bg-gray-50'>
                 <td class='border border-gray-300 px-3 py-2'>{$car['CAR_ID']}</td>
                 <td class='border border-gray-300 px-3 py-2'>{$car['CAR_NAME']}</td>
                 <td class='border border-gray-300 px-3 py-2'>{$car['COLOR']}</td>
                 <td class='border border-gray-300 px-3 py-2'>{$car['CAPACITY']} seats</td>
                 <td class='border border-gray-300 px-3 py-2 text-yellow-600 font-medium'>{$car['STATUS']}</td>
+                <td class='border border-gray-300 px-3 py-2'>{$reason}</td>
                 <td class='border border-gray-300 px-3 py-2'>" . date("M d, Y", strtotime($car['CREATED_AT'])) . "</td>
-              </tr>
-              ";
+            </tr>
+            ";
                         }
                     } else {
-                        echo "<tr><td colspan='6' class='text-center py-4 text-gray-500'>No cars under maintenance.</td></tr>";
+                        echo "<tr><td colspan='7' class='text-center py-4 text-gray-500'>No cars under maintenance.</td></tr>";
                     }
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
+
 </section>
 
 <!-- Image Preview Modal -->
