@@ -1,7 +1,7 @@
 <?php
 
 try {
-    // Fetch bookings with CHECKING status
+    // Fetch bookings with CHECKING or EXTENDED status
     $sql = "
     SELECT 
         b.BOOKING_ID, 
@@ -20,9 +20,10 @@ try {
     FROM CUSTOMER_BOOKING_DETAILS b
     INNER JOIN CAR_DETAILS c ON b.CAR_ID = c.CAR_ID
     INNER JOIN USER_DETAILS u ON b.USER_ID = u.USER_ID
-    WHERE b.STATUS = 'CHECKING' AND c.STATUS = 'RENTED'
+    WHERE b.STATUS IN ('CHECKING', 'EXTENDED') 
+      AND c.STATUS = 'RENTED'
     ORDER BY b.CREATED_AT DESC
-";
+    ";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();

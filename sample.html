@@ -1,188 +1,221 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modal Terms & Conditions</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-50">
-    <!-- Popup Modal -->
-    <div
-      id="popupForm"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
-    >
-      <div class="bg-white w-full max-w-2xl rounded-lg shadow-lg p-6 relative">
-        <h2 class="text-xl font-bold mb-4">Exterior Checking</h2>
+<?php
 
-        <form id="verificationForm" enctype="multipart/form-data">
-          <input type="hidden" name="booking_id" id="formBookingId" />
+// Fetch bookings with CHECKING status
+try {
+    $sql = "
+        SELECT 
+            b.BOOKING_ID, 
+            b.PICKUP_DATE, 
+            b.DROP_OFF_DATE, 
+            b.TRIP_DETAILS,
+            b.TOTAL_COST,
+            b.STATUS,
+            c.CAR_NAME, 
+            c.COLOR, 
+            c.THUMBNAIL_PATH,
+            u.FIRST_NAME, 
+            u.LAST_NAME
+        FROM CUSTOMER_BOOKING_DETAILS b
+        INNER JOIN CAR_DETAILS c ON b.CAR_ID = c.CAR_ID
+        INNER JOIN USER_DETAILS u ON b.USER_ID = u.USER_ID
+        WHERE b.STATUS = 'CHECKING'
+        ORDER BY b.CREATED_AT DESC
+    ";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error fetching bookings: " . $e->getMessage());
+}
 
-          <!-- Checklist -->
-          <div class="space-y-4">
-            <!-- One condition -->
-            <div>
-              <label class="block font-medium"
-                >Body condition (no dents/scratches)</label
-              >
-              <div class="flex gap-3 mt-1">
-                <label
-                  ><input
-                    type="radio"
-                    name="body_condition"
-                    value="OK"
-                    required
-                  />
-                  ✅</label
-                >
-                <label
-                  ><input type="radio" name="body_condition" value="NOT_OK" />
-                  ❌</label
-                >
-              </div>
+// Handle inspection form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['inspection_submit'])) {
+    $booking_id = intval($_POST['booking_id'] ?? 0);
+    if ($booking_id > 0) {
+        $checks = [
+            'Body condition'       => $_POST['body_condition'] ?? '',
+            'Windows scratches'    => $_POST['windows_scratches'] ?? '',
+            'Windows cracks'       => $_POST['windows_cracks'] ?? '',
+            'Side mirror'          => $_POST['side_mirror'] ?? '',
+            'Lights'               => $_POST['lights'] ?? '',
+            'Tires'                => $_POST['tires'] ?? '',
+            'Wipers'               => $_POST['wipers'] ?? ''
+        ];
+        $notes = trim($_POST['notes'] ?? '');
+
+        // Save uploaded images
+        $uploadDir = "../uploads/booking_checks/" . $booking_id . "/";
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+        $uploadedPaths = [];
+        if (!empty($_FILES['images']['name'][0])) {
+            foreach ($_FILES['images']['tmp_name'] as $i => $tmpName) {
+                $filename = basename($_FILES['images']['name'][$i]);
+                $targetPath = $uploadDir . time() . "_" . $filename;
+                if (move_uploaded_file($tmpName, $targetPath)) {
+                    $uploadedPaths[] = $targetPath;
+                }
+            }
+        }
+
+        // Prepare inspection summary
+        $inspectionSummary = "Exterior Check:\n";
+        foreach ($checks as $item => $result) {
+            $inspectionSummary .= "- $item: $result\n";
+        }
+        if ($notes) $inspectionSummary .= "Notes: $notes\n";
+        if (!empty($uploadedPaths)) {
+            $inspectionSummary .= "Images: " . implode(", ", $uploadedPaths) . "\n";
+        }
+
+        try {
+            $stmt = $conn->prepare("
+                UPDATE CUSTOMER_BOOKING_DETAILS 
+                SET STATUS = 'FOR PICKUP',
+                    TRIP_DETAILS = CONCAT(TRIP_DETAILS, '\n', :summary)
+                WHERE BOOKING_ID = :booking_id
+            ");
+            $stmt->execute([
+                ':summary' => $inspectionSummary,
+                ':booking_id' => $booking_id
+            ]);
+            header("Location: " . $_SERVER['PHP_SELF']); // refresh page
+            exit;
+        } catch (PDOException $e) {
+            die("DB Error: " . $e->getMessage());
+        }
+    }
+}
+?>
+
+<h2 class="text-2xl font-bold mb-4">Bookings for Exterior Checking</h2>
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <?php if (!empty($bookings)): ?>
+        <?php foreach ($bookings as $b): ?>
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+                <img src="<?= htmlspecialchars($b['THUMBNAIL_PATH']) ?>" alt="Car Image" class="object-cover rounded-2xl p-5">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($b['CAR_NAME']) ?> (<?= htmlspecialchars($b['COLOR']) ?>)</h3>
+                    <p class="text-sm text-gray-600">Booked by: <?= htmlspecialchars($b['FIRST_NAME'] . ' ' . $b['LAST_NAME']) ?></p>
+                    <p class="text-sm text-gray-600">Pickup: <?= date("M d, Y H:i", strtotime($b['PICKUP_DATE'])) ?></p>
+                    <p class="text-sm text-gray-600">Drop-off: <?= date("M d, Y H:i", strtotime($b['DROP_OFF_DATE'])) ?></p>
+                    <p class="mt-2 font-bold text-orange-600">₱<?= number_format($b['TOTAL_COST'], 2) ?></p>
+                </div>
+                <div class="flex justify-between items-center bg-gray-50 p-3">
+                    <span class="px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full"><?= htmlspecialchars($b['STATUS']) ?></span>
+                    <button
+                        onclick="openForm(<?= $b['BOOKING_ID'] ?>)"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                        Exterior Check
+                    </button>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p class="text-gray-600 col-span-full">No bookings for checking.</p>
+    <?php endif; ?>
+</div>
+<!-- Multi-Step Popup -->
+<div id="popupForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white w-full max-w-3xl rounded-lg shadow-lg p-6 relative">
+        <h2 id="formTitle" class="text-xl font-bold mb-4">Exterior Checking</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="booking_id" id="formBookingId">
+            <input type="hidden" name="inspection_submit" value="1">
+
+            <!-- STEP 1: Exterior -->
+            <div id="step1" class="step space-y-5">
+                <h3 class="font-semibold text-lg text-gray-700">Exterior Check</h3>
+                <div>
+                    <label class="block font-medium">Body condition (no dents/scratches)</label>
+                    <div class="flex gap-4 mt-1">
+                        <label><input type="radio" name="body_condition" value="OK" required> ✅</label>
+                        <label><input type="radio" name="body_condition" value="NOT_OK"> ❌</label>
+                    </div>
+                </div>
+                <!-- repeat for other exterior items -->
             </div>
 
-            <div>
-              <label class="block font-medium"
-                >Windows & Windshield (no scratches)</label
-              >
-              <div class="flex gap-3 mt-1">
-                <label
-                  ><input
-                    type="radio"
-                    name="windows_scratches"
-                    value="OK"
-                    required
-                  />
-                  ✅</label
-                >
-                <label
-                  ><input
-                    type="radio"
-                    name="windows_scratches"
-                    value="NOT_OK"
-                  />
-                  ❌</label
-                >
-              </div>
+            <!-- STEP 2: Interior -->
+            <div id="step2" class="step space-y-5 hidden">
+                <h3 class="font-semibold text-lg text-gray-700">Interior Check</h3>
+                <div>
+                    <label class="block font-medium">Clean Interior</label>
+                    <div class="flex gap-4 mt-1">
+                        <label><input type="radio" name="clean_interior" value="OK" required> ✅</label>
+                        <label><input type="radio" name="clean_interior" value="NOT_OK"> ❌</label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-medium">Seatbelts working</label>
+                    <div class="flex gap-4 mt-1">
+                        <label><input type="radio" name="seatbelts" value="OK" required> ✅</label>
+                        <label><input type="radio" name="seatbelts" value="NOT_OK"> ❌</label>
+                    </div>
+                </div>
+                <!-- repeat for other interior items -->
             </div>
 
-            <div>
-              <label class="block font-medium"
-                >Windows & Windshield (no cracks)</label
-              >
-              <div class="flex gap-3 mt-1">
-                <label
-                  ><input
-                    type="radio"
-                    name="windows_cracks"
-                    value="OK"
-                    required
-                  />
-                  ✅</label
-                >
-                <label
-                  ><input type="radio" name="windows_cracks" value="NOT_OK" />
-                  ❌</label
-                >
-              </div>
+            <!-- Buttons -->
+            <div class="flex justify-between mt-6">
+                <button type="button" id="prevBtn" onclick="prevStep()" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded hidden">
+                    Back
+                </button>
+                <div class="ml-auto flex gap-2">
+                    <button type="button" id="nextBtn" onclick="nextStep()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                        Next
+                    </button>
+                    <button type="submit" id="submitBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded hidden">
+                        Confirm
+                    </button>
+                </div>
             </div>
-
-            <div>
-              <label class="block font-medium">Side mirror intact</label>
-              <div class="flex gap-3 mt-1">
-                <label
-                  ><input type="radio" name="side_mirror" value="OK" required />
-                  ✅</label
-                >
-                <label
-                  ><input type="radio" name="side_mirror" value="NOT_OK" />
-                  ❌</label
-                >
-              </div>
-            </div>
-
-            <div>
-              <label class="block font-medium">All lights functional</label>
-              <div class="flex gap-3 mt-1">
-                <label
-                  ><input type="radio" name="lights" value="OK" required />
-                  ✅</label
-                >
-                <label
-                  ><input type="radio" name="lights" value="NOT_OK" /> ❌</label
-                >
-              </div>
-            </div>
-
-            <div>
-              <label class="block font-medium">Tires in good condition</label>
-              <div class="flex gap-3 mt-1">
-                <label
-                  ><input type="radio" name="tires" value="OK" required />
-                  ✅</label
-                >
-                <label
-                  ><input type="radio" name="tires" value="NOT_OK" /> ❌</label
-                >
-              </div>
-            </div>
-
-            <div>
-              <label class="block font-medium"
-                >Wiper blades in good condition</label
-              >
-              <div class="flex gap-3 mt-1">
-                <label
-                  ><input type="radio" name="wipers" value="OK" required />
-                  ✅</label
-                >
-                <label
-                  ><input type="radio" name="wipers" value="NOT_OK" /> ❌</label
-                >
-              </div>
-            </div>
-
-            <!-- Notes -->
-            <div>
-              <label class="block font-medium">Notes for extra info</label>
-              <textarea
-                name="notes"
-                class="w-full border rounded p-2 mt-1"
-              ></textarea>
-            </div>
-
-            <!-- Image Upload -->
-            <div>
-              <label class="block font-medium">Upload Proof Images</label>
-              <input
-                type="file"
-                name="images[]"
-                multiple
-                accept="image/*"
-                class="mt-1 border rounded p-2 w-full"
-              />
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="flex justify-end gap-2 mt-6">
-            <button
-              type="button"
-              onclick="closeForm()"
-              class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-            >
-              Confirm
-            </button>
-          </div>
         </form>
-      </div>
     </div>
-  </body>
-</html>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 2; // change to 4 later
+
+    function openForm(bookingId) {
+        document.getElementById("formBookingId").value = bookingId;
+        currentStep = 1;
+        showStep(currentStep);
+        document.getElementById("popupForm").classList.remove("hidden");
+    }
+
+    function closeForm() {
+        document.getElementById("popupForm").classList.add("hidden");
+    }
+
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    function showStep(step) {
+        document.querySelectorAll(".step").forEach((el, i) => {
+            el.classList.add("hidden");
+            if (i + 1 === step) el.classList.remove("hidden");
+        });
+
+        document.getElementById("formTitle").innerText =
+            step === 1 ? "Exterior Checking" :
+            step === 2 ? "Interior Checking" : "Inspection";
+
+        document.getElementById("prevBtn").classList.toggle("hidden", step === 1);
+        document.getElementById("nextBtn").classList.toggle("hidden", step === totalSteps);
+        document.getElementById("submitBtn").classList.toggle("hidden", step !== totalSteps);
+    }
+</script>

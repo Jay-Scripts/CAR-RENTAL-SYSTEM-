@@ -11,11 +11,12 @@ $ongoing_count = $conn->query("
     WHERE STATUS = 'ONGOING'
 ")->fetchColumn();
 
-// Checking count
+// Checking + Extended count
 $checking_count = $conn->query("
     SELECT COUNT(*) FROM CUSTOMER_BOOKING_DETAILS
-    WHERE STATUS = 'CHECKING'
+    WHERE STATUS IN ('CHECKING', 'EXTENDED')
 ")->fetchColumn();
+
 ?>
 
 <h2 class="text-2xl font-bold mb-2">Dashboard</h2>
