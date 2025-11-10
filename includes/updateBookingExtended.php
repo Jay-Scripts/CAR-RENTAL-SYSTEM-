@@ -5,11 +5,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 date_default_timezone_set('Asia/Manila');
-$today = date('Y-m-d'); // only date, no time
+$today = date('Y-m-d'); // only date
 
 // Fetch bookings that are CHECKING and drop off date has passed
 $stmt = $conn->prepare("
-    SELECT cbd.BOOKING_ID, cbd.STATUS, u.EMAIL, u.FIRST_NAME, c.CAR_NAME, cbd.DROP_OFF_DATE
+    SELECT cbd.BOOKING_ID, cbd.STATUS, u.USER_ID, u.EMAIL, u.FIRST_NAME, c.CAR_NAME, cbd.DROP_OFF_DATE
     FROM CUSTOMER_BOOKING_DETAILS cbd
     JOIN USER_DETAILS u ON cbd.USER_ID = u.USER_ID
     JOIN CAR_DETAILS c ON cbd.CAR_ID = c.CAR_ID
@@ -24,6 +24,7 @@ $updatedCount = 0;
 foreach ($bookings as $b) {
     $bookingId     = $b['BOOKING_ID'];
     $prevStatus    = $b['STATUS'];
+    $userId        = $b['USER_ID'];
     $customerEmail = $b['EMAIL'];
     $customerName  = $b['FIRST_NAME'];
     $carName       = $b['CAR_NAME'];
@@ -40,13 +41,14 @@ foreach ($bookings as $b) {
     // 2️⃣ Insert log
     $log = $conn->prepare("
         INSERT INTO BOOKING_STATUS_LOGS 
-        (BOOKING_ID, PREVIOUS_STATUS, NEW_STATUS, CHANGE_SOURCE) 
-        VALUES (:bid, :prev, :new, 'SYSTEM')
+        (BOOKING_ID, PREVIOUS_STATUS, NEW_STATUS, CHANGED_BY, CHANGE_SOURCE, REMARKS) 
+        VALUES (:bid, :prev, :new, NULL, 'SYSTEM', :remarks)
     ");
     $log->execute([
-        ':bid'  => $bookingId,
-        ':prev' => $prevStatus,
-        ':new'  => 'EXTENDED'
+        ':bid'     => $bookingId,
+        ':prev'    => $prevStatus,
+        ':new'     => 'EXTENDED',
+        ':remarks' => 'Drop-off date exceeded'
     ]);
 
     $updatedCount++;

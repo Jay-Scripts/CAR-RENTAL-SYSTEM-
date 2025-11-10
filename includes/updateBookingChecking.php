@@ -29,7 +29,7 @@ foreach ($bookings as $b) {
     $carName       = $b['CAR_NAME'];
     $dropOffDate   = date('F j, Y H:i', strtotime($b['DROP_OFF_DATE']));
 
-    // 1️⃣ Update status to CHECKING
+    // 1️ Update status to CHECKING
     $update = $conn->prepare("
         UPDATE CUSTOMER_BOOKING_DETAILS 
         SET STATUS = 'CHECKING' 
@@ -37,11 +37,11 @@ foreach ($bookings as $b) {
     ");
     $update->execute([':id' => $bookingId]);
 
-    // 2️⃣ Insert log
+    // 2️ Insert system-triggered log
     $log = $conn->prepare("
         INSERT INTO BOOKING_STATUS_LOGS 
-        (BOOKING_ID, PREVIOUS_STATUS, NEW_STATUS, CHANGE_SOURCE) 
-        VALUES (:bid, :prev, :new, 'SYSTEM')
+        (BOOKING_ID, PREVIOUS_STATUS, NEW_STATUS, CHANGED_BY, CHANGE_SOURCE, REMARKS) 
+        VALUES (:bid, :prev, :new, NULL, 'SYSTEM', 'Auto status update by system')
     ");
     $log->execute([
         ':bid'  => $bookingId,
@@ -51,7 +51,7 @@ foreach ($bookings as $b) {
 
     $updatedCount++;
 
-    // 3️⃣ Send reminder email
+    // 3️ Send reminder email
     try {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
