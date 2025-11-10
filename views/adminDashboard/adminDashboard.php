@@ -1038,6 +1038,15 @@ LIMIT :limit OFFSET :offset
   <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
   <script src="../../js/adminModules.js"></script>
   <script src="../../js/adminDropdownLogout.js"></script>
+  <script>
+    // Run every 2 seconds
+    setInterval(() => {
+      fetch('../../includes/updateBookingPickUp.php')
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(err => console.error('Error:', err));
+    }, 2000);
+  </script>
 
   <!--
     ===================================================================================================================================================================================================================================================
