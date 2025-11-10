@@ -62,15 +62,18 @@ try {
         $carStatus     = 'AVAILABLE';
         $emailSubject  = 'Payment Unsuccessful : Action Required';
         $emailBody     = "
-            <p>Dear {$customerName},</p>
-            <p>Unfortunately, your payment for the <b>{$carName}</b> rental could not be verified.</p>
-            <p><b>Booking ID:</b> #{$booking_id}</p>
-            <p><b>Pickup Date:</b> {$pickupDate}<br>
-               <b>Drop-off Date:</b> {$dropOffDate}<br>
-               <b>Total Amount:</b> ₱{$totalAmount}</p>
-            <p>Please contact our support team for assistance.</p>
-        ";
+        <p>Dear {$customerName},</p>
+        <p>Unfortunately, your payment for the <b>{$carName}</b> rental has declined.</p>
+        <p>As a result, your reservation has been automatically cancelled.</p>
+        <p>Payment will be refund with in the day.</p>
+        <p>Please make a new booking if you still wish to rent a vehicle. Thank you for your understanding.</p>
+        <p><b>Booking ID:</b> #{$booking_id}</p>
+        <p><b>Pickup Date:</b> {$pickupDate}<br>
+           <b>Drop-off Date:</b> {$dropOffDate}<br>
+           <b>Total Amount:</b> ₱{$totalAmount}</p>
+    ";
     }
+
 
     // 3️ Update booking status
     $stmt = $conn->prepare("
