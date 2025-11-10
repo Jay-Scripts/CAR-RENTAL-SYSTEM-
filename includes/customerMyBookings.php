@@ -57,7 +57,7 @@
                     <td class='px-3 py-2'>";
 
                 // Show "Generate" button only for allowed statuses
-                if (in_array($r['status'], ['ONGOING', 'EXTENDED', 'CHECKING', 'COMPLETED'])) {
+                if (in_array($r['status'], ['FOR PICKUP', 'ONGOING', 'EXTENDED', 'CHECKING', 'COMPLETED'])) {
                     echo "<a href='../../includes/customerGenerateInvoice.php?booking_id={$r['BOOKING_ID']}' 
                             target='_blank' 
                             class='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs'>

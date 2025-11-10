@@ -86,8 +86,9 @@ if (isset($_POST['customer_booking']) && !isset($_POST['confirm_booking'])) {
             $total_days = $interval->days ?: 1;
 
             // Fetch car details
-            $stmt = $conn->prepare("SELECT CAR_NAME, COLOR, CAPACITY, PRICE, THUMBNAIL_PATH 
-                                    FROM CAR_DETAILS WHERE CAR_ID = :car_id LIMIT 1");
+            $stmt = $conn->prepare("SELECT CAR_NAME, COLOR, CAPACITY, PRICE, THUMBNAIL_PATH, PLATE_NUM 
+                        FROM CAR_DETAILS WHERE CAR_ID = :car_id LIMIT 1");
+
             $stmt->execute([':car_id' => $sanitized_car_id]);
             $carRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -105,10 +106,12 @@ Swal.fire({
     <div style='text-align:left; font-family:Arial; line-height:1.5;'>
       <div style='margin-bottom:15px;'>
         <img src=\"{$carRow['THUMBNAIL_PATH']}\" style='max-width:250px; height:auto; border-radius:8px;'>
-        <h3 style='margin:10px 0 5px; font-size:16px;'>Car Model : {$carRow['CAR_NAME']}</h3>
-        <p style='margin:0; font-size:14px; color:#444;'>
-         • Color: {$carRow['COLOR']} <br> • Capacity: {$carRow['CAPACITY']} Passengers
-        </p>
+   <h3 style='margin:10px 0 5px; font-size:16px;'>Car Model : {$carRow['CAR_NAME']}</h3>
+<p style='margin:0; font-size:14px; color:#444;'>
+   • Plate No: {$carRow['PLATE_NUM']} <br>
+   • Color: {$carRow['COLOR']} <br>
+   • Capacity: {$carRow['CAPACITY']} Passengers
+</p>
       </div>
       <p><b>Pick-up:</b> {$sanitized_pickup_date}</p>
       <p><b>Drop-off:</b> {$sanitized_dropoff_date}</p>
@@ -278,7 +281,9 @@ Swal.fire({
                     <div class="car-content border rounded p-4 w-100 hover:shadow-md">
                         <img src="<?= $car['THUMBNAIL_PATH'] ?>" class="w-full h-40 object-contain mb-2">
                         <div class="text-center font-bold"><?= $car['CAR_NAME'] ?></div>
+                        <div class="text-center text-sm text-gray-600">Plate No: <?= $car['PLATE_NUM'] ?></div>
                         <div class="text-center">• <?= $car['CAPACITY'] ?> Passenger • <?= $car['COLOR'] ?></div>
+
                         <div class="text-center text-orange-500 font-semibold">PHP <?= number_format($car['PRICE'], 2) ?></div>
                     </div>
                 </label>

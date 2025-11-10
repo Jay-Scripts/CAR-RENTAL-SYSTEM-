@@ -16,9 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // 1️⃣ Get user email
-    $stmt = $conn->prepare("SELECT u.EMAIL, u.FIRST_NAME FROM USER_ACCOUNT ua 
-                            JOIN USER_DETAILS u ON ua.USER_ID = u.USER_ID
-                            WHERE ua.ACCOUNT_ID = :id");
+    $stmt = $conn->prepare("
+        SELECT u.EMAIL, u.FIRST_NAME 
+        FROM USER_ACCOUNT ua 
+        JOIN USER_DETAILS u ON ua.USER_ID = u.USER_ID
+        WHERE ua.ACCOUNT_ID = :id
+    ");
     $stmt->execute([':id' => $account_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -33,29 +36,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $success = $stmt->execute([':status' => $status, ':id' => $account_id]);
 
     if ($success && $stmt->rowCount() > 0) {
-
-        // 3️⃣ Send email notification
         try {
+            // 3️⃣ Send email notification
             $mail = new PHPMailer(true);
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'carrentaljemjem@gmail.com';
-            $mail->Password   = 'yaiu cwqf vehd uwtg'; // App password
-            $mail->SMTPSecure = 'tls';
+            $mail->Password   = 'yaiu cwqf vehd uwtg'; // Gmail App Password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 
             $mail->setFrom('carrentaljemjem@gmail.com', 'Car Rental System');
             $mail->addAddress($user['EMAIL'], $user['FIRST_NAME']);
-
             $mail->isHTML(true);
-            $mail->Subject = 'Account Status Update';
-            $actionText = $status === 'ACTIVE' ? 'activated' : 'declined';
-            $mail->Body    = "Hi {$user['FIRST_NAME']},<br><br>Your account has been <b>{$actionText}</b>.<br><br>Regards,<br>Car Rental System";
+
+            // 4️⃣ Define email subject and message
+            if ($status === 'ACTIVE') {
+                $mail->Subject = 'Account Registration Approved!';
+                $mail->Body = "
+                    <p>Dear {$user['FIRST_NAME']},</p>
+                    <p>Your account registration has been successfully <b>approved</b>!</p>
+                    <p>You can now log in to your account and start exploring our car rental services.</p>
+                    <p>Thank you for choosing <b>Car Rental System</b>. We’re excited to serve your travel needs!</p>
+                    <br>
+                    <p>Best regards,<br><b>Car Rental System Team</b></p>
+                ";
+            } else {
+                $mail->Subject = 'Account Registration Declined';
+                $mail->Body = "
+                    <p>Dear {$user['FIRST_NAME']},</p>
+                    <p>We regret to inform you that your account registration has been <b>declined</b>.</p>
+                    <p>If you believe this was a mistake or wish to reapply, please contact our support team.</p>
+                    <br>
+                    <p>Best regards,<br><b>Car Rental System Team</b></p>
+                ";
+            }
 
             $mail->send();
         } catch (Exception $e) {
-            // Optional: log error but don't block response
+            error_log("Mail error: " . $mail->ErrorInfo);
         }
 
         echo "success";
