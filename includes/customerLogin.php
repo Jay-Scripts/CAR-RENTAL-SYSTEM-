@@ -40,53 +40,63 @@ if (isset($_POST['customerLogin'])) {
     if (!$hasErrors) {
         try {
             $select_statement_existing_customer = "
-                SELECT ua.user_id, ua.password, ud.role, ud.first_name 
-                FROM user_account ua
-                JOIN user_details ud ON ua.user_id = ud.user_id
-                WHERE ud.email = :email
-            ;";
+    SELECT ua.user_id, ua.password, ua.status, ud.role, ud.first_name 
+    FROM user_account ua
+    JOIN user_details ud ON ua.user_id = ud.user_id
+    WHERE ud.email = :email
+;";
             $stmt = $conn->prepare($select_statement_existing_customer);
             $stmt->execute([':email' => $sanitized_email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($sanitized_password, $user['password'])) {
-                if ($user['role'] === 'customer') {
+                if ($user['status'] !== 'ACTIVE') {
+                    // Account is inactive
+                    $login_message = "
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Account Inactive',
+                text: 'Your account is not active. Please contact support.'
+            });
+        </script>";
+                } elseif ($user['role'] === 'customer') {
                     // Store first name in session
                     $_SESSION['user_id'] = $user['user_id'];
                     $_SESSION['customer_name'] = $user['first_name'];
 
-
-                    //  SweetAlert + JS redirect
+                    // SweetAlert + redirect
                     $login_message = "
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Welcome back, {$user['first_name']}!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        window.location.href = '../customerModule/customerDashboard.php';
-                    });
-                </script>";
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Welcome back, {$user['first_name']}!',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '../customerModule/customerDashboard.php';
+            });
+        </script>";
                 } else {
+                    // Other roles or invalid role
                     $login_message = "
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Invalid credentials',
-                        text: 'Email or password is incorrect.'
-                    });
-                </script>";
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid credentials',
+                text: 'Email or password is incorrect.'
+            });
+        </script>";
                 }
             } else {
                 $login_message = "
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Invalid credentials',
-                        text: 'Email or password is incorrect.'
-                    });
-                </script>";
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid credentials',
+            text: 'Email or password is incorrect.'
+        });
+    </script>";
             }
         } catch (PDOException $e) {
             $login_message = "<p class='text-red-500 text-sm'>Database error: " . htmlspecialchars($e->getMessage()) . "</p>";

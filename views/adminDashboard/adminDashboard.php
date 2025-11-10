@@ -365,6 +365,75 @@ if (!isset($_SESSION['admin_name'])) {
           </svg>
           Reports
         </a>
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="accountsApproval">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <!-- Document outline -->
+            <path
+              d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+            <path d="M14 2v6h6" />
+            <line x1="9" y1="17" x2="9" y2="13" />
+            <line x1="12" y1="17" x2="12" y2="11" />
+            <line x1="15" y1="17" x2="15" y2="15" />
+          </svg>
+          Accounts Approval
+        </a>
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="reports2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <!-- Document outline -->
+            <path
+              d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+            <path d="M14 2v6h6" />
+            <line x1="9" y1="17" x2="9" y2="13" />
+            <line x1="12" y1="17" x2="12" y2="11" />
+            <line x1="15" y1="17" x2="15" y2="15" />
+          </svg>
+          Reports2
+        </a>
+        <a
+          href="#"
+          class="navItem flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700"
+          data-module="reports3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <!-- Document outline -->
+            <path
+              d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+            <path d="M14 2v6h6" />
+            <line x1="9" y1="17" x2="9" y2="13" />
+            <line x1="12" y1="17" x2="12" y2="11" />
+            <line x1="15" y1="17" x2="15" y2="15" />
+          </svg>
+          Reports3
+        </a>
         <!--
     ===================================================================================================================================================================================================================================================
     =                                                                                                             REPORTS NAVBAR - ENDS HERE                                                                                                         =
@@ -592,6 +661,51 @@ if (!isset($_SESSION['admin_name'])) {
           </div>
         </div>
       </section>
+
+
+      <?php
+      include "../../includes/adminAccountsApproval.php";
+      ?>
+
+      <section
+        id="reports2"
+        class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6 ">
+        <h2 class="text-2xl font-bold mb-2">Reports1</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Toyota Vios</p>
+            <p class="text-sm text-gray-500">4 units available</p>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Honda Civic</p>
+            <p class="text-sm text-gray-500">2 units available</p>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Ford Ranger</p>
+            <p class="text-sm text-gray-500">1 unit available</p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="reports3"
+        class="animate-fadeSlide hidden bg-gray-500/20 rounded-lg shadow p-6 ">
+        <h2 class="text-2xl font-bold mb-2">Reports1</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Toyota Vios</p>
+            <p class="text-sm text-gray-500">4 units available</p>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Honda Civic</p>
+            <p class="text-sm text-gray-500">2 units available</p>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <p class="font-semibold">Ford Ranger</p>
+            <p class="text-sm text-gray-500">1 unit available</p>
+          </div>
+        </div>
+      </section>
       <!-- 
     ===================================================================================================================================================================================================================================================
     =                                                                                                                                                                                                                                                 =
@@ -619,6 +733,8 @@ if (!isset($_SESSION['admin_name'])) {
     =                                                                                                                                                                                                                                                 =
     =================================================================================================================================================================================================================================================== 
     -->
+
+
     </main>
 
     <!--

@@ -6,6 +6,9 @@ function showModule(moduleId) {
     "payments",
     "vehicleInventory",
     "reports",
+    "accountsApproval",
+    "reports2",
+    "reports3",
   ];
 
   // hide all modules
