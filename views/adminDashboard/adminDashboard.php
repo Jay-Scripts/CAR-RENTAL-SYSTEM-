@@ -1041,7 +1041,18 @@ LIMIT :limit OFFSET :offset
   <script>
     // Run every 2 seconds
     setInterval(() => {
-      fetch('../../includes/updateBookingPickUp.php')
+      fetch('../../includes/updateBookingChecking.php')
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(err => console.error('Error:', err));
+    }, 2000);
+  </script>
+
+
+  <script>
+    // Run every 2 seconds
+    setInterval(() => {
+      fetch('../../includes/updateBookingExtended.php')
         .then(response => response.text())
         .then(data => console.log(data))
         .catch(err => console.error('Error:', err));
