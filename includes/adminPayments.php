@@ -14,6 +14,7 @@
                 c.CAR_NAME, 
                 c.COLOR, 
                 c.THUMBNAIL_PATH,
+                 c.PLATE_NUM,  
                 u.FIRST_NAME, 
                 u.LAST_NAME,
                 p.RECEIPT_PATH
@@ -38,6 +39,7 @@
                     <img src="<?= htmlspecialchars($b['THUMBNAIL_PATH'] ?: 'placeholder.png') ?>" alt="Car Image" class="object-cover h-48 w-full">
                     <div class="p-4">
                         <h3 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($b['CAR_NAME']) ?> (<?= htmlspecialchars($b['COLOR']) ?>)</h3>
+                        <p class="text-sm text-gray-600">Plate Number: <?= htmlspecialchars($b['PLATE_NUM']) ?></p>
                         <p class="text-sm text-gray-600">Booked by: <?= htmlspecialchars($b['FIRST_NAME'] . ' ' . $b['LAST_NAME']) ?></p>
                         <p class="text-sm text-gray-600">Pickup: <?= date("M d, Y", strtotime($b['PICKUP_DATE'])) ?></p>
                         <p class="text-sm text-gray-600">Drop-off: <?= date("M d, Y", strtotime($b['DROP_OFF_DATE'])) ?></p>
@@ -69,6 +71,11 @@
                 <img id="receiptImage" src="" alt="E-Receipt" class="mx-auto w-48 mb-4" />
                 <p id="receiptInfo" class="text-gray-700"></p>
             </div>
+            <!-- New notes input -->
+            <div class="mb-4">
+                <label for="bookingNotes" class="block text-gray-700 font-medium mb-1">Remarks / Notes:</label>
+                <textarea id="bookingNotes" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Enter notes here..."></textarea>
+            </div>
             <div class="flex gap-3">
                 <button id="approveBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-1/2">Approve</button>
                 <button id="declineBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-1/2">Decline</button>
@@ -76,6 +83,7 @@
             <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500">&times;</button>
         </div>
     </div>
+
 
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -98,12 +106,14 @@
         function handleBooking(action) {
             if (!currentBookingId) return;
 
+            const notes = encodeURIComponent(document.getElementById('bookingNotes').value.trim());
+
             fetch('../../includes/adminPaymentsUpdates.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: 'booking_id=' + currentBookingId + '&action=' + action
+                    body: 'booking_id=' + currentBookingId + '&action=' + action + '&remarks=' + notes
                 })
                 .then(res => res.json())
                 .then(data => {
@@ -124,6 +134,7 @@
                     });
                 });
         }
+
 
         // Approve / Decline buttons
         document.getElementById('approveBtn').addEventListener('click', () => handleBooking('approve'));

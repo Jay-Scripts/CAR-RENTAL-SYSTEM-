@@ -2,6 +2,7 @@
     <thead class="bg-gray-200">
         <tr>
             <th class="px-3 py-2 text-left">Car</th>
+            <th class="px-3 py-2 text-left">Plate Number</th> <!-- New column -->
             <th class="px-3 py-2 text-left">Pickup Date</th>
             <th class="px-3 py-2 text-left">Dropoff Date</th>
             <th class="px-3 py-2 text-left">Price</th>
@@ -18,6 +19,7 @@
             SELECT 
                 cbd.BOOKING_ID,
                 c.CAR_NAME AS car,
+                c.PLATE_NUM AS plate_num,  -- Fetch plate number
                 DATE_FORMAT(cbd.PICKUP_DATE, '%b %d, %Y') AS pickup_date,
                 DATE_FORMAT(cbd.DROP_OFF_DATE, '%b %d, %Y') AS dropoff_date,
                 (DATEDIFF(cbd.DROP_OFF_DATE, cbd.PICKUP_DATE) + 1) * c.PRICE AS amount,
@@ -35,7 +37,6 @@
 
         if ($rows) {
             foreach ($rows as $r) {
-                // Status color mapping
                 $statusColor = match ($r['status']) {
                     'PENDING' => 'text-yellow-600',
                     'FOR VERIFICATION' => 'text-blue-600',
@@ -49,6 +50,7 @@
 
                 echo "<tr class='border-b'>
                     <td class='px-3 py-2'>{$r['car']}</td>
+                    <td class='px-3 py-2'>{$r['plate_num']}</td> <!-- Display plate number -->
                     <td class='px-3 py-2'>{$r['pickup_date']}</td>
                     <td class='px-3 py-2'>{$r['dropoff_date']}</td>
                     <td class='px-3 py-2'>₱" . number_format($r['amount'], 2) . "</td>
@@ -56,7 +58,6 @@
                     <td class='px-3 py-2'>{$r['created_at']}</td>
                     <td class='px-3 py-2'>";
 
-                // Show "Generate" button only for allowed statuses
                 if (in_array($r['status'], ['FOR PICKUP', 'ONGOING', 'EXTENDED', 'CHECKING', 'COMPLETED'])) {
                     echo "<a href='../../includes/customerGenerateInvoice.php?booking_id={$r['BOOKING_ID']}' 
                             target='_blank' 
@@ -70,7 +71,7 @@
                 echo "</td></tr>";
             }
         } else {
-            echo "<tr><td colspan='7' class='text-center py-4 text-gray-500'>No bookings found</td></tr>";
+            echo "<tr><td colspan='8' class='text-center py-4 text-gray-500'>No bookings found</td></tr>";
         }
         ?>
     </tbody>

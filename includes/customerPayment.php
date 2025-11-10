@@ -13,6 +13,7 @@ try {
             c.CAR_NAME, 
             c.COLOR, 
             c.THUMBNAIL_PATH,
+              c.PLATE_NUM,
             u.FIRST_NAME, 
             u.LAST_NAME
         FROM CUSTOMER_BOOKING_DETAILS b
@@ -45,6 +46,9 @@ try {
                     <h3 class="text-lg font-semibold text-gray-800">
                         <?= htmlspecialchars($booking['CAR_NAME']) ?> (<?= htmlspecialchars($booking['COLOR']) ?>)
                     </h3>
+                    <p class="text-sm text-gray-600">
+                        Plate Number: <?= htmlspecialchars($booking['PLATE_NUM']) ?> <!-- Added plate number -->
+                    </p>
                     <p class="text-sm text-gray-600">
                         Booked by: <?= htmlspecialchars($booking['FIRST_NAME'] . " " . $booking['LAST_NAME']) ?>
                     </p>
