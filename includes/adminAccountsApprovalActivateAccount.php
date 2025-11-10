@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // 1️⃣ Get user email
+    // 1️ Get user email
     $stmt = $conn->prepare("
         SELECT u.EMAIL, u.FIRST_NAME 
         FROM USER_ACCOUNT ua 
@@ -31,13 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // 2️⃣ Update account status
+    // 2️ Update account status
     $stmt = $conn->prepare("UPDATE USER_ACCOUNT SET STATUS = :status WHERE ACCOUNT_ID = :id");
     $success = $stmt->execute([':status' => $status, ':id' => $account_id]);
 
     if ($success && $stmt->rowCount() > 0) {
         try {
-            // 3️⃣ Send email notification
+            // 3️ Send email notification
             $mail = new PHPMailer(true);
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->addAddress($user['EMAIL'], $user['FIRST_NAME']);
             $mail->isHTML(true);
 
-            // 4️⃣ Define email subject and message
+            // 4️ Define email subject and message
             if ($status === 'ACTIVE') {
                 $mail->Subject = 'Account Registration Approved!';
                 $mail->Body = "
