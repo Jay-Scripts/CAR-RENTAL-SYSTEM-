@@ -1,5 +1,4 @@
 <?php
-
 try {
     // Fetch bookings with CHECKING or EXTENDED status
     $sql = "
@@ -11,6 +10,7 @@ try {
         b.TOTAL_COST,
         b.STATUS,
         b.CAR_STATUS_NOTE,  
+        b.CAR_STATUS_IMAGE,
         c.CAR_ID,
         c.CAR_NAME, 
         c.COLOR, 
@@ -51,10 +51,22 @@ try {
                     <p class="mt-1 text-sm text-gray-700 italic">
                         Car Status Notes: <?= htmlspecialchars($b['CAR_STATUS_NOTE'] ?? 'No notes yet') ?>
                     </p>
+
+                    <?php if (!empty($b['CAR_STATUS_IMAGE'])): ?>
+                        <div class="mt-2">
+                            <button
+                                onclick="openImageModal('../../<?= htmlspecialchars($b['CAR_STATUS_IMAGE']) ?>')"
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                View Image Before Handover
+                            </button>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="flex justify-between items-center bg-gray-50 p-3">
-                    <span class="px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full"><?= htmlspecialchars($b['STATUS']) ?></span>
+                    <span class="px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                        <?= htmlspecialchars($b['STATUS']) ?>
+                    </span>
                     <button
                         onclick="openForm(<?= $b['BOOKING_ID'] ?>)"
                         class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
@@ -71,7 +83,6 @@ try {
 <!-- Popup Form -->
 <div id="popupForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white w-full max-w-2xl rounded-lg shadow-lg p-6 relative">
-
         <form id="inspectionForm" method="POST" enctype="multipart/form-data" class="m-5">
             <input type="hidden" name="booking_id" id="formBookingId">
 
@@ -103,6 +114,14 @@ try {
     </div>
 </div>
 
+<!-- Image Preview Modal -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 hidden justify-center items-center z-50">
+    <img id="previewImage" src="" class="max-w-3xl max-h-[80vh] rounded-lg shadow-lg border-4 border-white">
+    <button onclick="closeImageModal()" class="absolute top-5 right-5 bg-white text-black px-3 py-1 rounded-lg font-semibold hover:bg-gray-200">
+        ✕ Close
+    </button>
+</div>
+
 <!-- SweetAlert2 CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -116,8 +135,22 @@ try {
         document.getElementById("popupForm").classList.add("hidden");
     }
 
+    function openImageModal(src) {
+        const modal = document.getElementById("imageModal");
+        const img = document.getElementById("previewImage");
+        img.src = src;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    }
+
+    function closeImageModal() {
+        const modal = document.getElementById("imageModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+
     document.getElementById("inspectionForm").addEventListener("submit", function(e) {
-        e.preventDefault(); // prevent default form submission
+        e.preventDefault();
 
         const formData = new FormData(this);
 

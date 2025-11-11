@@ -86,40 +86,40 @@ try {
             html: `
             <p>This booking will be marked as ONGOING.</p>
             <input type="text" id="carStatusNote" class="swal2-input" placeholder="Enter car status note">
+            <input type="file" id="carStatusImage" class="swal2-file" accept="image/*">
         `,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#16A34A', // green
+            confirmButtonColor: '#16A34A',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, mark it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                const carStatusNote = document.getElementById('carStatusNote').value;
+                const note = document.getElementById('carStatusNote').value;
+                const file = document.getElementById('carStatusImage').files[0];
+
+                const formData = new FormData();
+                formData.append('booking_id', bookingId);
+                formData.append('new_status', 'ONGOING');
+                formData.append('car_status_note', note);
+                if (file) formData.append('car_status_image', file);
 
                 fetch('../../includes/rentalAgentForPickupUpdateStatus.php', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: `booking_id=${bookingId}&new_status=ONGOING&car_status_note=${encodeURIComponent(carStatusNote)}`
+                        body: formData
                     })
                     .then(res => res.text())
                     .then(data => {
                         if (data.trim() === 'success') {
                             Swal.fire({
                                 title: 'Updated!',
-                                text: 'Booking status has been changed to ONGOING.',
+                                text: 'Booking marked as ONGOING.',
                                 icon: 'success',
                                 timer: 2000,
                                 showConfirmButton: false
                             }).then(() => location.reload());
                         } else {
-                            Swal.fire({
-                                title: 'Error!',
-                                text: data,
-                                icon: 'error',
-                                confirmButtonColor: '#d33'
-                            });
+                            Swal.fire('Error!', data, 'error');
                         }
                     })
                     .catch(err => Swal.fire('Error!', err, 'error'));
