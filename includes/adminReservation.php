@@ -76,9 +76,6 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 'CANCELED' => 'text-red-600',
                 default => 'text-gray-600',
             };
-            $idPath = $r['ID_PATH'] ?? '';
-            $receiptPath = $r['receipt_path'] ?? '';
-
         ?>
             <div class="bg-white p-4 rounded-lg shadow">
                 <p class="font-semibold"><?= htmlspecialchars($r['FIRST_NAME'] . ' ' . $r['LAST_NAME']) ?></p>
@@ -90,12 +87,14 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <p class="font-semibold <?= $statusColor ?>">Status: <?= $r['status'] ?></p>
                 <p class="text-gray-500 text-sm">Booked: <?= $r['created_at'] ?></p>
 
-                <?php if ($idPath): ?>
-                    <button class="res-view-id-btn px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" data-id="<?= htmlspecialchars($idPath) ?>">View ID</button>
+                <?php if ($r['ID_PATH']): ?>
+                    <button class="res-view-id-btn px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        data-id="<?= htmlspecialchars($r['ID_PATH']) ?>">View ID</button>
                 <?php endif; ?>
 
-                <?php if ($receiptPath): ?>
-                    <button class="res-view-payment-btn px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" data-id="<?= htmlspecialchars($receiptPath) ?>">View ePayment</button>
+                <?php if ($r['receipt_path']): ?>
+                    <button class="res-view-payment-btn px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                        data-id="<?= htmlspecialchars($r['receipt_path']) ?>">View ePayment</button>
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
@@ -134,10 +133,6 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         'CANCELED' => 'text-red-600',
                         default => 'text-gray-600',
                     };
-                    $idPath = $r['ID_PATH'] ? "/uploads/ids/" . $r['ID_PATH'] : '';
-                    $receiptPath = $r['receipt_path'] ? "/uploads/receipts/" . $r['receipt_path'] : '';
-
-
                 ?>
                     <tr class="border-b">
                         <td class="px-3 py-2"><?= htmlspecialchars($r['FIRST_NAME'] . ' ' . $r['LAST_NAME']) ?></td>
@@ -149,13 +144,15 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td class="px-3 py-2 font-semibold <?= $statusColor ?>"><?= $r['status'] ?></td>
                         <td class="px-3 py-2"><?= $r['created_at'] ?></td>
                         <td class="px-3 py-2">
-                            <?php if ($idPath): ?>
-                                <button class="res-view-id-btn px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" data-id="<?= htmlspecialchars($idPath) ?>">View</button>
+                            <?php if ($r['ID_PATH']): ?>
+                                <button class="res-view-id-btn px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    data-id="<?= htmlspecialchars($r['ID_PATH']) ?>">View</button>
                             <?php endif; ?>
                         </td>
                         <td class="px-3 py-2">
-                            <?php if ($receiptPath): ?>
-                                <button class="res-view-payment-btn px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" data-id="<?= htmlspecialchars($receiptPath) ?>">View</button>
+                            <?php if ($r['receipt_path']): ?>
+                                <button class="res-view-payment-btn px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                                    data-id="<?= htmlspecialchars($r['receipt_path']) ?>">View</button>
                             <?php endif; ?>
                         </td>
                     </tr>
