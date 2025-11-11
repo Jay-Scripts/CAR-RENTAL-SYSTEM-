@@ -151,9 +151,10 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </td>
                         <td class="px-3 py-2">
                             <?php if ($r['receipt_path']): ?>
-                                <button class="res-view-payment-btn px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                                    data-id="<?= htmlspecialchars($r['receipt_path']) ?>">View</button>
+                                <button class="res-view-epay-btn px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                                    data-epay="<?= htmlspecialchars($r['receipt_path']) ?>">View ePayment</button>
                             <?php endif; ?>
+
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -189,15 +190,45 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-<!-- Payment Modal -->
-<div id="res_paymentModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+<!-- E-Payment Modal (unique for this module) -->
+<div id="epayModalModule" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
     <div class="bg-white rounded-xl p-4 max-w-md w-full relative">
-        <button id="res_closePaymentModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 font-bold">&times;</button>
-        <img id="res_paymentImg" src="" alt="Receipt" class="w-full rounded">
+        <button id="epayCloseModule" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 font-bold">&times;</button>
+        <img id="epayImgModule" src="" alt="E-Receipt" class="w-full rounded">
     </div>
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // E-Payment modal unique for this module
+        const epayModal = document.getElementById('epayModalModule');
+        const epayImg = document.getElementById('epayImgModule');
+        const epayClose = document.getElementById('epayCloseModule');
+
+        document.querySelectorAll('.res-view-epay-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const imgPath = btn.dataset.epay && btn.dataset.epay !== '' ? '../' + btn.dataset.epay : '../placeholder.png';
+                epayImg.src = imgPath;
+                epayModal.classList.remove('hidden');
+                epayModal.classList.add('flex', 'items-center', 'justify-center');
+            });
+        });
+
+        epayClose.addEventListener('click', () => {
+            epayModal.classList.add('hidden');
+            epayModal.classList.remove('flex', 'items-center', 'justify-center');
+            epayImg.src = '';
+        });
+
+        epayModal.addEventListener('click', e => {
+            if (e.target === epayModal) {
+                epayModal.classList.add('hidden');
+                epayModal.classList.remove('flex', 'items-center', 'justify-center');
+                epayImg.src = '';
+            }
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
         // ID modal
         const idModal = document.getElementById('res_idModal');
