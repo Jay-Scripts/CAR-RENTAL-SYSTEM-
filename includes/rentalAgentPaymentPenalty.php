@@ -13,9 +13,9 @@ try {
         b.DROP_OFF_DATE,
         b.TOTAL_COST,
         i.INSPECTION_ID,
-        i.IMAGE_PATH,
-        i.NOTES,
-        i.PENALTY,
+        i.IMAGE_PATH AS INSPECTION_IMAGE,
+        i.NOTES AS INSPECTION_NOTES,
+        i.PENALTY AS INSPECTION_PENALTY,
         iu.FIRST_NAME AS INSPECTOR_FIRST,
         iu.LAST_NAME  AS INSPECTOR_LAST,
         p.PAYMENT_DETAILS_ID,
@@ -33,11 +33,11 @@ try {
         ON b.BOOKING_ID = p.BOOKING_ID AND p.PAYMENT_TYPE = 'PENALTY'
     WHERE b.STATUS = 'CHECKING'
     ORDER BY b.CREATED_AT DESC
-";
+    ";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $penalties = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $penaltyView_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Error fetching penalties: " . $e->getMessage());
 }
@@ -45,7 +45,7 @@ try {
 
 <h2 class="text-2xl font-bold mb-4">Penalty Payments for Checking Bookings</h2>
 
-<?php if (!empty($penalties)): ?>
+<?php if (!empty($penaltyView_data)): ?>
     <div class="overflow-x-auto">
         <table class="min-w-full table-auto border border-gray-300 bg-white rounded-lg">
             <thead class="bg-gray-100">
@@ -60,49 +60,41 @@ try {
                     <th class="border px-4 py-2 text-left">Notes</th>
                     <th class="border px-4 py-2 text-left">Actions</th>
                     <th class="border px-4 py-2 text-left">Rental Agent</th>
-
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($penalties as $p): ?>
+                <?php foreach ($penaltyView_data as $penaltyView_row): ?>
                     <tr class="border-b">
-                        <td class="border px-4 py-2"><?= htmlspecialchars($p['BOOKING_ID']) ?></td>
-
-                        <!-- Customer column now shows Inspector -->
+                        <td class="border px-4 py-2"><?= htmlspecialchars($penaltyView_row['BOOKING_ID']) ?></td>
                         <td class="border px-4 py-2">
-                            <?= htmlspecialchars(($p['CUSTOMER_FIRST'] ?? '') . ' ' . ($p['CUSTOMER_LAST'] ?? '')) ?>
+                            <?= htmlspecialchars(($penaltyView_row['CUSTOMER_FIRST'] ?? '') . ' ' . ($penaltyView_row['CUSTOMER_LAST'] ?? '')) ?>
                         </td>
-
-                        <td class="border px-4 py-2"><?= htmlspecialchars($p['CAR_NAME'] . ' (' . $p['COLOR'] . ')') ?></td>
-                        <td class="border px-4 py-2"><?= date("M d, Y", strtotime($p['PICKUP_DATE'])) ?></td>
-                        <td class="border px-4 py-2"><?= date("M d, Y", strtotime($p['DROP_OFF_DATE'])) ?></td>
-                        <td class="border px-4 py-2">₱<?= number_format($p['TOTAL_COST'], 2) ?></td>
-                        <td class="border px-4 py-2 text-red-600 font-semibold">₱<?= number_format($p['PENALTY'], 2) ?></td>
-                        <td class="border px-4 py-2"><?= htmlspecialchars($p['NOTES'] ?? '') ?></td>
+                        <td class="border px-4 py-2"><?= htmlspecialchars($penaltyView_row['CAR_NAME'] . ' (' . $penaltyView_row['COLOR'] . ')') ?></td>
+                        <td class="border px-4 py-2"><?= date("M d, Y", strtotime($penaltyView_row['PICKUP_DATE'])) ?></td>
+                        <td class="border px-4 py-2"><?= date("M d, Y", strtotime($penaltyView_row['DROP_OFF_DATE'])) ?></td>
+                        <td class="border px-4 py-2">₱<?= number_format($penaltyView_row['TOTAL_COST'], 2) ?></td>
+                        <td class="border px-4 py-2 text-red-600 font-semibold">₱<?= number_format($penaltyView_row['INSPECTION_PENALTY'], 2) ?></td>
+                        <td class="border px-4 py-2"><?= htmlspecialchars($penaltyView_row['INSPECTION_NOTES'] ?? '') ?></td>
                         <td class="border px-4 py-2 flex gap-2">
-                            <?php if (!empty($p['IMAGE_PATH'])): ?>
-                                <button onclick="viewImage('../<?= $p['IMAGE_PATH'] ?>')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
+                            <?php if (!empty($penaltyView_row['INSPECTION_IMAGE'])): ?>
+                                <button onclick="penaltyView_viewImage('../<?= $penaltyView_row['INSPECTION_IMAGE'] ?>')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
                                     View Image
                                 </button>
                             <?php endif; ?>
 
-                            <?php if (!empty($p['PAYMENT_DETAILS_ID']) && $p['PAYMENT_STATUS'] === 'UNPAID'): ?>
-                                <button onclick="markAsPaid(<?= $p['PAYMENT_DETAILS_ID'] ?>, <?= $p['BOOKING_ID'] ?>)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs">
+                            <?php if (!empty($penaltyView_row['PAYMENT_DETAILS_ID']) && $penaltyView_row['PAYMENT_STATUS'] === 'UNPAID'): ?>
+                                <button onclick="penaltyView_markAsPaid(<?= $penaltyView_row['PAYMENT_DETAILS_ID'] ?>, <?= $penaltyView_row['BOOKING_ID'] ?>)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs">
                                     Mark as Paid
                                 </button>
-                            <?php elseif (!empty($p['PAYMENT_DETAILS_ID']) && $p['PAYMENT_STATUS'] === 'PAID'): ?>
+                            <?php elseif (!empty($penaltyView_row['PAYMENT_DETAILS_ID']) && $penaltyView_row['PAYMENT_STATUS'] === 'PAID'): ?>
                                 <span class="text-green-600 font-semibold text-xs">Paid</span>
                             <?php endif; ?>
                         </td>
 
-                        <!-- Rental Agent column -->
                         <td class="border px-4 py-2">
-                            <?= htmlspecialchars(($p['INSPECTOR_FIRST'] ?? '') . ' ' . ($p['INSPECTOR_LAST'] ?? '')) ?>
+                            <?= htmlspecialchars(($penaltyView_row['INSPECTOR_FIRST'] ?? '') . ' ' . ($penaltyView_row['INSPECTOR_LAST'] ?? '')) ?>
                         </td>
-
                     </tr>
-
-
                 <?php endforeach; ?>
             </tbody>
         </table>
@@ -112,25 +104,25 @@ try {
 <?php endif; ?>
 
 <!-- Modal for Image View -->
-<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+<div id="penaltyView_imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
     <div class="relative bg-white rounded-lg p-4 max-w-lg w-full">
-        <button onclick="closeImage()" class="absolute top-2 right-2 text-gray-700 hover:text-gray-900">&times;</button>
-        <img id="modalImg" src="" alt="Inspection Image" class="w-full rounded-lg">
+        <button onclick="penaltyView_closeImage()" class="absolute top-2 right-2 text-gray-700 hover:text-gray-900">&times;</button>
+        <img id="penaltyView_modalImg" src="" alt="Inspection Image" class="w-full rounded-lg">
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function viewImage(src) {
-        document.getElementById('modalImg').src = src;
-        document.getElementById('imageModal').classList.remove('hidden');
+    function penaltyView_viewImage(src) {
+        document.getElementById('penaltyView_modalImg').src = src;
+        document.getElementById('penaltyView_imageModal').classList.remove('hidden');
     }
 
-    function closeImage() {
-        document.getElementById('imageModal').classList.add('hidden');
+    function penaltyView_closeImage() {
+        document.getElementById('penaltyView_imageModal').classList.add('hidden');
     }
 
-    function markAsPaid(paymentId, bookingId) {
+    function penaltyView_markAsPaid(paymentId, bookingId) {
         Swal.fire({
             title: 'Confirm Payment?',
             text: "This will mark the penalty as PAID and complete the booking.",
@@ -151,13 +143,16 @@ try {
                             booking_id: bookingId
                         })
                     })
-                    .then(res => res.text())
+                    .then(res => res.json()) // ✅ parse JSON response
                     .then(data => {
-                        if (data.trim() === 'success') {
-                            Swal.fire('Updated!', 'Penalty marked as paid.', 'success').then(() => location.reload());
+                        if (data.status === 'success') {
+                            Swal.fire('Updated!', data.message, 'success').then(() => location.reload()); // ✅ reload table
                         } else {
-                            Swal.fire('Error!', data, 'error');
+                            Swal.fire('Error!', data.message || 'Something went wrong', 'error');
                         }
+                    })
+                    .catch(err => {
+                        Swal.fire('Error!', 'Failed to communicate with server', 'error');
                     });
             }
         });
