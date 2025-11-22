@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $port = 3307;
-$dbName = "rentaldb";
+$dbName = "carrentaldb";
 $user = "root";
 $password = "";
 
