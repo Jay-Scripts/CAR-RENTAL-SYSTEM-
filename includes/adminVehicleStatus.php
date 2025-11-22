@@ -45,12 +45,11 @@
                     <?= $car['STATUS'] ?>
                 </span>
             </div>
-            <div class="text-center mt-3">
-                <!-- Edit Button Floating -->
+            <div class="text-center mt-3 gap-2">
+                <!-- Edit Button -->
                 <button
                     onclick='openEditCarModal(<?= json_encode($car) ?>)'
-                    class="absolute top-2 right-2  text-black 
-           p-2 rounded-full shadow-md transition"
+                    class="absolute top-2 right-10 mr-4 border text-black p-2 rounded-full shadow-md transitio hover:bg-green-100"
                     title="Edit Car">
                     <svg xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -64,7 +63,24 @@
                     </svg>
                 </button>
 
+                <!-- Delete Button -->
+                <button
+                    onclick="deleteCar(<?= $car['CAR_ID'] ?>)"
+                    class="absolute top-2 border right-2 text-red-600 p-2 rounded-full shadow-md transition hover:bg-red-100"
+                    title="Delete Car">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        class="w-4 h-4">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
+
 
         </div>
     <?php endforeach; ?>
@@ -115,6 +131,50 @@
 </div>
 
 <script>
+    function deleteCar(carId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This will permanently delete the car!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`../../includes/deleteCar.php`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            car_id: carId
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'Car has been deleted.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => location.reload());
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message
+                            });
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+        });
+    }
+
     function openEditCarModal(car) {
         document.getElementById('editCarModal').classList.remove('hidden');
 

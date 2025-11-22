@@ -821,56 +821,43 @@ LIMIT :limit OFFSET :offset
       <?php
       include "../../config/db.php";
 
-      // Get search term
-      $apac_search = trim($_GET['search'] ?? '');
-
       // Pagination
-      $apac_page = isset($_GET['activePage']) ? max(1, intval($_GET['activePage'])) : 1;
-      $apac_limit = 10;
-      $apac_offset = ($apac_page - 1) * $apac_limit;
+      $activePage = isset($_GET['activePage']) ? max(1, intval($_GET['activePage'])) : 1;
+      $activeLimit = 10;
+      $activeOffset = ($activePage - 1) * $activeLimit;
 
-      // Count total active accounts with search
-      $apac_totalQuery = "SELECT COUNT(*) FROM USER_ACCOUNT ua
-                    JOIN USER_DETAILS u ON ua.USER_ID = u.USER_ID
-                    WHERE ua.STATUS = 'ACTIVE'
-                    AND (u.FIRST_NAME LIKE :search OR u.LAST_NAME LIKE :search OR u.EMAIL LIKE :search OR u.PHONE LIKE :search)";
-      $apac_totalStmt = $conn->prepare($apac_totalQuery);
-      $apac_totalStmt->execute([':search' => "%$apac_search%"]);
-      $apac_totalRows = $apac_totalStmt->fetchColumn();
-      $apac_totalPages = ceil($apac_totalRows / $apac_limit);
+      // Count total active accounts
+      $totalActiveQuery = "SELECT COUNT(*) FROM USER_ACCOUNT ua
+                     JOIN USER_DETAILS u ON ua.USER_ID = u.USER_ID
+                     WHERE ua.STATUS = 'ACTIVE'";
+      $totalActiveStmt = $conn->prepare($totalActiveQuery);
+      $totalActiveStmt->execute();
+      $totalActiveRows = $totalActiveStmt->fetchColumn();
+      $totalActivePages = ceil($totalActiveRows / $activeLimit);
 
-      // Fetch active accounts with search
-      $apac_query = "SELECT ua.ACCOUNT_ID, ua.STATUS, ua.CREATED_AT as account_created,
-                      u.USER_ID, u.FIRST_NAME, u.LAST_NAME, u.EMAIL, u.PHONE, u.ADDRESS, u.GENDER, u.BIRTHDATE, u.ID_PATH
-               FROM USER_ACCOUNT ua
-               JOIN USER_DETAILS u ON ua.USER_ID = u.USER_ID
-               WHERE ua.STATUS = 'ACTIVE'
-               AND (u.FIRST_NAME LIKE :search OR u.LAST_NAME LIKE :search OR u.EMAIL LIKE :search OR u.PHONE LIKE :search)
-               ORDER BY ua.CREATED_AT DESC
-               LIMIT :limit OFFSET :offset";
+      // Fetch active accounts
+      $activeQuery = "SELECT ua.ACCOUNT_ID, ua.STATUS, ua.CREATED_AT as account_created,
+                       u.USER_ID, u.FIRST_NAME, u.LAST_NAME, u.EMAIL, u.PHONE, u.ADDRESS, u.GENDER, u.BIRTHDATE, u.ID_PATH
+                FROM USER_ACCOUNT ua
+                JOIN USER_DETAILS u ON ua.USER_ID = u.USER_ID
+                WHERE ua.STATUS = 'ACTIVE'
+                ORDER BY ua.CREATED_AT DESC
+                LIMIT :limit OFFSET :offset";
 
-      $apac_stmt = $conn->prepare($apac_query);
-      $apac_stmt->bindValue(':search', "%$apac_search%", PDO::PARAM_STR);
-      $apac_stmt->bindValue(':limit', $apac_limit, PDO::PARAM_INT);
-      $apac_stmt->bindValue(':offset', $apac_offset, PDO::PARAM_INT);
-      $apac_stmt->execute();
-      $apac_accounts = $apac_stmt->fetchAll(PDO::FETCH_ASSOC);
+      $activeStmt = $conn->prepare($activeQuery);
+      $activeStmt->bindValue(':limit', $activeLimit, PDO::PARAM_INT);
+      $activeStmt->bindValue(':offset', $activeOffset, PDO::PARAM_INT);
+      $activeStmt->execute();
+      $activeAccounts = $activeStmt->fetchAll(PDO::FETCH_ASSOC);
       ?>
 
       <section id="reports3" class="animate-fadeSlide bg-gray-500/20 rounded-lg shadow p-6">
         <h2 class="text-2xl font-bold mb-2">Active Accounts</h2>
 
-        <!-- Search Bar -->
-        <form method="get" class="mb-4">
-          <input type="text" name="search" placeholder="Search by name, email, or phone" value="<?= htmlspecialchars($apac_search) ?>"
-            class="w-full md:w-1/2 px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300">
-          <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mt-2 md:mt-0">Search</button>
-        </form>
-
         <!-- Mobile Cards -->
         <div class="space-y-4 md:hidden">
-          <?php if ($apac_accounts): ?>
-            <?php foreach ($apac_accounts as $a): ?>
+          <?php if ($activeAccounts): ?>
+            <?php foreach ($activeAccounts as $a): ?>
               <div class="bg-white p-4 rounded-lg shadow">
                 <p class="font-semibold"><?= htmlspecialchars($a['FIRST_NAME'] . ' ' . $a['LAST_NAME']) ?></p>
                 <p>Email: <?= htmlspecialchars($a['EMAIL']) ?></p>
@@ -879,9 +866,13 @@ LIMIT :limit OFFSET :offset
                 <p>Birthdate: <?= date('M d, Y', strtotime($a['BIRTHDATE'])) ?></p>
                 <p>Address: <?= htmlspecialchars($a['ADDRESS']) ?></p>
                 <?php if ($a['ID_PATH']): ?>
-                  <button class="active-view-id-btn px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    data-id="<?= htmlspecialchars($a['ID_PATH']) ?>">View ID</button>
+                  <button
+                    class="active-view-id-btn px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    data-id="<?= htmlspecialchars($a['ID_PATH']) ?>">
+                    View ID
+                  </button>
                 <?php endif; ?>
+
                 <p>Status: <span class="text-green-600 font-semibold"><?= $a['STATUS'] ?></span></p>
                 <p>Account Created: <?= date('M d, Y', strtotime($a['account_created'])) ?></p>
               </div>
@@ -908,8 +899,8 @@ LIMIT :limit OFFSET :offset
               </tr>
             </thead>
             <tbody>
-              <?php if ($apac_accounts): ?>
-                <?php foreach ($apac_accounts as $a): ?>
+              <?php if ($activeAccounts): ?>
+                <?php foreach ($activeAccounts as $a): ?>
                   <tr class="border-b hover:bg-gray-50">
                     <td class="px-3 py-2"><?= $a['ACCOUNT_ID'] ?></td>
                     <td class="px-3 py-2"><?= htmlspecialchars($a['FIRST_NAME'] . ' ' . $a['LAST_NAME']) ?></td>
@@ -920,8 +911,11 @@ LIMIT :limit OFFSET :offset
                     <td class="px-3 py-2"><?= htmlspecialchars($a['ADDRESS']) ?></td>
                     <td class="px-3 py-2">
                       <?php if ($a['ID_PATH']): ?>
-                        <button class="active-view-id-btn px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                          data-id="<?= htmlspecialchars($a['ID_PATH']) ?>">View</button>
+                        <button
+                          class="active-view-id-btn px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                          data-id="<?= htmlspecialchars($a['ID_PATH']) ?>">
+                          View
+                        </button>
                       <?php endif; ?>
                     </td>
                     <td class="px-3 py-2 text-green-600 font-semibold"><?= $a['STATUS'] ?></td>
@@ -938,19 +932,60 @@ LIMIT :limit OFFSET :offset
 
         <!-- Pagination -->
         <div class="flex justify-center mt-4 space-x-2">
-          <?php if ($apac_page > 1): ?>
-            <a href="?activePage=<?= $apac_page - 1 ?>&search=<?= urlencode($apac_search) ?>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+          <?php if ($activePage > 1): ?>
+            <a href="?activePage=<?= $activePage - 1 ?>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
           <?php endif; ?>
 
-          <?php for ($p = 1; $p <= $apac_totalPages; $p++): ?>
-            <a href="?activePage=<?= $p ?>&search=<?= urlencode($apac_search) ?>" class="px-3 py-1 rounded <?= $p == $apac_page ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300' ?>"><?= $p ?></a>
+          <?php for ($p = 1; $p <= $totalActivePages; $p++): ?>
+            <a href="?activePage=<?= $p ?>" class="px-3 py-1 rounded <?= $p == $activePage ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300' ?>"><?= $p ?></a>
           <?php endfor; ?>
 
-          <?php if ($apac_page < $apac_totalPages): ?>
-            <a href="?activePage=<?= $apac_page + 1 ?>&search=<?= urlencode($apac_search) ?>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+          <?php if ($activePage < $totalActivePages): ?>
+            <a href="?activePage=<?= $activePage + 1 ?>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
           <?php endif; ?>
         </div>
       </section>
+
+      <!-- ID View Modal -->
+      <div id="activeIdModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-4 max-w-md w-full relative">
+          <button id="closeActiveModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 font-bold">&times;</button>
+          <img id="activeModalImg" src="" alt="ID Image" class="w-full rounded">
+        </div>
+      </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const modal = document.getElementById('activeIdModal');
+          const modalImg = document.getElementById('activeModalImg');
+          const closeModal = document.getElementById('closeActiveModal');
+
+          document.querySelectorAll('.active-view-id-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const imgPath = btn.dataset.id;
+              if (!imgPath) return;
+
+              modalImg.src = imgPath;
+              modal.classList.remove('hidden');
+              modal.classList.add('flex', 'items-center', 'justify-center');
+            });
+          });
+
+          closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex', 'items-center', 'justify-center');
+            modalImg.src = '';
+          });
+
+          modal.addEventListener('click', e => {
+            if (e.target === modal) {
+              modal.classList.add('hidden');
+              modal.classList.remove('flex', 'items-center', 'justify-center');
+              modalImg.src = '';
+            }
+          });
+        });
+      </script>
 
 
       <!-- 
