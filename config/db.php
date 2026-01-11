@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $port = 3307;
-$dbName = "carrentaldb";
+$dbName = "carretal_test";
 $user = "root";
 $password = "";
 

@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $fileName = basename($_FILES['images']['name'][$index]);
         $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        if (!in_array($fileExt, ['jpg','jpeg','png','gif'])) continue;
+        if (!in_array($fileExt, ['jpg', 'jpeg', 'png', 'gif'])) continue;
 
         $newFileName = "inspection_{$booking_id}_" . time() . "_{$index}." . $fileExt;
         $uploadPath = $uploadDir . $newFileName;
@@ -56,15 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Insert each image as separate row
         foreach ($uploadedFiles as $file) {
             $stmt = $conn->prepare("
-                INSERT INTO BOOKING_VEHICLE_INSPECTION
-                (BOOKING_ID, USER_ID, IMAGE_PATH, IMAGE_NAME, NOTES, PENALTY, CREATED_AT)
-                VALUES (:booking_id, :user_id, :image_path, :image_name, :notes, :penalty, NOW())
-            ");
+    INSERT INTO BOOKING_VEHICLE_INSPECTION
+    (BOOKING_ID, USER_ID, IMAGE_PATH, NOTES, PENALTY, CREATED_AT)
+    VALUES (:booking_id, :user_id, :image_path, :notes, :penalty, NOW())
+");
+
             $stmt->execute([
                 ':booking_id' => $booking_id,
                 ':user_id'    => $user_id,
                 ':image_path' => $file['path'],
-                ':image_name' => $file['name'],
                 ':notes'      => $notes,
                 ':penalty'    => $penalty
             ]);
