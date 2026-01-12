@@ -1035,6 +1035,26 @@ LIMIT :limit OFFSET :offset
     =================================================================================================================================================================================================================================================== 
     -->
   </div>
+  <!-- Verification Modal -->
+  <div id="verificationModal" class="fixed inset-0 bg-black bg-opacity-50 border flex items-center justify-center hidden z-50">
+    <div class="bg-white w-full max-w-lg rounded-lg shadow-lg p-6 relative">
+      <h2 class="text-xl font-bold mb-4">E-Receipt</h2>
+      <div id="receiptDetails" class="mb-4">
+        <img id="receiptImage" src="" alt="E-Receipt" class="mx-auto w-48 mb-4" />
+        <p id="receiptInfo" class="text-gray-700"></p>
+      </div>
+      <!-- New notes input -->
+      <div class="mb-4">
+        <label for="bookingNotes" class="block text-gray-700 font-medium mb-1">Remarks / Notes:</label>
+        <textarea id="bookingNotes" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Enter notes here..."></textarea>
+      </div>
+      <div class="flex gap-3">
+        <button id="approveBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-1/2">Approve</button>
+        <button id="declineBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-1/2">Decline</button>
+      </div>
+      <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500">&times;</button>
+    </div>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
   <script src="../../js/adminModules.js"></script>
   <script src="../../js/adminDropdownLogout.js"></script>

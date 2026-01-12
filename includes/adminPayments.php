@@ -36,7 +36,10 @@
         <?php if (!empty($bookings)): ?>
             <?php foreach ($bookings as $b): ?>
                 <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-                    <img src="<?= htmlspecialchars($b['THUMBNAIL_PATH'] ?: 'placeholder.png') ?>" alt="Car Image" class="object-cover h-48 w-full">
+                    <div class="p-5">
+                        <img src="<?= htmlspecialchars($b['THUMBNAIL_PATH'] ?: 'placeholder.png') ?>" alt="Car Image" class="object-cover h-48 w-full">
+
+                    </div>
                     <div class="p-4">
                         <h3 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($b['CAR_NAME']) ?> (<?= htmlspecialchars($b['COLOR']) ?>)</h3>
                         <p class="text-sm text-gray-600">Plate Number: <?= htmlspecialchars($b['PLATE_NUM']) ?></p>
@@ -63,26 +66,7 @@
             <p class="text-gray-600 col-span-full">No pending bookings for verification.</p>
         <?php endif; ?>
     </div>
-    <!-- Verification Modal -->
-    <div id="verificationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white w-full max-w-lg rounded-lg shadow-lg p-6 relative">
-            <h2 class="text-xl font-bold mb-4">E-Receipt</h2>
-            <div id="receiptDetails" class="mb-4">
-                <img id="receiptImage" src="" alt="E-Receipt" class="mx-auto w-48 mb-4" />
-                <p id="receiptInfo" class="text-gray-700"></p>
-            </div>
-            <!-- New notes input -->
-            <div class="mb-4">
-                <label for="bookingNotes" class="block text-gray-700 font-medium mb-1">Remarks / Notes:</label>
-                <textarea id="bookingNotes" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Enter notes here..."></textarea>
-            </div>
-            <div class="flex gap-3">
-                <button id="approveBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-1/2">Approve</button>
-                <button id="declineBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-1/2">Decline</button>
-            </div>
-            <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500">&times;</button>
-        </div>
-    </div>
+
 
 
     <!-- SweetAlert2 CDN -->
