@@ -41,13 +41,13 @@ The Car Rental Management System helps rental businesses manage their fleet, mon
 
 ### Frontend
 - HTML
-- CSS
+- TailwindCSS
 - JavaScript
-- Bootstrap
+- Flowbite
 
 ### Backend
 - PHP
-- Laravel *(Replace if different)*
+
 
 ### Database
 - MySQL
@@ -105,26 +105,24 @@ npm install
 
 4. Configure the database connection
 
-5. Run database migrations
-
-```bash
-php artisan migrate
-```
-
-6. Start the development server
-
-```bash
-php artisan serve
-```
 
 ## Screenshots
 
-Add screenshots of:
+
 - Dashboard
+- <img width="1924" height="1084" alt="admin 1 1" src="https://github.com/user-attachments/assets/555a394c-41e6-4891-9ce6-4f3313493d10" />
+
 - Vehicle Management
+- <img width="1924" height="1084" alt="admin 1 2" src="https://github.com/user-attachments/assets/184b113b-84e2-41f2-9953-fa0105bd1493" />
+
 - Reservation Page
+- <img width="1924" height="1084" alt="admin 1 9" src="https://github.com/user-attachments/assets/f1a3ef29-48c3-4f0a-8fd2-c7014c0fe7a2" />
+
+
 - Customer Management
-- Reports Module
+- <img width="1924" height="1084" alt="admin 1 10" src="https://github.com/user-attachments/assets/4364bde6-ec85-42bf-bdc9-ea0476633e55" />
+
+
 
 ## Project Highlights
 
@@ -147,4 +145,3 @@ Add screenshots of:
 **Cornelio A. Gatbonton Jr.**
 - Junior Web Developer
 - Portfolio: https://cornelio-portfolio.vercel.app/
-- LinkedIn: www.linkedin.com/in/corneliogatbonton
