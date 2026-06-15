@@ -1,3 +1,6 @@
+<img width="1672" height="941" alt="car rental" src="https://github.com/user-attachments/assets/7b5e04d5-2d5a-4729-9b6f-0a6089819f9d" />
+
+
 # Car Rental Management System
 
 A web-based Car Rental Management System designed to streamline vehicle rental operations by providing efficient management of customers, vehicles, reservations, and rental transactions.
